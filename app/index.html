@@ -15,6 +15,8 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="/bower_components/mapbox.js/mapbox.css" />
+    <link rel="stylesheet" href="/bower_components/sidebar-v2/css/leaflet-sidebar.css" />
+    <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -29,6 +31,16 @@
     <script src="shaders/vertex.vert" type="x-shader/x-vertex" id="vertex"></script>
     <script src="shaders/advection.frag" type="x-shader/x-fragment" id="fragment"></script>
 
+    <script id="model-template" type="text/x-handlebars-template">
+      <h1>Models</h1>
+      {{#each models}}
+      <div class="model" id="{{ id }}">
+        <h2>{{ title }} <a href="#" class="load-model" data-id="{{ id }}"><i class="fa fa-cog"></i></a></h2>
+        <p>{{ abstract }}</p>
+      </div>
+      {{/each}}
+    </script>
+
   </head>
   <body>
     <!--[if lt IE 10]>
@@ -36,11 +48,37 @@
     <![endif]-->
 
     <!-- Map -->
-    <div class="fluid-container">
-      <div class="row">
-        <div id="map"></div>
-      </div>
+
+    <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <ul class="sidebar-tabs" role="tablist">
+            <li><a href="#models" role="tab"><i class="fa fa-bars"></i></a></li>
+            <li><a href="#paint" role="tab"><i class="fa fa-paint-brush"></i></a></li>
+            <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>
+            <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="sidebar-content active">
+            <div class="sidebar-pane" id="models">
+              <h1>Models</h1>
+            </div>
+            <div class="sidebar-pane" id="paint">
+              <h1>Painting</h1>
+              <div>
+                  <span style="color: #69D2E7;"><i class="fa fa-circle"></i></span>
+                  <span style="color: #A7DBD8;"><i class="fa fa-circle"></i></span>
+                  <span style="color: #E0E4CC;"><i class="fa fa-circle"></i></span>
+                  <span style="color: #F38630;"><i class="fa fa-circle"></i></span>
+                  <span style="color: #FA6900;"><i class="fa fa-circle"></i></span>
+              </div>
+            </div>
+            <div class="sidebar-pane" id="profile"><h1>Fedor Baart</h1></div>
+            <div class="sidebar-pane" id="settings"><h1>Settings</h1></div>
+        </div>
     </div>
+    <div id="map" class="sidebar-map"></div>
+
     <!-- Hidden layers -->
     <div class="hidden layer">
       <video id="uv" autoplay loop>
@@ -63,6 +101,9 @@
     <script src="/bower_components/mapbox.js/mapbox.js"></script>
     <script src="/bower_components/sketch.js/js/sketch.js"></script>
     <script src="/bower_components/three.js/three.min.js"></script>
+    <script src="/bower_components/sidebar-v2/js/jquery-sidebar.js"></script>
+    <script src="/bower_components/sidebar-v2/js/leaflet-sidebar.js"></script>
+    <script src="/bower_components/handlebars/handlebars.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -83,6 +124,8 @@
 
     <!-- build:js scripts/main.js -->
     <script src="scripts/main.js"></script>
+    <script src="scripts/map.js"></script>
+    <script src="scripts/models.js"></script>
     <!-- endbuild -->
   </body>
 </html>

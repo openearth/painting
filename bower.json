@@ -1,36 +1,48 @@
 {
-    "name": "painting",
-    "private": true,
-    "dependencies": {
-        "bootstrap-sass": "*",
-        "modernizr": "*",
-        "fetch": "*",
-        "es6-promise": "*",
-        "lodash": "*",
-        "leaflet": "*",
-        "leaflet-editable-handlers": "*",
-        "dat-gui": "*",
-        "mapbox.js": "*",
-        "sketch.js": "*",
-        "three.js": "~0.71.0"
+  "name": "painting",
+  "private": true,
+  "dependencies": {
+    "bootstrap-sass": "*",
+    "modernizr": "*",
+    "fetch": "*",
+    "es6-promise": "*",
+    "lodash": "*",
+    "leaflet": "*",
+    "leaflet-editable-handlers": "*",
+    "dat-gui": "*",
+    "mapbox.js": "*",
+    "sketch.js": "*",
+    "three.js": "~0.71.0",
+    "sidebar-v2": "~0.2.1",
+    "fontawesome": "~4.3.0",
+    "handlebars": "~3.0.3"
+  },
+  "overrides": {
+    "sketch.js": {
+      "main": [
+        "js/sketch.js"
+      ]
     },
-    "overrides": {
-        "sketch.js": {
-            "main": "js/sketch.js"
-        },
-        "bootstrap-sass": {
-            "main": [
-                "assets/stylesheets/_bootstrap.scss",
-                "assets/fonts/bootstrap/*",
-                "assets/javascripts/bootstrap.js"
-            ]
-        },
-        "dat-gui": {
-            "main": "build/dat.gui.js"
-        }
+    "sidebar-v2": {
+      "main": [
+        "css/leaflet-sidebar.css",
+        "js/jquery-sidebar.js",
+        "js/leaflet-sidebar.js"
+      ]
     },
-    "devDependencies": {
-        "chai": "~3.0.0",
-        "mocha": "~2.2.5"
+    "bootstrap-sass": {
+      "main": [
+        "assets/stylesheets/_bootstrap.scss",
+        "assets/fonts/bootstrap/*",
+        "assets/javascripts/bootstrap.js"
+      ]
+    },
+    "dat-gui": {
+      "main": "build/dat.gui.js"
     }
+  },
+  "devDependencies": {
+    "chai": "~3.0.0",
+    "mocha": "~2.2.5"
+  }
 }
