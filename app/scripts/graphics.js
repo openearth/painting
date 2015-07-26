@@ -57,6 +57,24 @@ $(function(){
         sketch.radius = evt.value.newValue;
     });
 
+
+    // Add event handlers to images
+    $('#images a.thumbnail').click(
+        function(evt){
+            // find the image source
+            var src = $(evt.currentTarget).find('img').attr('src');
+
+            // draw it on the canvas
+            var img = new Image();
+            img.onload = function() {
+                sketch.drawImage(img, 0, 0);
+            };
+            img.src = src;
+
+            evt.preventDefault();
+        }
+    )
+
     // Listen for loaded models
     document.addEventListener('model-selected', function(evt){
         var model = evt.detail;
