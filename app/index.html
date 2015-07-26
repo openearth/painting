@@ -40,54 +40,73 @@
       </div>
       {{/each}}
     </script>
+    <script id="video-template" type="text/x-handlebars-template">
+      <video id="uv" autoplay loop>
+        {{#each uv}}
+        <source src="{{ src }}" type="{{ type }}"></source>
+        {{/each}}
+      </video>
+    </script>
+    <script id="colours-template" type="text/x-handlebars-template">
+      {{#each palettes}}
+      <div class="palette">
+        <div class="colors">
+        {{#each colors}}
+        <span class="color" style="background-color: #{{this}}">&nbsp;</span>
+        {{/each}}
+        </div>
+        <span class="title" title="{{ title }} by {{ userName }}">
+          <a href="{{ url }}"><li class="fa fa-info-circle"></li></a>
+        </span>
+      </div>
+      {{/each}}
+      <p>Colours from <a href="http://colourlovers.com">colourlovers</a></p>
+    </script>
 
   </head>
   <body>
     <!--[if lt IE 10]>
-      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
 
     <!-- Map -->
 
     <div id="sidebar" class="sidebar collapsed">
-        <!-- Nav tabs -->
-        <ul class="sidebar-tabs" role="tablist">
-            <li><a href="#models" role="tab"><i class="fa fa-bars"></i></a></li>
-            <li><a href="#paint" role="tab"><i class="fa fa-paint-brush"></i></a></li>
-            <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>
-            <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-        </ul>
+      <!-- Nav tabs -->
+      <ul class="sidebar-tabs" role="tablist">
+        <li><a href="#models" role="tab"><i class="fa fa-bars"></i></a></li>
+        <li><a href="#paint" role="tab"><i class="fa fa-paint-brush"></i></a></li>
+        <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>
+        <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+      </ul>
 
-        <!-- Tab panes -->
-        <div class="sidebar-content active">
-            <div class="sidebar-pane" id="models">
-              <h1>Models</h1>
-            </div>
-            <div class="sidebar-pane" id="paint">
-              <h1>Painting</h1>
-              <div>
-                  <span style="color: #69D2E7;"><i class="fa fa-circle"></i></span>
-                  <span style="color: #A7DBD8;"><i class="fa fa-circle"></i></span>
-                  <span style="color: #E0E4CC;"><i class="fa fa-circle"></i></span>
-                  <span style="color: #F38630;"><i class="fa fa-circle"></i></span>
-                  <span style="color: #FA6900;"><i class="fa fa-circle"></i></span>
-              </div>
-            </div>
-            <div class="sidebar-pane" id="profile"><h1>Fedor Baart</h1></div>
-            <div class="sidebar-pane" id="settings"><h1>Settings</h1></div>
+      <!-- Tab panes -->
+      <div class="sidebar-content active">
+        <div class="sidebar-pane" id="models">
+          <h1>Models</h1>
         </div>
+        <div class="sidebar-pane" id="paint">
+          <h1>Painting</h1>
+          <div id="colours">
+          </div>
+        </div>
+        <div class="sidebar-pane" id="profile">
+          <h1>Created by Fedor Baart</h1>
+          <p>
+
+          </p>
+        </div>
+        <div class="sidebar-pane" id="settings"><h1>Settings</h1></div>
+      </div>
     </div>
     <div id="map" class="sidebar-map"></div>
 
     <!-- Hidden layers -->
     <div class="hidden layer">
-      <video id="uv" autoplay loop>
-        <source src="movies/wadden.webm" type="video/webm"></source>
-        <source src="movies/wadden.mp4"  type="video/mp4"></source>
-      </video>
+      <div id="uv-container">
+      </div>
     </div>
 
-    </script>
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
@@ -99,7 +118,6 @@
     <script src="/bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="/bower_components/dat-gui/build/dat.gui.js"></script>
     <script src="/bower_components/mapbox.js/mapbox.js"></script>
-    <script src="/bower_components/sketch.js/js/sketch.js"></script>
     <script src="/bower_components/three.js/three.min.js"></script>
     <script src="/bower_components/sidebar-v2/js/jquery-sidebar.js"></script>
     <script src="/bower_components/sidebar-v2/js/leaflet-sidebar.js"></script>
@@ -123,8 +141,12 @@
     <!-- endbuild -->
 
     <!-- build:js scripts/main.js -->
+    <!-- custom version of sketch -->
+    <script src="scripts-external/sketch.js"></script>
+    <!-- main files -->
     <script src="scripts/main.js"></script>
     <script src="scripts/map.js"></script>
+    <script src="scripts/graphics.js"></script>
     <script src="scripts/models.js"></script>
     <!-- endbuild -->
   </body>

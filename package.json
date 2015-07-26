@@ -30,7 +30,13 @@
     "eslintConfig": {
         "env": {
             "node": true,
-            "browser": true
+            "browser": true,
+            "jquery": true
+        },
+        "globals": {
+            "_": true,
+            "L": true,
+            "Handlebars": true
         },
         "rules": {
             "quotes": [

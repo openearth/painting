@@ -11,18 +11,12 @@
     "leaflet-editable-handlers": "*",
     "dat-gui": "*",
     "mapbox.js": "*",
-    "sketch.js": "*",
     "three.js": "~0.71.0",
     "sidebar-v2": "~0.2.1",
     "fontawesome": "~4.3.0",
     "handlebars": "~3.0.3"
   },
   "overrides": {
-    "sketch.js": {
-      "main": [
-        "js/sketch.js"
-      ]
-    },
     "sidebar-v2": {
       "main": [
         "css/leaflet-sidebar.css",
