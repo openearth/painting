@@ -8,28 +8,24 @@ $icon-font-path: '../fonts/';
 @import "map.scss";
 @import "sidebar.scss";
 
-span.color {
-    width: 50px;
+.color {
+    width: 20vw;
     height: 20px;
-    border-color: black;
-    border-width: 1px;
-    vertical-align: middle;
-}
-.palette  .title {
-    margin-left: 5px;
     vertical-align: middle;
 }
 div .colors {
     display: flex;
-    vertical-align: middle;
+    padding: 0px;
 }
 div .palette {
-    margin: 5px;
-    display: flex;
-    vertical-align: middle;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
 }
 
-
+.slider.slider-horizontal {
+    width: 100%;
+}
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;

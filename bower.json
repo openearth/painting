@@ -14,7 +14,8 @@
     "three.js": "~0.71.0",
     "sidebar-v2": "~0.2.1",
     "fontawesome": "~4.3.0",
-    "handlebars": "~3.0.3"
+    "handlebars": "~3.0.3",
+    "seiyria-bootstrap-slider": "~4.13.1"
   },
   "overrides": {
     "sidebar-v2": {

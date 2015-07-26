@@ -30,7 +30,6 @@ function addDrawing(drawingElement, drawingContainer) {
         // scalability. If you only need to handle the mouse / desktop browsers,
         // use the 0th touch element and you get wider device support for free.
         touchmove: function() {
-            console.log('touchmove', this);
             for ( var i = this.touches.length - 1, touch; i >= 0; i-- ) {
                 touch = this.touches[i];
                 this.lineCap = 'round';
@@ -49,14 +48,20 @@ function addDrawing(drawingElement, drawingContainer) {
 
 
 $(function(){
-    addDrawing();
+
+    var sketch;
+
+    // Add the slider
+    var slider = $("input.slider").slider();
+    slider.on('change', function(evt){
+        sketch.radius = evt.value.newValue;
+    });
+
     // Listen for loaded models
     document.addEventListener('model-selected', function(evt){
         var model = evt.detail;
-        console.log('model selected', model);
         loadVideo(model);
-        var sketch = addDrawing($('#drawing')[0], $('#drawingcontainer')[0]);
-        console.log(sketch);
+        sketch = addDrawing($('#drawing')[0], $('#drawingcontainer')[0]);
     });
     fetch('/data/colourlovers.json')
         .then(function(response) {
@@ -67,6 +72,14 @@ $(function(){
             var template = Handlebars.compile(source);
             var html = template({'palettes': json});
             $('#colours').html(html);
+            _.map(json, function(palette){
+                $('#palette' + palette.id).click(function(){
+                    console.log(palette.colors, sketch.palette);
+                    sketch.palette = _.map(palette.colors, function(x){return '#' + x; });
+                });
+            });
+
+
         })
         .catch(function(ex) {
             console.log('parsing failed', ex);
