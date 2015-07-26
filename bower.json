@@ -1,36 +1,36 @@
 {
-  "name": "painting",
-  "private": true,
-  "dependencies": {
-    "bootstrap-sass": "*",
-    "modernizr": "*",
-    "fetch": "*",
-    "es6-promise": "*",
-    "lodash": "*",
-    "leaflet": "*",
-    "leaflet-editable-handlers": "*",
-    "dat-gui": "*",
-    "mapbox.js": "*",
-    "sketch.js": "*",
-    "three.js": "~0.71.0"
-  },
-  "overrides": {
-    "sketch.js": {
-        "main": "js/sketch.js"
+    "name": "painting",
+    "private": true,
+    "dependencies": {
+        "bootstrap-sass": "*",
+        "modernizr": "*",
+        "fetch": "*",
+        "es6-promise": "*",
+        "lodash": "*",
+        "leaflet": "*",
+        "leaflet-editable-handlers": "*",
+        "dat-gui": "*",
+        "mapbox.js": "*",
+        "sketch.js": "*",
+        "three.js": "~0.71.0"
     },
-    "bootstrap-sass": {
-      "main": [
-        "assets/stylesheets/_bootstrap.scss",
-        "assets/fonts/bootstrap/*",
-        "assets/javascripts/bootstrap.js"
-      ]
+    "overrides": {
+        "sketch.js": {
+            "main": "js/sketch.js"
+        },
+        "bootstrap-sass": {
+            "main": [
+                "assets/stylesheets/_bootstrap.scss",
+                "assets/fonts/bootstrap/*",
+                "assets/javascripts/bootstrap.js"
+            ]
+        },
+        "dat-gui": {
+            "main": "build/dat.gui.js"
+        }
     },
-    "dat-gui": {
-      "main": "build/dat.gui.js"
+    "devDependencies": {
+        "chai": "~3.0.0",
+        "mocha": "~2.2.5"
     }
-  },
-  "devDependencies": {
-    "chai": "~3.0.0",
-    "mocha": "~2.2.5"
-  }
 }
