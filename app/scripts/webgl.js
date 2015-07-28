@@ -29,11 +29,16 @@ $(function() {
         var video = $('#uv')[0];
         console.log('video', video);
         var videoTexture = PIXI.Texture.fromVideo(video);
-        videoTexture.autoUpdate = true;
+        // videoTexture.autoUpdate = true;
         var videoSprite = new PIXI.Sprite(videoTexture);
+        videoSprite.worldTransform = PIXI.Matrix.IDENTITY;
         advectStage.addChild(videoSprite);
-        video.pause();
-        video.play();
+        mixStage.addChild(videoSprite);
+
+        var displacementFilter = new PIXI.filters.DisplacementFilter(
+            videoTexture
+        );
+        var filters = [displacementFilter];
 
         // create framebuffer with texture source
         var renderTextureFrom = new PIXI.RenderTexture(renderer, width, height);
@@ -41,6 +46,7 @@ $(function() {
         // We add what we advect to both rendering and mixing
         advectStage.addChild(renderSpriteFrom);
         mixStage.addChild(renderSpriteFrom);
+        //mixStage.filters = filters;
 
         // Create framebuffer with texture target
         var renderTextureTo = new PIXI.RenderTexture(renderer, width, height);
