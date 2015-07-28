@@ -1,13 +1,24 @@
 $icon-font-path: '../fonts/';
 
-
+$tab-fg: #43535A ;
+$tab-active-fg: #8BA2A4;
+$tab-active-bg: #23527C;
 // bower:scss
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "bower_components/sidebar-v2/scss/leaflet-sidebar.scss";
 // endbower
 
-@import "map.scss";
-@import "sidebar.scss";
 
+@import "map.scss";
+
+.panel.sidebar-pane {
+    padding: 0px;
+
+}
+.sidebar-pane .panel-heading {
+    border-top-left-radius: 0px;
+
+}
 .color {
     width: 20vw;
     height: 20px;

@@ -1,4 +1,9 @@
 'use strict';
-$(function(){
+// global settings
+var settings = {
+    clear2d: false
+};
+
+$(function() {
 
 });

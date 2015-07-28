@@ -18,7 +18,7 @@ function addDrawing(drawingElement, drawingContainer) {
         palette: ['black', 'white'],
         radius: 3,
         setup: function() {
-            console.log( 'setup', this );
+            console.log( 'drawing setup', this );
         },
         update: function() {
         },
@@ -76,10 +76,18 @@ $(function(){
     )
 
     // Listen for loaded models
-    document.addEventListener('model-selected', function(evt){
+    document.addEventListener('model-layers', function(evt){
         var model = evt.detail;
+        console.log('model layers created', model);
         loadVideo(model);
+        // Add model to drawing layer
         sketch = addDrawing($('#drawing')[0], $('#drawingcontainer')[0]);
+        var event = new CustomEvent(
+            'model-loaded',
+            {'detail': model}
+        );
+        document.dispatchEvent(event);
+
     });
     fetch('/data/colourlovers.json')
         .then(function(response) {

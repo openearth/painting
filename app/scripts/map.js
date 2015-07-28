@@ -103,7 +103,6 @@ function loadModel(map, model) {
     );
     layers.push(L.imageOverlay.canvas(bounds, {id: 'webgl'}).addTo(map));
     layers.push(L.imageOverlay.canvas(bounds, {id: 'drawing'}).addTo(map));
-    console.log(layers);
 }
 
 $(function(){
@@ -113,11 +112,17 @@ $(function(){
     // add the sidebar
     L.control.sidebar('sidebar').addTo(map);
 
-    // Listen for loaded models
-    document.addEventListener('model-selected', function(evt){
+    // Listen for selected models
+    document.addEventListener('model-selected', function(evt) {
         var model = evt.detail;
         console.log('model selected', model);
         loadModel(map, model);
+        // layers available
+        var event = new CustomEvent(
+            'model-layers',
+            {'detail': model}
+        );
+        document.dispatchEvent(event);
     });
 
 });

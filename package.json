@@ -36,7 +36,8 @@
         "globals": {
             "_": true,
             "L": true,
-            "Handlebars": true
+            "Handlebars": true,
+            "PIXI": true
         },
         "rules": {
             "quotes": [

@@ -11,16 +11,16 @@
     "leaflet-editable-handlers": "*",
     "dat-gui": "*",
     "mapbox.js": "*",
-    "three.js": "~0.71.0",
     "sidebar-v2": "~0.2.1",
     "fontawesome": "~4.3.0",
     "handlebars": "~3.0.3",
-    "seiyria-bootstrap-slider": "~4.13.1"
+    "seiyria-bootstrap-slider": "~4.13.1",
+    "pixi.js": "~3.0.7"
   },
   "overrides": {
     "sidebar-v2": {
       "main": [
-        "css/leaflet-sidebar.css",
+        "scss/leaflet-sidebar.scss",
         "js/jquery-sidebar.js",
         "js/leaflet-sidebar.js"
       ]

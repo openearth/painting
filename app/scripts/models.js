@@ -24,6 +24,13 @@ $(function(){
                     }
                 );
             });
+            // select first model
+            document.dispatchEvent(
+                new CustomEvent(
+                    'model-selected',
+                    {'detail': json.models[0]}
+                )
+            );
         })
         .catch(function(ex) {
             console.log('parsing failed', ex);
