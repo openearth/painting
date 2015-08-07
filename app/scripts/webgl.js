@@ -1,23 +1,23 @@
 'use strict';
+var displacementFilter;
 $(function() {
     document.addEventListener('model-started', function(evt) {
+
         var model = evt.detail;
         console.log('model started', model);
         console.log('looking for webgl context', $('#webgl'));
 
-        // Create Three js renderer
+        // Create WebGL renderer
         var webgl = $('#webgl')[0];
         var webglContext = webgl.getContext('webgl');
 
-        //
+        // get the width/height
         var width = webgl.width,
             height = webgl.height;
-        var advectStage = new PIXI.Container();
-        var mixStage = new PIXI.Container();
+
+        // Define the renderer, explicit webgl (no canvas)
         var renderer = new PIXI.WebGLRenderer(
-            // width height
             width, height,
-            //
             {
                 'view': webgl,
                 'transparent': true
@@ -25,57 +25,74 @@ $(function() {
         );
         console.log('created renderer', renderer);
 
-        // Load the video texture
-        var video = $('#uv')[0];
-        console.log('video', video);
-        var videoTexture = PIXI.Texture.fromVideo(video);
-        // videoTexture.autoUpdate = true;
-        var videoSprite = new PIXI.Sprite(videoTexture);
-        videoSprite.worldTransform = PIXI.Matrix.IDENTITY;
-        advectStage.addChild(videoSprite);
-        mixStage.addChild(videoSprite);
+        // Create a container with all elements
+        var stage = new PIXI.Container();
 
-        var displacementFilter = new PIXI.filters.DisplacementFilter(
-            videoTexture
-        );
-        var filters = [displacementFilter];
+        // The container goes in the stage....
+        var container = new PIXI.Container();
+        stage.addChild(container);
 
-        // create framebuffer with texture source
-        var renderTextureFrom = new PIXI.RenderTexture(renderer, width, height);
-        var renderSpriteFrom = new PIXI.Sprite(renderTextureFrom);
-        // We add what we advect to both rendering and mixing
-        advectStage.addChild(renderSpriteFrom);
-        mixStage.addChild(renderSpriteFrom);
-        //mixStage.filters = filters;
-
-        // Create framebuffer with texture target
-        var renderTextureTo = new PIXI.RenderTexture(renderer, width, height);
 
         // load the drawing texture
         var drawing = $('#drawing')[0];
         var drawingContext = drawing.getContext('2d');
         var drawingTexture = PIXI.Texture.fromCanvas(drawing);
         var drawingSprite = new PIXI.Sprite(drawingTexture);
-        mixStage.addChild(drawingSprite);
+        // drawings go in the container
+
+
+        // Load the video texture
+        var video = $('#uv')[0];
+        console.log('video', video);
+        // into a texture
+        var videoTexture = PIXI.Texture.fromVideo(video);
+        var videoSprite = new PIXI.Sprite(videoTexture);
+        videoSprite.width = width;
+        videoSprite.height = height;
+        // Create a render texture
+        displacementFilter = new PIXI.filters.DisplacementFilter(
+            videoSprite
+        );
+        // Add the video sprite to the stage (not to the container)
+        stage.addChild(videoSprite);
+
+        container.filters = [displacementFilter];
+
+        // scale it up
+        displacementFilter.scale.x = 10.0;
+        displacementFilter.scale.y = 10.0;
+
+
+        // // create framebuffer with texture source
+        var renderTextureFrom = new PIXI.RenderTexture(renderer, width, height);
+        var renderSpriteFrom = new PIXI.Sprite(renderTextureFrom);
+        // We add what we advect to both rendering and mixing
+
+        // // Create framebuffer with texture target
+        var renderTextureTo = new PIXI.RenderTexture(renderer, width, height);
 
 
 
+        container.addChild(renderSpriteFrom);
+        container.addChild(videoSprite);
+        container.addChild(drawingSprite);
 
         function animate() {
             // request next animation frame
-            requestAnimationFrame(animate);
 
             // upload the drawing to webgl
             drawingTexture.update();
 
-            if (settings.clear2d) {
-                drawingContext.clearRect(0, 0, drawing.width, drawing.height);
-            }
-            // render to the framebuffer
-            renderTextureTo.render(advectStage);
-            // and to the screen
-            renderer.render(mixStage);
+            // renderSpriteFrom.position.x = Math.random() * 10;
+            // renderSpriteFrom.position.y = Math.random() * 10;
 
+            // render to the framebuffer
+            // and to the screen
+            renderer.render(stage);
+            renderTextureTo.render(stage, null, false);
+            requestAnimationFrame(animate);
+
+            drawingContext.clearRect(0, 0, drawing.width, drawing.height);
             // set the generated texture as input for the next timestep
             renderSpriteFrom.texture = renderTextureTo;
             // swap the names
@@ -85,5 +102,7 @@ $(function() {
 
         }
         animate();
+        $('video')[0].pause();
+        $('video')[0].play();
     });
 });

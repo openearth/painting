@@ -48,7 +48,7 @@
       {{/each}}
     </script>
     <script id="video-template" type="text/x-handlebars-template">
-      <video id="uv" autoplay loop>
+      <video id="uv" autoplay loop width="{{ width }}" height="{{ height }}">
         {{#each uv}}
         <source src="{{ src }}" type="{{ type }}"></source>
         {{/each}}
