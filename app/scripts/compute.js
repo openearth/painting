@@ -1,3 +1,5 @@
+'use strict';
+
 function startModel(model){
     console.log('starting model', model);
 }

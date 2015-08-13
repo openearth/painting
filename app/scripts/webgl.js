@@ -1,5 +1,5 @@
 'use strict';
-var displacementFilter;
+
 $(function() {
     document.addEventListener('model-started', function(evt) {
 
@@ -9,7 +9,6 @@ $(function() {
 
         // Create WebGL renderer
         var webgl = $('#webgl')[0];
-        var webglContext = webgl.getContext('webgl');
 
         // get the width/height
         var width = webgl.width,
@@ -50,17 +49,16 @@ $(function() {
         videoSprite.width = width;
         videoSprite.height = height;
         // Create a render texture
-        displacementFilter = new PIXI.filters.DisplacementFilter(
+        var displacementFilter = new PIXI.filters.DisplacementFilter(
             videoSprite
         );
         // Add the video sprite to the stage (not to the container)
         stage.addChild(videoSprite);
 
         container.filters = [displacementFilter];
-
         // scale it up
-        displacementFilter.scale.x = 10.0;
-        displacementFilter.scale.y = 10.0;
+        displacementFilter.scale.x = 2.0;
+        displacementFilter.scale.y = 2.0;
 
 
         // // create framebuffer with texture source
@@ -71,26 +69,23 @@ $(function() {
         // // Create framebuffer with texture target
         var renderTextureTo = new PIXI.RenderTexture(renderer, width, height);
 
-
-
         container.addChild(renderSpriteFrom);
-        container.addChild(videoSprite);
         container.addChild(drawingSprite);
+
 
         function animate() {
             // request next animation frame
+            requestAnimationFrame(animate);
+
+            videoSprite.scale.y = -1;
 
             // upload the drawing to webgl
             drawingTexture.update();
 
-            // renderSpriteFrom.position.x = Math.random() * 10;
-            // renderSpriteFrom.position.y = Math.random() * 10;
-
             // render to the framebuffer
             // and to the screen
             renderer.render(stage);
-            renderTextureTo.render(stage, null, false);
-            requestAnimationFrame(animate);
+            renderTextureTo.render(stage, null, true);
 
             drawingContext.clearRect(0, 0, drawing.width, drawing.height);
             // set the generated texture as input for the next timestep
@@ -99,6 +94,7 @@ $(function() {
             var temp = renderTextureFrom;
             renderTextureFrom = renderTextureTo;
             renderTextureTo = temp;
+            renderTextureTo.clear();
 
         }
         animate();

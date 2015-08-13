@@ -1,5 +1,5 @@
+/* eslint no-underscore-dangle: 0 */
 'use strict';
-
 var layers = [];
 
 /*
@@ -34,7 +34,7 @@ L.ImageOverlay.Canvas = L.ImageOverlay.extend({
             this._image.id = this.options.id;
         }
         // Set the width and height properties, custom or depending on view size
-        this._image.width  = this.options.width || size.x;
+        this._image.width = this.options.width || size.x;
         this._image.height = this.options.width || size.y;
 
         if (this._map.options.zoomAnimation && L.Browser.any3d) {
@@ -55,20 +55,20 @@ L.ImageOverlay.Canvas = L.ImageOverlay.extend({
     },
 
     _reset: function () {
-        var image   = this._image;
+        var image = this._image;
         var topLeft = this._map.latLngToLayerPoint(this._bounds.getNorthWest());
         var bottomRight = this._map.latLngToLayerPoint(this._bounds.getSouthEast());
         // recompute the size
         var size = bottomRight._subtract(topLeft);
 
-        image.width  = this.options.width || size.x;
+        image.width = this.options.width || size.x;
         image.height = this.options.width || size.y;
 
         // reposition the image on reset
         L.DomUtil.setPosition(image, topLeft);
 
         // rescale in view
-        image.style.width  = size.x + 'px';
+        image.style.width = size.x + 'px';
         image.style.height = size.y + 'px';
 
     },
@@ -86,11 +86,11 @@ L.imageOverlay.canvas = function (bounds, options) {
 
 function loadModel(map, model) {
     // remove all layers
-    while(layers.length){
+    while(layers.length) {
         var layer = layers.pop();
         console.log('removing', layer);
         map.removeLayer(layer);
-    };
+    }
 
     var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
         ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);

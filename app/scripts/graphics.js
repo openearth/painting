@@ -1,5 +1,6 @@
 'use strict';
 
+var sketch;
 function loadVideo(model) {
     var source = $('#video-template').html();
     var template = Handlebars.compile(source);
@@ -8,7 +9,7 @@ function loadVideo(model) {
 }
 
 function addDrawing(drawingElement, drawingContainer) {
-    var sketch = Sketch.create({
+    sketch = Sketch.create({
         element: drawingElement,
         // if you don't pass a container, Sketch wil append the element to the body
         container: drawingContainer,
@@ -34,7 +35,7 @@ function addDrawing(drawingElement, drawingContainer) {
                 touch = this.touches[i];
                 this.lineCap = 'round';
                 this.lineJoin = 'round';
-                this.strokeStyle = this.palette[Math.floor(Math.random()*this.palette.length)];
+                this.strokeStyle = this.palette[Math.floor(Math.random() * this.palette.length)];
                 this.lineWidth = this.radius;
                 this.beginPath();
                 this.moveTo( touch.ox, touch.oy );
@@ -49,10 +50,8 @@ function addDrawing(drawingElement, drawingContainer) {
 
 $(function(){
 
-    var sketch;
-
     // Add the slider
-    var slider = $("input.slider").slider();
+    var slider = $('input.slider').slider();
     slider.on('change', function(evt){
         sketch.radius = evt.value.newValue;
     });
@@ -73,7 +72,7 @@ $(function(){
 
             evt.preventDefault();
         }
-    )
+    );
 
     // Listen for loaded models
     document.addEventListener('model-layers', function(evt){
