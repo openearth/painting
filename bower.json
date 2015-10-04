@@ -1,48 +1,48 @@
 {
-    "name": "painting",
-    "private": true,
-    "dependencies": {
-        "bootstrap-sass": "*",
-        "modernizr": "*",
-        "fetch": "*",
-        "es6-promise": "*",
-        "lodash": "*",
-        "leaflet": "*",
-        "leaflet-editable-handlers": "*",
-        "dat-gui": "*",
-        "mapbox.js": "*",
-        "sidebar-v2": "~0.2.1",
-        "fontawesome": "~4.3.0",
-        "handlebars": "~3.0.3",
-        "seiyria-bootstrap-slider": "~4.13.1",
-        "pixi.js": "~3.0.7"
+  "name": "painting",
+  "private": true,
+  "dependencies": {
+    "bootstrap-sass": "*",
+    "modernizr": "*",
+    "fetch": "*",
+    "es6-promise": "*",
+    "lodash": "*",
+    "leaflet": "*",
+    "leaflet-editable-handlers": "*",
+    "dat-gui": "*",
+    "mapbox.js": "*",
+    "sidebar-v2": "~0.2.1",
+    "fontawesome": "~4.3.0",
+    "handlebars": "~3.0.3",
+    "seiyria-bootstrap-slider": "~4.13.1",
+    "pixi.js": "~3.0.7"
+  },
+  "overrides": {
+    "pixi.js": {
+      "main": [
+        "bin/pixi.js"
+      ]
     },
-    "overrides": {
-        "pixi.js": {
-            "main": [
-                "src/index.js"
-            ]
-        },
-        "sidebar-v2": {
-            "main": [
-                "scss/leaflet-sidebar.scss",
-                "js/jquery-sidebar.js",
-                "js/leaflet-sidebar.js"
-            ]
-        },
-        "bootstrap-sass": {
-            "main": [
-                "assets/stylesheets/_bootstrap.scss",
-                "assets/fonts/bootstrap/*",
-                "assets/javascripts/bootstrap.js"
-            ]
-        },
-        "dat-gui": {
-            "main": "build/dat.gui.js"
-        }
+    "sidebar-v2": {
+      "main": [
+        "scss/leaflet-sidebar.scss",
+        "js/jquery-sidebar.js",
+        "js/leaflet-sidebar.js"
+      ]
     },
-    "devDependencies": {
-        "chai": "~3.0.0",
-        "mocha": "~2.2.5"
+    "bootstrap-sass": {
+      "main": [
+        "assets/stylesheets/_bootstrap.scss",
+        "assets/fonts/bootstrap/*",
+        "assets/javascripts/bootstrap.js"
+      ]
+    },
+    "dat-gui": {
+      "main": "build/dat.gui.js"
     }
+  },
+  "devDependencies": {
+    "chai": "~3.0.0",
+    "mocha": "~2.2.5"
+  }
 }

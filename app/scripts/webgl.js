@@ -1,6 +1,5 @@
-'use strict';
-
 $(function() {
+    'use strict';
     document.addEventListener('model-started', function(evt) {
 
         var model = evt.detail;
@@ -49,7 +48,7 @@ $(function() {
         videoSprite.width = width;
         videoSprite.height = height;
         // Create a render texture
-        var displacementFilter = new PIXI.filters.DisplacementFilter(
+        var displacementFilter = new AdvectionFilter(
             videoSprite
         );
         // Add the video sprite to the stage (not to the container)
@@ -98,7 +97,5 @@ $(function() {
 
         }
         animate();
-        $('video')[0].pause();
-        $('video')[0].play();
     });
 });

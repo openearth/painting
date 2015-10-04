@@ -33,6 +33,23 @@
             "zoom": 10,
             "width": 1024,
             "height": 1024
+        },
+        {
+            "title": "High Resolution Limited Area Model",
+            "abstract": "Numerical Weather Prediction model",
+            "id": "b2a7146a-6a8a-11e5-905d-3c15c2d29372",
+            "engine": "HIRLAM",
+            "uv": [
+                {"src": "models/movies/knmi.webm", "type": "video/webm"},
+                {"src": "models/movies/knmi.mp4", "type": "video/mp4"}
+            ],
+            "extent": {
+                "sw": [ 26.064999, -30.868795],
+                "ne": [80, 64.929413]
+            },
+            "zoom": 10,
+            "width": 2048,
+            "height": 2048
         }
     ]
 }
