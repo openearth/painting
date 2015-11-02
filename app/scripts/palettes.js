@@ -78,12 +78,12 @@ d3.json("/data/palettes.json",
                 .enter()
                 .append('div')
                 .classed({
-                    'col-xs-1': true,
+                    'col-xs-3': true,
                     'thumbnail': true
                 })
                 .append('img')
-                .attr('width', '100%')
-                .attr('height', '100%')
+                .attr('width', '60')
+                .attr('height', '40')
                 .attr('src', function(d){return d.url;})
                 .on("click", function(d){
                     console.log('click', d, this);

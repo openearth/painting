@@ -1,5 +1,6 @@
 $icon-font-path: '../fonts/';
-
+$font-family-base: 'Open Sans', sans-serif;
+$headings-font-weight: 300 !default;
 $tab-fg: #43535A ;
 $tab-active-fg: #8BA2A4;
 $tab-active-bg: #23527C;
@@ -10,6 +11,8 @@ $tab-active-bg: #23527C;
 
 
 @import "map.scss";
+
+
 circle.active {
   stroke-width: 2;
   stroke: black;
@@ -22,44 +25,52 @@ circle.active {
 }
 
 .crosshair {
-    cursor: crosshair;
+  cursor: crosshair;
 }
 
+
 .panel.sidebar-pane {
-    padding: 0px;
+  padding: 0px;
+}
+.sidebar-content {
+  background-color: rgba(20, 20, 20, 0.8);
+  color: rgba(255, 255, 255, 0.9);
+}
+#paintings  .row  img {
+  height: 50px;
 }
 .sidebar-tabs {
   background-color: rgba(20, 20, 20, 0.5);
-  color: rgba(200, 255, 200, 0.9);
+  color: rgba(220, 255, 220, 0.9);
   li {
     color: inherit;
   }
 }
 .sidebar-pane .panel-heading {
-    border-top-left-radius: 0px;
+  border-top-left-radius: 0px;
 
 }
 .color {
-    width: 20vw;
-    height: 20px;
-    vertical-align: middle;
+  width: 20vw;
+  height: 20px;
+  vertical-align: middle;
 }
 div .colors {
-    display: flex;
-    padding: 0px;
+  display: flex;
+  padding: 0px;
 }
 div .palette {
-    margin-top: 5px;
-    margin-bottom: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 
 }
 
 div .row img {
-    width: 100%;
+  width: 100%;
 }
 
 .slider.slider-horizontal {
-    width: 100%;
+  width: 100%;
 }
 .browserupgrade {
   margin: 0.2em 0;
@@ -124,5 +135,5 @@ body {
 
 }
 .hidden {
-    display: none;
+  display: none;
 }
