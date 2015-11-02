@@ -10,6 +10,16 @@ $tab-active-bg: #23527C;
 
 
 @import "map.scss";
+circle.active {
+  stroke-width: 2;
+  stroke: black;
+}
+
+
+.nopadding {
+  padding: 0;
+  margin: 0;
+}
 
 .crosshair {
     cursor: crosshair;
@@ -17,11 +27,10 @@ $tab-active-bg: #23527C;
 
 .panel.sidebar-pane {
     padding: 0px;
-
 }
 .sidebar-tabs {
-  background-color: rgba(0.2, 0.2, 0.2, 0.5);
-  color: rgba(0.9, 0.9, 0.9, 0.9);
+  background-color: rgba(20, 20, 20, 0.5);
+  color: rgba(200, 255, 200, 0.9);
   li {
     color: inherit;
   }
