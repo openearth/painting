@@ -11,7 +11,7 @@
  */
 'use strict';
 
-function AdvectionFilter(sprite, scale)
+function AdvectionFilter(sprite, settings)
 {
     var maskMatrix = new PIXI.Matrix();
     sprite.renderable = false;
@@ -43,6 +43,7 @@ function AdvectionFilter(sprite, scale)
             'varying vec2 vTextureCoord;',
             'varying vec4 vColor;',
             'uniform vec2 scale;',
+            'uniform bool flipv;',
             'uniform sampler2D uSampler;',
             'uniform sampler2D mapSampler;',
             'void main(void)',
@@ -50,6 +51,9 @@ function AdvectionFilter(sprite, scale)
             'vec4 map =  texture2D(mapSampler, vMapCoord);',
             'map -= 0.5;',
             'map.xy *= scale;',
+            'if (flipv) {',
+            'map.y = 1.0 - map.y;',
+            '}',
             '/* stop rendering if masked */',
             'gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.x + map.x, vTextureCoord.y + map.y));',
             'if (map.z > 0.0) {',
@@ -62,19 +66,19 @@ function AdvectionFilter(sprite, scale)
         {
             mapSampler: { type: 'sampler2D', value: sprite.texture },
             otherMatrix: { type: 'mat3', value: maskMatrix.toArray(true) },
-            scale: { type: 'v2', value: { x: 1, y: 1 } }
+            scale: { type: 'v2', value: { x: 1, y: 1 } },
+            flipv: { type: 'bool', value: false }
         }
     );
 
     this.maskSprite = sprite;
     this.maskMatrix = maskMatrix;
 
-    if (scale === null || scale === undefined)
-    {
-        scale = 20;
-    }
-
+    var scale = _.get(settings, 'scale', 20);
     this.scale = new PIXI.Point(scale, scale);
+
+    var flipv = _.get(settings, 'flipv', false);
+    this.flipv = flipv;
 }
 
 AdvectionFilter.prototype = Object.create(PIXI.AbstractFilter.prototype);
@@ -89,6 +93,8 @@ AdvectionFilter.prototype.applyFilter = function (renderer, input, output)
     this.uniforms.otherMatrix.value = this.maskMatrix.toArray(true);
     this.uniforms.scale.value.x = this.scale.x * (1 / input.frame.width);
     this.uniforms.scale.value.y = this.scale.y * (1 / input.frame.height);
+    // apply vertical flip
+    this.uniforms.flipv.value = this.flipv;
 
     var shader = this.getShader(renderer);
     // draw the filter...

@@ -6,13 +6,14 @@
             "id": "E719CD9A-339A-11E5-BA2D-4963B6C90E9A",
             "engine": "delft3d flow",
             "uv": [
-                {"src": "models/movies/wadden.webm", "type": "video/webm"},
-                {"src": "models/movies/wadden.mp4", "type": "video/mp4"}
+                {"src": "models/movies/wadden.mp4", "type": "video/mp4"},
+                {"src": "models/movies/wadden.webm", "type": "video/webm"}
             ],
             "extent": {
                 "sw": [52.498012542723586, 4.026927471160947],
                 "ne": [53.758518218850185, 6.538724422447244]
             },
+            "flipv": true,
             "zoom": 10,
             "width": 1024,
             "height": 1024
@@ -30,6 +31,8 @@
                 "sw": [37.4487848675731, -123.09234894317646],
                 "ne": [38.780310596186474, -121.2218887213739]
             },
+            "flipv": true,
+            "scale": 10,
             "zoom": 10,
             "width": 1024,
             "height": 1024

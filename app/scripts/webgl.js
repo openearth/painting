@@ -49,7 +49,11 @@ $(function() {
         videoSprite.height = height;
         // Create a render texture
         var displacementFilter = new AdvectionFilter(
-            videoSprite
+            videoSprite,
+            {
+                scale: model.scale,
+                flipv: model.flipv
+            }
         );
         // Add the video sprite to the stage (not to the container)
         stage.addChild(videoSprite);
@@ -85,8 +89,9 @@ $(function() {
             // and to the screen
             renderer.render(stage);
             renderTextureTo.render(stage, null, true);
-
-            drawingContext.clearRect(0, 0, drawing.width, drawing.height);
+            if ($('#cleardrawing').is(':checked')) {
+                drawingContext.clearRect(0, 0, drawing.width, drawing.height);
+            }
             // set the generated texture as input for the next timestep
             renderSpriteFrom.texture = renderTextureTo;
             // swap the names

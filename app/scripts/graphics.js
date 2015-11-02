@@ -18,6 +18,8 @@ function addDrawing(drawingElement, drawingContainer) {
         exists: true,
         palette: ['black', 'white'],
         radius: 3,
+        painting: false,
+        hasDragged: true,
         setup: function() {
             console.log( 'drawing setup', this );
         },
@@ -26,11 +28,44 @@ function addDrawing(drawingElement, drawingContainer) {
         // Event handlers
         keydown: function() {
         },
+        mouseup: function() {
+            if (this.hasDragged) {
+                return;
+            }
+            console.log('mouseupn dragging', this.dragging);
+            this.painting = ! this.painting;
+            if (this.painting) {
+                $('#drawing').addClass('crosshair');
+            }
+            else {
+                $('#drawing').removeClass('crosshair');
+            }
+
+
+        },
+        mousedown: function() {
+            console.log('mousedown dragging', this.dragging);
+            this.hasDragged = false;
+
+        },
+        mousemove: function() {
+            console.log('mousemove dragging', this.dragging);
+            this.hasDragged = true;
+
+        },
+        click: function() {
+            console.log('click dragging', this.dragging);
+
+
+        },
         // Mouse & touch events are merged, so handling touch events by default
         // and powering sketches using the touches array is recommended for easy
         // scalability. If you only need to handle the mouse / desktop browsers,
         // use the 0th touch element and you get wider device support for free.
         touchmove: function() {
+            if (!this.painting ){
+                return;
+            }
             for ( var i = this.touches.length - 1, touch; i >= 0; i-- ) {
                 touch = this.touches[i];
                 this.lineCap = 'round';
@@ -112,4 +147,3 @@ $(function(){
 
 
 });
-
