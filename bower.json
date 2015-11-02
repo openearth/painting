@@ -9,7 +9,6 @@
     "lodash": "*",
     "leaflet": "*",
     "leaflet-editable-handlers": "*",
-    "dat-gui": "*",
     "mapbox.js": "*",
     "sidebar-v2": "~0.2.1",
     "fontawesome": "~4.3.0",
