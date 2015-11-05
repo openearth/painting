@@ -38,7 +38,8 @@
       "L": true,
       "Handlebars": true,
       "PIXI": true,
-      "Sketch": true
+      "Sketch": true,
+      "d3": true
     },
     "rules": {
       "quotes": [

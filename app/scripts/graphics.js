@@ -1,5 +1,5 @@
 'use strict';
-
+/*exported sketch */
 var sketch;
 function loadVideo(model) {
     var source = $('#video-template').html();
@@ -33,7 +33,7 @@ function addDrawing(drawingElement, drawingContainer) {
                 return;
             }
             console.log('mouseupn dragging', this.dragging);
-            this.painting = ! this.painting;
+            this.painting = !this.painting;
             if (this.painting) {
                 $('#drawing').addClass('crosshair');
             }

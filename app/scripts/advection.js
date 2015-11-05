@@ -1,3 +1,4 @@
+/* exported AdvectionFilter */
 /**
  * The AdvectionFilter class uses the pixel values from the specified texture (called the displacement map) to perform a displacement of an object.
  * You can use this filter to to move stuff around
@@ -9,6 +10,7 @@
  * @memberof PIXI.filters
  * @param sprite {PIXI.Sprite} the sprite used for the displacement map. (make sure its added to the scene!)
  */
+
 'use strict';
 
 function AdvectionFilter(sprite, settings)

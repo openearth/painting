@@ -1,3 +1,4 @@
+/* global AdvectionFilter */
 $(function() {
     'use strict';
     document.addEventListener('model-started', function(evt) {
