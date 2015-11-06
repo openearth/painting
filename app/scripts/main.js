@@ -1,5 +1,5 @@
 'use strict';
 // global settings
 $(function() {
-    $("input[type='checkbox']").bootstrapSwitch();
+    $('input[type="checkbox"]').bootstrapSwitch();
 });

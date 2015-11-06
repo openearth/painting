@@ -68,7 +68,7 @@ function selectPalette(palette) {
     });
 }
 
-d3.json('/data/palettes.json',
+d3.json('../data/palettes.json',
 
         function(error, palettes) {
 
