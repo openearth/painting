@@ -2,7 +2,7 @@
 
 $(function(){
     // get models.json
-    fetch('../data/models.json')
+    fetch('data/models.json')
         .then(function(response) {
             return response.json();
         })

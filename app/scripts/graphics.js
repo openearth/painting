@@ -123,7 +123,7 @@ $(function(){
         document.dispatchEvent(event);
 
     });
-    fetch('../data/colourlovers.json')
+    fetch('data/colourlovers.json')
         .then(function(response) {
             return response.json();
         })
