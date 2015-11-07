@@ -79,8 +79,17 @@ gulp.task('images', () => {
 
 gulp.task('fonts', () => {
     return gulp.src(require('main-bower-files')({
-        filter: '**/*.{eot,svg,ttf,woff,woff2}'
+        filter: '**/*.{eot,svg,ttf,woff,woff2}',
+        base: '.'
     }).concat('app/fonts/**/*'))
+        .pipe(gulp.dest('.tmp/fonts'))
+        .pipe(gulp.dest('dist/fonts'));
+});
+
+gulp.task('morefonts', () => {
+    return gulp.src([
+        'bower_components/open-sans-fontface/fonts/**/*.{eot,svg,ttf,woff,woff2}'
+    ])
         .pipe(gulp.dest('.tmp/fonts'))
         .pipe(gulp.dest('dist/fonts'));
 });
@@ -104,6 +113,7 @@ gulp.task('models', () => {
         'app/models/**/*'
     ]).pipe(gulp.dest('dist/models'));
 });
+
 
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
@@ -175,7 +185,7 @@ gulp.task('wiredep', () => {
         .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras', 'data', 'models'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'fonts', 'morefonts', 'extras', 'data', 'models'], () => {
     return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
