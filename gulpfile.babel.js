@@ -77,6 +77,15 @@ gulp.task('images', () => {
         .pipe(gulp.dest('dist/images'));
 });
 
+// referenced wrong....
+gulp.task('moreimages', () => {
+  return gulp.src([
+    'bower_components/mapbox.js/dist/images/*.{png,jpg,svg}'
+  ])
+    .pipe(gulp.dest('dist/styles/images'));
+});
+
+
 gulp.task('fonts', () => {
     return gulp.src(require('main-bower-files')({
         filter: '**/*.{eot,svg,ttf,woff,woff2}',
