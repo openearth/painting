@@ -11,7 +11,7 @@
         "leaflet-editable-handlers": "*",
         "mapbox.js": "*",
         "sidebar-v2": "~0.2.1",
-        "fontawesome": "~4.3.0",
+        "fontawesome": "~4.4.0",
         "handlebars": "~3.0.3",
         "seiyria-bootstrap-slider": "~4.13.1",
         "pixi.js": "~3.0.7",

@@ -52,6 +52,13 @@
         {{/each}}
       </video>
     </script>
+    <script id="image-template" type="text/x-handlebars-template">
+      <img id="uv" autoplay loop width="{{ width }}" height="{{ height }}"
+        {{#each uv}}
+        src="{{ src }}"
+        {{/each}}
+      />
+    </script>
     <script id="colours-template" type="text/x-handlebars-template">
       {{#each palettes}}
       <div class="palette row" id="palette{{ id }}">
@@ -99,12 +106,14 @@
           <button class="btn btn-default" id="paintingsclear">deselect</button>
           <button class="btn btn-default" id="paintingsall">select all</button>
           <h4>Clear canvas</h4>
-          <p><input  class="checkbox" type="checkbox" id="cleardrawing" checked name="cleardrawing" value="" /></p>
+          <p><input  class="checkbox" type="checkbox" id="cleardrawing" checked name="cleardrawing" value="" /><button class="btn btn-default" id="clear3d">reset</button>
           <h4>Lock map</h4>
           <p><input  class="checkbox" type="checkbox" id="lockmap" checked name="lockmap" value="" /></p>
+          </p>
           <h4>Brush size</h4>
           <div id="brush" class="row">
             <div class="col-xs-2 text-right">
+
               <i class="fa fa-paint-brush fa-lg"></i>
             </div>
             <div class="col-xs-8">
