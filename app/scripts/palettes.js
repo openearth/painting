@@ -76,6 +76,7 @@ function selectPalette(palette) {
 
 d3.json(
     'data/palettes.json',
+    // 'http://www.colourlovers.com/api/palettes/top?format=json',
     function(error, palettes) {
         d3.select('#paintings')
             .append('div')
