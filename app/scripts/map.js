@@ -1,7 +1,6 @@
-/* eslint no-underscore-dangle: 0 */
-'use strict';
-var layers = [];
+/* eslint no-underscore-dangle:  true */
 
+var layers = [];
 /*
  * L.ImageOverlay.Canvas is used to overlay images over the map (to specific geographical bounds).
  */
@@ -124,7 +123,40 @@ $(function(){
         );
         document.dispatchEvent(event);
     });
+    if ($('#lockmap').is(':checked')) {
+        lockMap(map);
+    } else {
+        unlockMap(map);
+    }
+    $('#lockmap').on('switchChange.bootstrapSwitch', function(evt){
+        console.log(evt );
+        if ($('#lockmap').is(':checked')) {
+            lockMap(map);
+        } else {
+            unlockMap(map);
+        }
+    });
+
 
 });
 
+function lockMap(map) {
+    // Disable drag and zoom handlers.
+    map.dragging.disable();
+    map.touchZoom.disable();
+    map.doubleClickZoom.disable();
+    map.scrollWheelZoom.disable();
 
+    // Disable tap handler, if present.
+    if (map.tap) map.tap.disable();
+}
+function unlockMap(map) {
+    // Disable drag and zoom handlers.
+    map.dragging.enable();
+    map.touchZoom.enable();
+    map.doubleClickZoom.enable();
+    map.scrollWheelZoom.enable();
+
+    // Disable tap handler, if present.
+    if (map.tap) map.tap.enable();
+}
