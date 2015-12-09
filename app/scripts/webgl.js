@@ -1,5 +1,62 @@
 /* global AdvectionFilter */
 var displacementFilter;
+var particles;
+var sprites;
+var icon = 'images/bar.png';
+var particleAlpha = 0.6;
+function updateParticles() {
+
+  var uv = $('#uv')[0];
+  if (uv.paused || uv.ended) {
+    return;
+  }
+  if (displayed) {
+
+  }
+  displayed = true;
+
+  var uvhidden = $('#uvhidden')[0];
+  var uvctx = uvhidden.getContext('2d');
+  var width = uvhidden.width,
+      height = uvhidden.height;
+  uvctx.drawImage(uv, 0, 0, width, height);
+  var frame = uvctx.getImageData(0, 0, width, height);
+
+  _.each(particles, function(particle, i){
+    var idx = (
+      Math.round(height - particle.position.y) * width +
+        Math.round(particle.position.x)
+    ) * 4;
+    var u = (frame.data[idx + 0] / 255.0) - 0.5;
+    var v = (frame.data[idx + 1] / 255.0) - 0.5;
+    var mask = (frame.data[idx + 2] / 255.0) > 0.5 ;
+    mask = mask || (Math.abs(u) + Math.abs(v) == 0.0);
+    particle.position.x =  particle.position.x + u*2;
+    particle.position.y = particle.position.y + -v*2;
+    particle.rotation = Math.atan2(u, v) - (0.5 * Math.PI);
+    if (mask) {
+      _.pull(particles, particle);
+      sprites.removeChild(particle);
+
+      // replace it
+      var newParticle = PIXI.Sprite.fromImage(icon);
+      // set anchor to center
+      newParticle.alpha = particleAlpha;
+      newParticle.anchor.set(0.5);
+      newParticle.x = Math.random() * width;
+      newParticle.y = Math.random() * height;
+      // add to array and to particle container
+      particles.push(newParticle);
+      sprites.addChild(newParticle);
+
+    }
+
+
+  });
+
+
+}
+var displayed = false;
 $(function() {
   'use strict';
   document.addEventListener('model-started', function(evt) {
@@ -7,6 +64,7 @@ $(function() {
     var model = evt.detail;
     console.log('model started', model);
     console.log('looking for webgl context', $('#webgl'));
+
 
     // Create WebGL renderer
     var webgl = $('#webgl')[0];
@@ -78,6 +136,29 @@ $(function() {
     container.addChild(renderSpriteFrom);
     container.addChild(drawingSprite);
 
+    var n = 0;
+    sprites = new PIXI.ParticleContainer(n, {
+      scale: true,
+      position: true,
+      rotation: true,
+      uvs: true,
+      alpha: true
+    });
+    container.addChild(sprites);
+    particles = [];
+    for(var i = 0; i < n; i++) {
+      var particle = PIXI.Sprite.fromImage(icon);
+      // set anchor to center
+      particle.anchor.set(0.5);
+      particle.alpha = particleAlpha;
+      particle.x = Math.random() * renderer.width;
+      particle.y = Math.random() * renderer.height;
+      // add to array and to particle container
+      particles.push(particle);
+      sprites.addChild(particle);
+    }
+
+
 
     function animate() {
       // request next animation frame
@@ -105,6 +186,10 @@ $(function() {
       renderTextureTo = temp;
       renderTextureTo.clear();
 
+      updateParticles();
+      if (particles.length > 500) {
+        renderTextureFrom.clear();
+      }
     }
     animate();
 
@@ -113,5 +198,35 @@ $(function() {
       renderTextureFrom.clear();
     }
     $('#clear3d').click(clear3d);
+
+    var slider = $('#n-particles').slider();
+    slider.on('change', function(evt){
+      console.log('using', evt.value.newValue, 'particles');
+      var nCurrent = particles.length;
+      var nNew = evt.value.newValue;
+
+
+      for (var i = nCurrent-1; i > nNew; i--) {
+        _.pullAt(particles, i);
+        sprites.removeChildAt(i);
+      }
+
+      for(var i = 0; i < nNew - nCurrent; i++) {
+
+        // replace it
+        var newParticle = PIXI.Sprite.fromImage(icon);
+        // set anchor to center
+        newParticle.anchor.set(0.5);
+        newParticle.alpha = particleAlpha;
+        newParticle.x = Math.random() * width;
+        newParticle.y = Math.random() * height;
+        // add to array and to particle container
+        particles.push(newParticle);
+        sprites.addChild(newParticle);
+      }
+
+    });
+
+
   });
 });
