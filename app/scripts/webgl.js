@@ -28,7 +28,8 @@ function updateParticles() {
         Math.round(particle.position.x)
     ) * 4;
     var u = (frame.data[idx + 0] / 255.0) - 0.5;
-    var v = (frame.data[idx + 1] / 255.0) - 0.5;
+    var v = (frame.data[idx + 1] / 255.0) - 0.5 ;
+        v = v * (displacementFilter.uniforms.flipv.value ? 1 : -1);
     var mask = (frame.data[idx + 2] / 255.0) > 0.5 ;
     mask = mask || (Math.abs(u) + Math.abs(v) == 0.0);
     particle.position.x =  particle.position.x + u*2;
@@ -123,7 +124,7 @@ $(function() {
     // scale it up
     displacementFilter.scale.x = 2.0;
     displacementFilter.scale.y = 2.0;
-
+    console.log(displacementFilter)
 
     // // create framebuffer with texture source
     var renderTextureFrom = new PIXI.RenderTexture(renderer, width, height);
