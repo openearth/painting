@@ -2,7 +2,7 @@
 var displacementFilter;
 var particles;
 var sprites;
-var icon = 'images/bar.png';
+var icon = 'images/arrowhead.png';
 var particleAlpha = 0.6;
 function updateParticles() {
 
@@ -34,7 +34,14 @@ function updateParticles() {
     mask = mask || (Math.abs(u) + Math.abs(v) == 0.0);
     particle.position.x =  particle.position.x + u*2;
     particle.position.y = particle.position.y + -v*2;
-    particle.rotation = Math.atan2(u, v) - (0.5 * Math.PI);
+    var newRotation = Math.atan2(u, v) - (0.5 * Math.PI);
+    var rotationDiff = newRotation - particle.rotation;
+    var maxRotation = 0.05;
+    if (Math.abs(rotationDiff) > maxRotation) {
+      // limit
+      rotationDiff = rotationDiff > 0.0 ? maxRotation : -maxRotation;
+    }
+    particle.rotation += rotationDiff;
     if (mask) {
       _.pull(particles, particle);
       sprites.removeChild(particle);
