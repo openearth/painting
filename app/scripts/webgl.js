@@ -2,18 +2,45 @@
 var displacementFilter;
 var particles;
 var sprites;
-var icon = 'images/arrowhead.png';
+var icon = 'images/verticalbar.png';
 var particleAlpha = 0.6;
-function updateParticles() {
+
+
+function particleCulling(particles, sprites, n) {
+  // make sure we have n particles by breeding or culling
+  // also update the sprites
+
+  var nCurrent = particles.length;
+  var nNew = n;
+
+  // culling
+  for (var i = nCurrent-1; i > nNew; i--) {
+    _.pullAt(particles, i);
+    sprites.removeChildAt(i);
+  }
+
+  // add extra particles
+  for(var j = 0; j < nNew - nCurrent; j++) {
+
+    // replace it
+    var newParticle = PIXI.Sprite.fromImage(icon);
+    // set anchor to center
+    newParticle.anchor.set(0.5);
+    newParticle.alpha = particleAlpha;
+    newParticle.x = Math.random() * width;
+    newParticle.y = Math.random() * height;
+    // add to array and to particle container
+    particles.push(newParticle);
+    sprites.addChild(newParticle);
+  }
+}
+
+function particleTimestep() {
 
   var uv = $('#uv')[0];
   if (uv.paused || uv.ended) {
     return;
   }
-  if (displayed) {
-
-  }
-  displayed = true;
 
   var uvhidden = $('#uvhidden')[0];
   var uvctx = uvhidden.getContext('2d');
@@ -42,6 +69,8 @@ function updateParticles() {
       rotationDiff = rotationDiff > 0.0 ? maxRotation : -maxRotation;
     }
     particle.rotation += rotationDiff;
+
+    // replace dead particles
     if (mask) {
       _.pull(particles, particle);
       sprites.removeChild(particle);
@@ -64,7 +93,6 @@ function updateParticles() {
 
 
 }
-var displayed = false;
 $(function() {
   'use strict';
   document.addEventListener('model-started', function(evt) {
@@ -154,18 +182,9 @@ $(function() {
     });
     container.addChild(sprites);
     particles = [];
-    for(var i = 0; i < n; i++) {
-      var particle = PIXI.Sprite.fromImage(icon);
-      // set anchor to center
-      particle.anchor.set(0.5);
-      particle.alpha = particleAlpha;
-      particle.x = Math.random() * renderer.width;
-      particle.y = Math.random() * renderer.height;
-      // add to array and to particle container
-      particles.push(particle);
-      sprites.addChild(particle);
-    }
 
+    // add a few particles
+    particleCulling(particles, sprites, n);
 
 
     function animate() {
@@ -194,13 +213,15 @@ $(function() {
       renderTextureTo = temp;
       renderTextureTo.clear();
 
-      updateParticles();
+      particleTimestep();
       if (particles.length > 500) {
         renderTextureFrom.clear();
       }
     }
     animate();
 
+
+    // user interface interactions
     function clear3d() {
       renderTextureTo.clear();
       renderTextureFrom.clear();
@@ -208,33 +229,31 @@ $(function() {
     $('#clear3d').click(clear3d);
 
     var slider = $('#n-particles').slider();
+
+
+
     slider.on('change', function(evt){
       console.log('using', evt.value.newValue, 'particles');
-      var nCurrent = particles.length;
-      var nNew = evt.value.newValue;
 
+      var n = evt.value.newValue;
+      particleCulling(particles, sprites, n);
 
-      for (var i = nCurrent-1; i > nNew; i--) {
-        _.pullAt(particles, i);
-        sprites.removeChildAt(i);
-      }
-
-      for(var i = 0; i < nNew - nCurrent; i++) {
-
-        // replace it
-        var newParticle = PIXI.Sprite.fromImage(icon);
-        // set anchor to center
-        newParticle.anchor.set(0.5);
-        newParticle.alpha = particleAlpha;
-        newParticle.x = Math.random() * width;
-        newParticle.y = Math.random() * height;
-        // add to array and to particle container
-        particles.push(newParticle);
-        sprites.addChild(newParticle);
-      }
 
     });
 
+    $(document).keydown(function(evt) {
+      console.log('processing key', evt.which);
 
+      if (evt.which == 80 || evt.which == 112) {
+        // p
+        console.log('setting particles to', particles.length + 50);
+        // updating particles
+        particleCulling(particles, sprites, particles.length + 50);
+      }
+      if (evt.which == 67) {
+        // clearing screen
+        clear3d();
+      }
+    });
   });
 });
