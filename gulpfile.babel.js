@@ -80,7 +80,7 @@ gulp.task('images', () => {
 // referenced wrong....
 gulp.task('moreimages', () => {
   return gulp.src([
-    'bower_components/mapbox.js/dist/images/*.{png,jpg,svg}'
+    'bower_components/mapbox.js/images/*.{png,jpg,svg}'
   ])
     .pipe(gulp.dest('dist/styles/images'));
 });
