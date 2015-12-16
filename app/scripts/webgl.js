@@ -148,6 +148,7 @@ $(function() {
     videoSprite.width = width;
     videoSprite.height = height;
     // Create a render texture
+    console.log('scale', model.scale);
     displacementFilter = new AdvectionFilter(
       videoSprite,
       {

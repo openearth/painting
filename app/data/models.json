@@ -33,6 +33,7 @@
       },
       "flipv": true,
       "zoom": 11,
+      "scale": 100,
       "width": 1024,
       "height": 1024
     },
@@ -50,7 +51,7 @@
         "ne": [38.780310596186474, -121.2218887213739]
       },
       "flipv": true,
-      "scale": 10,
+      "scale": 30,
       "zoom": 10,
       "width": 1024,
       "height": 1024

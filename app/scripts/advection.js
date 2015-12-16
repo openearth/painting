@@ -29,7 +29,7 @@ var fragmentSource = [
   'vec4 map =  texture2D(mapSampler, vMapCoord);',
   'float extrascale = 1.0;',
   'map -= 0.5;',
-  'map.xy *= scale * extrascale;',
+  'map.xy *= (scale * extrascale);',
   'if (flipv) {',
   'map.y = - map.y;',
   '}',
@@ -85,7 +85,7 @@ function AdvectionFilter(sprite, settings)
     {
       mapSampler: { type: 'sampler2D', value: sprite.texture },
       otherMatrix: { type: 'mat3', value: maskMatrix.toArray(true) },
-      scale: { type: 'v2', value: { x: 1, y: 1 } },
+      scale: { type: 'v2', value: { x: 0, y: 0 } },
       flipv: { type: 'bool', value: false },
       upwind: { type: 'bool', value: false}
     }
@@ -95,6 +95,7 @@ function AdvectionFilter(sprite, settings)
   this.maskMatrix = maskMatrix;
 
   var scale = _.get(settings, 'scale', 10.0);
+  console.log('scale in advection', scale);
   this.scale = new PIXI.Point(scale, scale);
 
   var flipv = _.get(settings, 'flipv', false);
