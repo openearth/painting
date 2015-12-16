@@ -1,12 +1,11 @@
 /* global AdvectionFilter */
 var displacementFilter;
-var particles;
-var sprites;
 var icon = 'images/verticalbar.png';
 var particleAlpha = 0.6;
 
 
 function particleCulling(particles, sprites, n) {
+  'use strict';
   // make sure we have n particles by breeding or culling
   // also update the sprites
 
@@ -18,7 +17,7 @@ function particleCulling(particles, sprites, n) {
       height = uvhidden.height;
 
   // culling
-  for (var i = nCurrent-1; i > nNew; i--) {
+  for (var i = nCurrent - 1; i > nNew; i--) {
     _.pullAt(particles, i);
     sprites.removeChildAt(i);
   }
@@ -39,7 +38,8 @@ function particleCulling(particles, sprites, n) {
   }
 }
 
-function particleTimestep() {
+function particleTimestep(particles, sprites) {
+  'use strict';
 
   var uv = $('#uv')[0];
   if (uv.paused || uv.ended) {
@@ -53,18 +53,18 @@ function particleTimestep() {
   uvctx.drawImage(uv, 0, 0, width, height);
   var frame = uvctx.getImageData(0, 0, width, height);
 
-  _.each(particles, function(particle, i){
+  _.each(particles, function(particle){
     var idx = (
       Math.round(height - particle.position.y) * width +
         Math.round(particle.position.x)
     ) * 4;
     var u = (frame.data[idx + 0] / 255.0) - 0.5;
-    var v = (frame.data[idx + 1] / 255.0) - 0.5 ;
-        v = v * (displacementFilter.uniforms.flipv.value ? 1 : -1);
-    var mask = (frame.data[idx + 2] / 255.0) > 0.5 ;
-    mask = mask || (Math.abs(u) + Math.abs(v) == 0.0);
-    particle.position.x =  particle.position.x + u*2;
-    particle.position.y = particle.position.y + -v*2;
+    var v = (frame.data[idx + 1] / 255.0) - 0.5;
+    v = v * (displacementFilter.uniforms.flipv.value ? 1 : -1);
+    var mask = (frame.data[idx + 2] / 255.0) > 0.5;
+    mask = mask || (Math.abs(u) + Math.abs(v) === 0.0);
+    particle.position.x = particle.position.x + u * 2;
+    particle.position.y = particle.position.y + -v * 2;
     var newRotation = Math.atan2(u, v) - (0.5 * Math.PI);
     var rotationDiff = newRotation - particle.rotation;
     var maxRotation = 0.05;
@@ -99,9 +99,9 @@ function particleTimestep() {
 }
 $(function() {
   'use strict';
-  document.addEventListener('model-started', function(evt) {
+  document.addEventListener('model-started', function(modelEvent) {
 
-    var model = evt.detail;
+    var model = modelEvent.detail;
     console.log('model started', model);
     console.log('looking for webgl context', $('#webgl'));
 
@@ -163,7 +163,6 @@ $(function() {
     // scale it up
     displacementFilter.scale.x = 2.0;
     displacementFilter.scale.y = 2.0;
-    console.log(displacementFilter)
 
     // // create framebuffer with texture source
     var renderTextureFrom = new PIXI.RenderTexture(renderer, width, height);
@@ -176,8 +175,8 @@ $(function() {
     container.addChild(renderSpriteFrom);
     container.addChild(drawingSprite);
 
-    var n = 0;
-    sprites = new PIXI.ParticleContainer(n, {
+    var nParticles = 0;
+    var sprites = new PIXI.ParticleContainer(nParticles, {
       scale: true,
       position: true,
       rotation: true,
@@ -185,10 +184,10 @@ $(function() {
       alpha: true
     });
     container.addChild(sprites);
-    particles = [];
+    var particles = [];
 
     // add a few particles
-    particleCulling(particles, sprites, n);
+    particleCulling(particles, sprites, nParticles);
 
 
     function animate() {
@@ -217,7 +216,7 @@ $(function() {
       renderTextureTo = temp;
       renderTextureTo.clear();
 
-      particleTimestep();
+      particleTimestep(particles, sprites);
       if (particles.length > 500) {
         renderTextureFrom.clear();
       }
@@ -237,8 +236,6 @@ $(function() {
 
 
     slider.on('change', function(evt){
-      console.log('using', evt.value.newValue, 'particles');
-
       var n = evt.value.newValue;
       particleCulling(particles, sprites, n);
 
@@ -248,13 +245,13 @@ $(function() {
     $(document).keydown(function(evt) {
       console.log('processing key', evt.which);
 
-      if (evt.which == 80 || evt.which == 112) {
+      if (evt.which === 80) {
         // p
         console.log('setting particles to', particles.length + 50);
         // updating particles
         particleCulling(particles, sprites, particles.length + 50);
       }
-      if (evt.which == 67) {
+      if (evt.which === 67) {
         // clearing screen
         clear3d();
       }
