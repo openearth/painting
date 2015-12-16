@@ -13,6 +13,10 @@ function particleCulling(particles, sprites, n) {
   var nCurrent = particles.length;
   var nNew = n;
 
+  var uvhidden = $('#uvhidden')[0];
+  var width = uvhidden.width,
+      height = uvhidden.height;
+
   // culling
   for (var i = nCurrent-1; i > nNew; i--) {
     _.pullAt(particles, i);
