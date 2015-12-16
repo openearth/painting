@@ -1,58 +1,112 @@
 {
-    "models": [
-        {
-            "title": "Wadden",
-            "abstract": "wadden model",
-            "id": "E719CD9A-339A-11E5-BA2D-4963B6C90E9A",
-            "engine": "delft3d flow",
-            "uv": [
-                {"src": "models/movies/wadden.mp4", "type": "video/mp4"},
-                {"src": "models/movies/wadden.webm", "type": "video/webm"}
-            ],
-            "extent": {
-                "sw": [52.498012542723586, 4.026927471160947],
-                "ne": [53.758518218850185, 6.538724422447244]
-            },
-            "flipv": true,
-            "zoom": 10,
-            "width": 1024,
-            "height": 1024
-        },
-        {
-            "title": "San Francisco ",
-            "abstract": "San Francisco Bay model",
-            "id": "F24A0CB6-339A-11E5-98F4-4963B6C90E9A",
-            "engine": "delft3d flexible mesh",
-            "uv": [
-                {"src": "models/movies/im2.webm", "type": "video/webm"},
-                {"src": "models/movies/im2.mp4", "type": "video/mp4"}
-            ],
-            "extent": {
-                "sw": [37.4487848675731, -123.09234894317646],
-                "ne": [38.780310596186474, -121.2218887213739]
-            },
-            "flipv": true,
-            "scale": 10,
-            "zoom": 10,
-            "width": 1024,
-            "height": 1024
-        },
-        {
-            "title": "High Resolution Limited Area Model",
-            "abstract": "Numerical Weather Prediction model",
-            "id": "b2a7146a-6a8a-11e5-905d-3c15c2d29372",
-            "engine": "HIRLAM",
-            "uv": [
-                {"src": "models/movies/knmi.webm", "type": "video/webm"},
-                {"src": "models/movies/knmi.mp4", "type": "video/mp4"}
-            ],
-            "extent": {
-                "sw": [ 26.064999, -30.868795],
-                "ne": [80, 64.929413]
-            },
-            "zoom": 10,
-            "width": 2048,
-            "height": 2048
-        }
-    ]
+  "models": [
+    {
+      "title": "Wadden",
+      "abstract": "wadden model",
+      "id": "E719CD9A-339A-11E5-BA2D-4963B6C90E9A",
+      "engine": "delft3d flow",
+      "uv": [
+        {"src": "models/movies/wadden.mp4", "type": "video/mp4"},
+        {"src": "models/movies/wadden.webm", "type": "video/webm"}
+      ],
+      "extent": {
+        "sw": [52.498012542723586, 4.026927471160947],
+        "ne": [53.758518218850185, 6.538724422447244]
+      },
+      "flipv": true,
+      "zoom": 10,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "title": "Ameland",
+      "abstract": "Ameland model from KPP project",
+      "id": "51139bae-a380-11e5-b02f-3c15c2d29372",
+      "engine": "delft3d flow",
+      "uv": [
+        {"src": "models/movies/ameland.mp4", "type": "video/mp4"}
+      ],
+      "extent": {
+
+        "sw": [53.284533894465625, 5.265900772973027],
+        "ne": [53.60179437766051, 5.925245096681446]
+      },
+      "flipv": true,
+      "zoom": 11,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "title": "San Francisco ",
+      "abstract": "San Francisco Bay model",
+      "id": "F24A0CB6-339A-11E5-98F4-4963B6C90E9A",
+      "engine": "delft3d flexible mesh",
+      "uv": [
+        {"src": "models/movies/im2.webm", "type": "video/webm"},
+        {"src": "models/movies/im2.mp4", "type": "video/mp4"}
+      ],
+      "extent": {
+        "sw": [37.4487848675731, -123.09234894317646],
+        "ne": [38.780310596186474, -121.2218887213739]
+      },
+      "flipv": true,
+      "scale": 10,
+      "zoom": 10,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "title": "High Resolution Limited Area Model",
+      "abstract": "Numerical Weather Prediction model",
+      "id": "b2a7146a-6a8a-11e5-905d-3c15c2d29372",
+      "engine": "HIRLAM",
+      "uv": [
+        {"src": "models/movies/knmi.webm", "type": "video/webm"},
+        {"src": "models/movies/knmi.mp4", "type": "video/mp4"}
+      ],
+      "extent": {
+        "sw": [ 26.064999, -30.868795],
+        "ne": [80, 64.929413]
+      },
+      "zoom": 10,
+      "width": 2048,
+      "height": 2048
+    },
+    {
+      "title": "Hycom",
+      "abstract": "Backward advection of the Hycom model",
+      "engine": "hycom",
+      "id": "15bb1006-8c50-11e5-a43d-3c15c2d29372",
+      "uv": [
+        {"src": "models/movies/mh370.webm", "type": "video/webm"},
+        {"src": "models/movies/mh370.mp4", "type": "video/mp4"}
+      ],
+      "flipv": true,
+      "extent": {
+        "sw": [-38, 24],
+        "ne": [23.92, 143.92]
+      },
+      "zoom": 3,
+      "width": 1024,
+      "height": 1024
+    },
+    {
+      "title": "Circular test case",
+      "abstract": "Test case used to detect inward/outward bias.",
+      "id": "85fe3dea-9e6e-11e5-94b1-3c15c2d29372",
+      "engine": "analytical",
+      "uv": [
+        {"src": "models/images/circular.png", "type": "image/png"}
+      ],
+      "extent": {
+        "sw": [52.498012542723586, 4.026927471160947],
+        "ne": [53.758518218850185, 6.538724422447244]
+      },
+      "flipv": false,
+      "zoom": 10,
+      "width": 1024,
+      "height": 1024
+    }
+
+  ]
 }
