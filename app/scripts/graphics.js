@@ -97,7 +97,7 @@ function addDrawing(drawingElement, drawingContainer) {
 $(function(){
 
   // Add the slider
-  var slider = $('input.slider').slider();
+  var slider = $('#brush-size').slider();
   slider.on('change', function(evt){
     sketch.radius = evt.value.newValue;
   });

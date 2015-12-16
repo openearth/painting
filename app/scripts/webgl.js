@@ -1,5 +1,102 @@
 /* global AdvectionFilter */
 var displacementFilter;
+var particles;
+var sprites;
+var icon = 'images/verticalbar.png';
+var particleAlpha = 0.6;
+
+
+function particleCulling(particles, sprites, n) {
+  // make sure we have n particles by breeding or culling
+  // also update the sprites
+
+  var nCurrent = particles.length;
+  var nNew = n;
+
+  var uvhidden = $('#uvhidden')[0];
+  var width = uvhidden.width,
+      height = uvhidden.height;
+
+  // culling
+  for (var i = nCurrent-1; i > nNew; i--) {
+    _.pullAt(particles, i);
+    sprites.removeChildAt(i);
+  }
+
+  // add extra particles
+  for(var j = 0; j < nNew - nCurrent; j++) {
+
+    // replace it
+    var newParticle = PIXI.Sprite.fromImage(icon);
+    // set anchor to center
+    newParticle.anchor.set(0.5);
+    newParticle.alpha = particleAlpha;
+    newParticle.x = Math.random() * width;
+    newParticle.y = Math.random() * height;
+    // add to array and to particle container
+    particles.push(newParticle);
+    sprites.addChild(newParticle);
+  }
+}
+
+function particleTimestep() {
+
+  var uv = $('#uv')[0];
+  if (uv.paused || uv.ended) {
+    return;
+  }
+
+  var uvhidden = $('#uvhidden')[0];
+  var uvctx = uvhidden.getContext('2d');
+  var width = uvhidden.width,
+      height = uvhidden.height;
+  uvctx.drawImage(uv, 0, 0, width, height);
+  var frame = uvctx.getImageData(0, 0, width, height);
+
+  _.each(particles, function(particle, i){
+    var idx = (
+      Math.round(height - particle.position.y) * width +
+        Math.round(particle.position.x)
+    ) * 4;
+    var u = (frame.data[idx + 0] / 255.0) - 0.5;
+    var v = (frame.data[idx + 1] / 255.0) - 0.5 ;
+        v = v * (displacementFilter.uniforms.flipv.value ? 1 : -1);
+    var mask = (frame.data[idx + 2] / 255.0) > 0.5 ;
+    mask = mask || (Math.abs(u) + Math.abs(v) == 0.0);
+    particle.position.x =  particle.position.x + u*2;
+    particle.position.y = particle.position.y + -v*2;
+    var newRotation = Math.atan2(u, v) - (0.5 * Math.PI);
+    var rotationDiff = newRotation - particle.rotation;
+    var maxRotation = 0.05;
+    if (Math.abs(rotationDiff) > maxRotation) {
+      // limit
+      rotationDiff = rotationDiff > 0.0 ? maxRotation : -maxRotation;
+    }
+    particle.rotation += rotationDiff;
+
+    // replace dead particles
+    if (mask) {
+      _.pull(particles, particle);
+      sprites.removeChild(particle);
+
+      // replace it
+      var newParticle = PIXI.Sprite.fromImage(icon);
+      // set anchor to center
+      newParticle.alpha = particleAlpha;
+      newParticle.anchor.set(0.5);
+      newParticle.x = Math.random() * width;
+      newParticle.y = Math.random() * height;
+      // add to array and to particle container
+      particles.push(newParticle);
+      sprites.addChild(newParticle);
+
+    }
+
+
+  });
+
+
+}
 $(function() {
   'use strict';
   document.addEventListener('model-started', function(evt) {
@@ -7,6 +104,7 @@ $(function() {
     var model = evt.detail;
     console.log('model started', model);
     console.log('looking for webgl context', $('#webgl'));
+
 
     // Create WebGL renderer
     var webgl = $('#webgl')[0];
@@ -65,7 +163,7 @@ $(function() {
     // scale it up
     displacementFilter.scale.x = 2.0;
     displacementFilter.scale.y = 2.0;
-
+    console.log(displacementFilter)
 
     // // create framebuffer with texture source
     var renderTextureFrom = new PIXI.RenderTexture(renderer, width, height);
@@ -77,6 +175,20 @@ $(function() {
 
     container.addChild(renderSpriteFrom);
     container.addChild(drawingSprite);
+
+    var n = 0;
+    sprites = new PIXI.ParticleContainer(n, {
+      scale: true,
+      position: true,
+      rotation: true,
+      uvs: true,
+      alpha: true
+    });
+    container.addChild(sprites);
+    particles = [];
+
+    // add a few particles
+    particleCulling(particles, sprites, n);
 
 
     function animate() {
@@ -105,13 +217,47 @@ $(function() {
       renderTextureTo = temp;
       renderTextureTo.clear();
 
+      particleTimestep();
+      if (particles.length > 500) {
+        renderTextureFrom.clear();
+      }
     }
     animate();
 
+
+    // user interface interactions
     function clear3d() {
       renderTextureTo.clear();
       renderTextureFrom.clear();
     }
     $('#clear3d').click(clear3d);
+
+    var slider = $('#n-particles').slider();
+
+
+
+    slider.on('change', function(evt){
+      console.log('using', evt.value.newValue, 'particles');
+
+      var n = evt.value.newValue;
+      particleCulling(particles, sprites, n);
+
+
+    });
+
+    $(document).keydown(function(evt) {
+      console.log('processing key', evt.which);
+
+      if (evt.which == 80 || evt.which == 112) {
+        // p
+        console.log('setting particles to', particles.length + 50);
+        // updating particles
+        particleCulling(particles, sprites, particles.length + 50);
+      }
+      if (evt.which == 67) {
+        // clearing screen
+        clear3d();
+      }
+    });
   });
 });

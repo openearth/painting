@@ -19,6 +19,24 @@
       "height": 1024
     },
     {
+      "title": "Ameland",
+      "abstract": "Ameland model from KPP project",
+      "id": "51139bae-a380-11e5-b02f-3c15c2d29372",
+      "engine": "delft3d flow",
+      "uv": [
+        {"src": "models/movies/ameland.mp4", "type": "video/mp4"}
+      ],
+      "extent": {
+
+        "sw": [53.284533894465625, 5.265900772973027],
+        "ne": [53.60179437766051, 5.925245096681446]
+      },
+      "flipv": true,
+      "zoom": 11,
+      "width": 1024,
+      "height": 1024
+    },
+    {
       "title": "San Francisco ",
       "abstract": "San Francisco Bay model",
       "id": "F24A0CB6-339A-11E5-98F4-4963B6C90E9A",

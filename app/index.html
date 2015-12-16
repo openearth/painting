@@ -15,7 +15,6 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="/bower_components/mapbox.js/mapbox.css" />
-    <link rel="stylesheet" href="/bower_components/fontawesome/css/font-awesome.css" />
     <link rel="stylesheet" href="/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
     <link rel="stylesheet" href="/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
     <!-- endbower -->
@@ -51,13 +50,15 @@
         <source src="{{ src }}" type="{{ type }}"></source>
         {{/each}}
       </video>
+      <!-- 2d canvas to capture pixels from uv map -->
+      <canvas id="uvhidden" width="{{ width }}" height="{{ height }}"></canvas>
     </script>
     <script id="image-template" type="text/x-handlebars-template">
       <img id="uv" autoplay loop width="{{ width }}" height="{{ height }}"
-        {{#each uv}}
-        src="{{ src }}"
-        {{/each}}
-      />
+           {{#each uv}}
+           src="{{ src }}"
+           {{/each}}
+           />
     </script>
     <script id="colours-template" type="text/x-handlebars-template">
       {{#each palettes}}
@@ -107,7 +108,7 @@
           <button class="btn btn-default" id="paintingsall">select all</button>
           <h4>Clear canvas</h4>
           <p><input  class="checkbox" type="checkbox" id="cleardrawing" checked name="cleardrawing" value="" /><button class="btn btn-default" id="clear3d">reset</button>
-          <h4>Lock map</h4>
+            <h4>Lock map</h4>
           <p><input  class="checkbox" type="checkbox" id="lockmap" checked name="lockmap" value="" /></p>
           </p>
           <h4>Brush size</h4>
@@ -198,7 +199,21 @@
           </p>
         </div>
         <div class="sidebar-pane" id="settings">
+          <div id="particles" class="row">
+            <div class="col-xs-2 text-right">
 
+              <i class="fa fa-circle-o fa-lg"></i>
+            </div>
+            <div class="col-xs-8">
+              <input
+                 id="n-particles"
+                 type="text"
+                 class="slider"
+                 data-slider-ticks="[0, 3000]"
+                 data-slider-ticks-snap-bounds="10"
+                 />
+            </div>
+          </div>
         </div>
       </div>
     </div>
