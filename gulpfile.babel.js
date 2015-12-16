@@ -80,9 +80,9 @@ gulp.task('images', () => {
 // referenced wrong....
 gulp.task('moreimages', () => {
   return gulp.src([
-    'bower_components/mapbox.js/images/*.{png,jpg,svg}'
+    'bower_components/mapbox.js/**/*.{png,jpg,svg}'
   ])
-    .pipe(gulp.dest('dist/styles/images'));
+    .pipe(gulp.dest('dist/styles'));
 });
 
 
@@ -194,7 +194,7 @@ gulp.task('wiredep', () => {
         .pipe(gulp.dest('app'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'fonts', 'morefonts', 'extras', 'data', 'models'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'moreimages', 'fonts', 'morefonts', 'extras', 'data', 'models'], () => {
     return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
