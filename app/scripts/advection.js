@@ -86,8 +86,8 @@ function AdvectionFilter(sprite, settings)
       mapSampler: { type: 'sampler2D', value: sprite.texture },
       otherMatrix: { type: 'mat3', value: maskMatrix.toArray(true) },
       scale: { type: 'v2', value: { x: 0, y: 0 } },
-      flipv: { type: 'bool', value: false },
-      upwind: { type: 'bool', value: false}
+      flipv: { type: 'bool', value: settings.flipv },
+      upwind: { type: 'bool', value: settings.upwind}
     }
   );
 
@@ -95,14 +95,14 @@ function AdvectionFilter(sprite, settings)
   this.maskMatrix = maskMatrix;
 
   var scale = _.get(settings, 'scale', 10.0);
-  console.log('scale in advection', scale);
   this.scale = new PIXI.Point(scale, scale);
+  console.log('scale in advection', this.scale, scale, this);
 
   var flipv = _.get(settings, 'flipv', false);
   this.flipv = flipv;
 
-  var upwind = _.get(settings, 'upwind', false);
-  this.upwind = upwind;
+  // var upwind = _.get(settings, 'upwind', false);
+  // this.upwind = upwind;
 
 }
 
@@ -118,9 +118,9 @@ AdvectionFilter.prototype.applyFilter = function (renderer, input, output)
   this.uniforms.otherMatrix.value = this.maskMatrix.toArray(true);
   this.uniforms.scale.value.x = this.scale.x * (1 / input.frame.width);
   this.uniforms.scale.value.y = this.scale.y * (1 / input.frame.height);
-  // apply vertical flip
+  // // apply vertical flip
   this.uniforms.flipv.value = this.flipv;
-  this.uniforms.upwind.value = this.upwind;
+  // this.uniforms.upwind.value = this.upwind;
 
   var shader = this.getShader(renderer);
   // draw the filter...

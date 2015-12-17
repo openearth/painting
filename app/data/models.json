@@ -14,6 +14,7 @@
         "ne": [53.758518218850185, 6.538724422447244]
       },
       "flipv": true,
+      "scale": 5.0,
       "zoom": 10,
       "width": 1024,
       "height": 1024
@@ -33,7 +34,7 @@
       },
       "flipv": true,
       "zoom": 11,
-      "scale": 100,
+      "scale": 5.0,
       "width": 1024,
       "height": 1024
     },
@@ -51,7 +52,7 @@
         "ne": [38.780310596186474, -121.2218887213739]
       },
       "flipv": true,
-      "scale": 30,
+      "scale": 5.0,
       "zoom": 10,
       "width": 1024,
       "height": 1024
@@ -69,6 +70,8 @@
         "sw": [ 26.064999, -30.868795],
         "ne": [80, 64.929413]
       },
+      "scale": 3,
+      "flipv": false,
       "zoom": 10,
       "width": 2048,
       "height": 2048
@@ -83,6 +86,7 @@
         {"src": "models/movies/mh370.mp4", "type": "video/mp4"}
       ],
       "flipv": true,
+      "scale": 2,
       "extent": {
         "sw": [-38, 24],
         "ne": [23.92, 143.92]
@@ -90,6 +94,7 @@
       "zoom": 3,
       "width": 1024,
       "height": 1024
+
     },
     {
       "title": "Circular test case",
@@ -104,6 +109,7 @@
         "ne": [53.758518218850185, 6.538724422447244]
       },
       "flipv": false,
+      "scale": 1.0,
       "zoom": 10,
       "width": 1024,
       "height": 1024
