@@ -59,6 +59,7 @@
            src="{{ src }}"
            {{/each}}
            />
+      <canvas id="uvhidden" width="{{ width }}" height="{{ height }}"></canvas>
     </script>
     <script id="colours-template" type="text/x-handlebars-template">
       {{#each palettes}}
@@ -222,6 +223,9 @@
     <!-- Hidden layers -->
     <div class="hidden layer">
       <div id="uv-container">
+      </div>
+      <div>
+        <canvas id="canvas-icon" width="10" height="10"></canvas>
       </div>
     </div>
 
