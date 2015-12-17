@@ -1,4 +1,5 @@
 function Particles(model, canvas, container) {
+  'use strict';
   console.log('creating particle system');
   this.canvas = canvas;
   this.width = canvas.width;
@@ -17,10 +18,11 @@ function Particles(model, canvas, container) {
   });
   container.addChild(this.sprites);
   this.counter = 0;
-};
+}
 
 
 Particles.prototype.create = function() {
+  'use strict';
   // replace it
   var newParticle = PIXI.Sprite.fromImage(this.icon);
   // set anchor to center
@@ -34,6 +36,7 @@ Particles.prototype.create = function() {
 };
 
 Particles.prototype.clear = function () {
+  'use strict';
   // clear particles
   console.log('clear particles');
   this.particles = [];
@@ -47,8 +50,6 @@ Particles.prototype.culling = function (n) {
 
   var nCurrent = this.particles.length;
   var nNew = n;
-
-  var uvhidden = $('#uvhidden')[0];
 
   // culling
   for (var i = nCurrent - 1; i > nNew; i--) {
@@ -122,7 +123,7 @@ Particles.prototype.step = function () {
       this.sprites.addChild(newParticle);
 
     }
-    if (this.particles.length  < 300 ) {
+    if (this.particles.length < 300 ) {
       // if we don't have too many particles, keep track of the tail
       // but only every 10 timesteps
 
@@ -138,7 +139,7 @@ Particles.prototype.step = function () {
       if (particle.tail.length > 0) {
         drawingctx.beginPath();
         drawingctx.moveTo(particle.tail[0].x, particle.tail[0].y);
-        for(var j = 1; j < particle.tail.length ; j++) {
+        for(var j = 1; j < particle.tail.length; j++) {
           drawingctx.lineTo(particle.tail[j].x, particle.tail[j].y);
         }
         drawingctx.stroke();

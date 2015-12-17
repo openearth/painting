@@ -1,6 +1,6 @@
-/* global AdvectionFilter */
+/* global AdvectionFilter, Particles */
 var displacementFilter;
-
+var particles;
 $(function() {
   'use strict';
   document.addEventListener('model-started', function(modelEvent) {
@@ -77,11 +77,8 @@ $(function() {
     container.addChild(renderSpriteFrom);
     container.addChild(drawingSprite);
 
-    var nParticles = 0;
-    var particles = new Particles(model, drawing, container);
+    particles = new Particles(model, drawing, container);
     console.log('created particles', particles);
-    // add a few particles
-    particles.culling(nParticles);
 
 
     function animate() {
@@ -132,7 +129,7 @@ $(function() {
 
     slider.on('change', function(evt){
       var n = evt.value.newValue;
-      particleCulling(particles, sprites, n);
+      particles.culling(n);
 
 
     });
