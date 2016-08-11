@@ -90,8 +90,8 @@ d3.json(
         'thumbnail': true
       })
       .append('img')
-      .attr('width', '60')
-      .attr('height', '40')
+      .attr('width', '50')
+      .attr('height', '50')
       .attr('src', function(d){return d.url; })
       .on('click', function(d){
         console.log('click', d, this);

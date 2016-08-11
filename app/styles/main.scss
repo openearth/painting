@@ -48,7 +48,8 @@ circle.active {
   color: rgba(255, 255, 255, 0.9);
 }
 #paintings  .row  img {
-  height: 50px;
+  min-height: 50px;
+  min-width: 50px;
 }
 .sidebar-tabs {
   background-color: rgba(20, 20, 20, 0.5);
