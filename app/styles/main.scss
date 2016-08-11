@@ -31,6 +31,14 @@ circle.active {
   cursor: crosshair;
 }
 
+.leaflet-bar, .leaflet-control-layers {
+  background-color: rgba(20, 20, 20, 0.0);
+}
+.leaflet-bar a {
+  background-color: rgba(20, 20, 20, 0.5);
+  color: rgba(220, 255, 220, 0.9);
+}
+
 
 .panel.sidebar-pane {
   padding: 0px;

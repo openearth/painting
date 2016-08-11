@@ -87,138 +87,139 @@
 
     <!-- Map -->
 
-    <div id="sidebar" class="sidebar collapsed">
-      <!-- Nav tabs -->
-      <ul class="sidebar-tabs" role="tablist">
-        <li><a href="#models" role="tab"><i class="fa fa-bars"></i></a></li>
-        <li><a href="#paint" role="tab"><i class="fa fa-paint-brush"></i></a></li>
-        <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>
-        <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-      </ul>
 
-      <!-- Tab panes -->
-      <div class="sidebar-content active">
-        <div class="sidebar-pane" id="models">
-          <h1 class="">Models</h1>
-        </div>
-        <div class="sidebar-pane" id="paint">
+    <div id="app">
+      <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <ul class="sidebar-tabs" role="tablist">
+          <li><a href="#models" role="tab"><i class="fa fa-bars"></i></a></li>
+          <li><a href="#paint" role="tab"><i class="fa fa-paint-brush"></i></a></li>
+          <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>
+          <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+        </ul>
 
-          <h4>Paintings</h4>
-          <div id="paintings" class="container-fluid"></div>
-          <button class="btn btn-default" id="paintingsclear">deselect</button>
-          <button class="btn btn-default" id="paintingsall">select all</button>
-          <h4>Clear canvas</h4>
-          <p><input  class="checkbox" type="checkbox" id="cleardrawing" checked name="cleardrawing" value="" /><button class="btn btn-default" id="clear3d">reset</button>
-            <h4>Lock map</h4>
-          <p><input  class="checkbox" type="checkbox" id="lockmap" checked name="lockmap" value="" /></p>
-          </p>
-          <h4>Brush size</h4>
-          <div id="brush" class="row">
-            <div class="col-xs-2 text-right">
+        <!-- Tab panes -->
+        <div class="sidebar-content active">
+          <div class="sidebar-pane" id="models">
+            <h1 class="">Models</h1>
+          </div>
+          <div class="sidebar-pane" id="paint">
 
-              <i class="fa fa-paint-brush fa-lg"></i>
+            <h4>Paintings</h4>
+            <div id="paintings" class="container-fluid"></div>
+            <button class="btn btn-default" id="paintingsclear">deselect</button>
+            <button class="btn btn-default" id="paintingsall">select all</button>
+            <h4>Clear canvas</h4>
+            <p><input  class="checkbox" type="checkbox" id="cleardrawing" checked name="cleardrawing" value="" /><button class="btn btn-default" id="clear3d">reset</button>
+              <h4>Lock map</h4>
+            <p><input  class="checkbox" type="checkbox" id="lockmap" checked name="lockmap" value="" /></p>
+            </p>
+            <h4>Brush size</h4>
+            <div id="brush" class="row">
+              <div class="col-xs-2 text-right">
+
+                <i class="fa fa-paint-brush fa-lg"></i>
+              </div>
+              <div class="col-xs-8">
+                <input
+                   id="brush-size"
+                   type="text"
+                   class="slider"
+                   data-slider-ticks="[1, 50]"
+                   data-slider-ticks-snap-bounds="3"
+                   />
+              </div>
+              <div class="col-xs-2 text-left">
+                <i class="fa fa-paint-brush fa-2x"></i>
+              </div>
             </div>
-            <div class="col-xs-8">
-              <input
-                 id="brush-size"
-                 type="text"
-                 class="slider"
-                 data-slider-ticks="[1, 50]"
-                 data-slider-ticks-snap-bounds="3"
-                 />
+            <h4>Popular colors</h4>
+            <div id="colours" class="container-fluid">
             </div>
-            <div class="col-xs-2 text-left">
-              <i class="fa fa-paint-brush fa-2x"></i>
+            <h4>Images</h4>
+            <div class="container-fluid" id="images">
+              <div class="row" >
+                <div class="col-xs-3 nopadding">
+                  <a href="#" class="thumbnail" id="static">
+                    <img src="images/static.png" alt="" />
+                  </a>
+                </div>
+                <div class="col-xs-3 nopadding">
+                  <a href="#" class="thumbnail" id="chessboard">
+                    <img src="images/chessboard.png" alt="" />
+                  </a>
+                </div>
+                <div class="col-xs-3 nopadding">
+                  <a href="#" class="thumbnail" id="chessboard">
+                    <img src="images/transparent.png" alt="" />
+                  </a>
+                </div>
+                <div class="col-xs-3 nopadding">
+                  <a href="#" class="thumbnail" id="monolisa">
+                    <img src="images/monolisa.jpg" alt="" />
+                  </a>
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-3 nopadding">
+                  <a href="#" class="thumbnail" id="blackdots">
+                    <img src="images/blackdots.png" alt="" />
+                  </a>
+                </div>
+                <div class="col-xs-3 nopadding">
+                  <a href="#" class="thumbnail" id="whitedots">
+                    <img src="images/whitedots.png" alt="" />
+                  </a>
+                </div>
+                <div class="col-xs-3 nopadding">
+                  <a href="#" class="thumbnail" id="grid">
+                    <img src="images/grid.png" alt="" />
+                  </a>
+                </div>
+                <div class="col-xs-3 nopadding">
+                  <a href="#" class="thumbnail" id="gridsmall">
+                    <img src="images/gridsmall.png" alt="" />
+                  </a>
+                </div>
+              </div>
+              <div class="row" >
+                <div class="col-xs-3 nopadding">
+                  <a href="#" class="thumbnail" id="zebra">
+                    <img src="images/zebra.png" alt="" />
+                  </a>
+                </div>
+                <div class="col-xs-3 nopadding">
+                  <a href="#" class="thumbnail" id="white">
+                    <img src="images/white.png" alt="" />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
-          <h4>Popular colors</h4>
-          <div id="colours" class="container-fluid">
+          <div class="sidebar-pane" id="profile">
+            <p>
+              Created by Fedor Baart.
+            </p>
           </div>
-          <h4>Images</h4>
-          <div class="container-fluid" id="images">
-            <div class="row" >
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="static">
-                  <img src="images/static.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="chessboard">
-                  <img src="images/chessboard.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="chessboard">
-                  <img src="images/transparent.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="monolisa">
-                  <img src="images/monolisa.jpg" alt="" />
-                </a>
-              </div>
-            </div>
-            <div class="row" >
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="blackdots">
-                  <img src="images/blackdots.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="whitedots">
-                  <img src="images/whitedots.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="grid">
-                  <img src="images/grid.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="gridsmall">
-                  <img src="images/gridsmall.png" alt="" />
-                </a>
-              </div>
-            </div>
-            <div class="row" >
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="zebra">
-                  <img src="images/zebra.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="white">
-                  <img src="images/white.png" alt="" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="sidebar-pane" id="profile">
-          <p>
-            Created by Fedor Baart.
-          </p>
-        </div>
-        <div class="sidebar-pane" id="settings">
-          <div id="particles" class="row">
-            <div class="col-xs-2 text-right">
+          <div class="sidebar-pane" id="settings">
+            <div id="particles" class="row">
+              <div class="col-xs-2 text-right">
 
-              <i class="fa fa-circle-o fa-lg"></i>
-            </div>
-            <div class="col-xs-8">
-              <input
-                 id="n-particles"
-                 type="text"
-                 class="slider"
-                 data-slider-ticks="[0, 3000]"
-                 data-slider-ticks-snap-bounds="10"
-                 />
+                <i class="fa fa-circle-o fa-lg"></i>
+              </div>
+              <div class="col-xs-8">
+                <input
+                   id="n-particles"
+                   type="text"
+                   class="slider"
+                   data-slider-ticks="[0, 3000]"
+                   data-slider-ticks-snap-bounds="10"
+                   />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div id="app">
       <div id="map" class="sidebar-map"></div>
     </div>
 
