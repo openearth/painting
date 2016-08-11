@@ -218,7 +218,9 @@
         </div>
       </div>
     </div>
-    <div id="map" class="sidebar-map"></div>
+    <div id="app">
+      <div id="map" class="sidebar-map"></div>
+    </div>
 
     <!-- Hidden layers -->
     <div class="hidden layer">
@@ -236,18 +238,19 @@
     <script src="/bower_components/fetch/fetch.js"></script>
     <script src="/bower_components/es6-promise/promise.js"></script>
     <script src="/bower_components/lodash/lodash.js"></script>
-    <script src="/bower_components/leaflet/dist/leaflet.js"></script>
     <script src="/bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="/bower_components/mapbox.js/mapbox.js"></script>
     <script src="/bower_components/sidebar-v2/js/jquery-sidebar.js"></script>
     <script src="/bower_components/sidebar-v2/js/leaflet-sidebar.js"></script>
     <script src="/bower_components/handlebars/handlebars.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="/bower_components/jquery-bridget/jquery.bridget.js"></script>
+    <script src="/bower_components/jquery-bridget/jquery-bridget.js"></script>
     <script src="/bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>
     <script src="/bower_components/pixi.js/bin/pixi.js"></script>
     <script src="/bower_components/d3/d3.js"></script>
     <script src="/bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <script src="/bower_components/vue-router/dist/vue-router.js"></script>
+    <script src="/bower_components/vue/dist/vue.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -279,6 +282,7 @@
     <script src="scripts/webgl.js"></script>
     <script src="scripts/palettes.js"></script>
     <script src="scripts/main.js"></script>
+    <script src="scripts/app.js"></script>
     <!-- endbuild -->
   </body>
 </html>
