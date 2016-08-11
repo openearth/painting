@@ -3,7 +3,6 @@
   "private": true,
   "dependencies": {
     "bootstrap-sass": "*",
-    "modernizr": "*",
     "fetch": "*",
     "es6-promise": "*",
     "lodash": "*",
@@ -17,7 +16,10 @@
     "pixi.js": "~3.0.7",
     "d3": "~3.5.6",
     "open-sans-fontface": "~1.4.2",
-    "bootstrap-switch": "~3.3.2"
+    "bootstrap-switch": "~3.3.2",
+    "vue-router": "^0.7.13",
+    "vue": "^1.0.26",
+    "modernizr": "^2"
   },
   "overrides": {
     "pixi.js": {
