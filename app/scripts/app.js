@@ -8,6 +8,9 @@
     events: {
       'model-selected': function(model) {
         console.log('app detected model selected', model);
+      },
+      'palette-selected': function(palette) {
+        console.log('app detected palette selected', palette);
       }
     }
   })

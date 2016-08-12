@@ -44,23 +44,19 @@
         </div>
       </div>
     </template>
-    <script id="video-template" type="text/x-handlebars-template">
-      <video id="uv" autoplay loop width="{{ width }}" height="{{ height }}">
-        {{#each uv}}
-        <source src="{{ src }}" type="{{ type }}"></source>
-        {{/each}}
-      </video>
-      <!-- 2d canvas to capture pixels from uv map -->
-      <canvas id="uvhidden" width="{{ width }}" height="{{ height }}"></canvas>
-    </script>
-    <script id="image-template" type="text/x-handlebars-template">
-      <img id="uv" autoplay loop width="{{ width }}" height="{{ height }}"
-           {{#each uv}}
-           src="{{ src }}"
-           {{/each}}
-           />
-      <canvas id="uvhidden" width="{{ width }}" height="{{ height }}"></canvas>
-    </script>
+    <template id="paintings-template">
+      <div class="container-fluid">
+        <div class="row">
+          <div v-for="painting in paintings" class="col-xs-3 thumbnail">
+            <a @click="select(painting)">
+              <img width="50" height="50" :src="painting.url" :title="painting.painter">
+            </a>
+
+          </div>
+        </div>
+      </div>
+
+    </template>
     <script id="colours-template" type="text/x-handlebars-template">
       {{#each palettes}}
       <div class="palette row" id="palette{{ id }}">
@@ -78,6 +74,24 @@
       {{/each}}
       <p>Colours from <a href="http://colourlovers.com">colourlovers</a></p>
     </script>
+    <script id="video-template" type="text/x-handlebars-template">
+      <video id="uv" autoplay loop width="{{ width }}" height="{{ height }}">
+        {{#each uv}}
+        <source src="{{ src }}" type="{{ type }}"></source>
+        {{/each}}
+      </video>
+      <!-- 2d canvas to capture pixels from uv map -->
+      <canvas id="uvhidden" width="{{ width }}" height="{{ height }}"></canvas>
+    </script>
+    <script id="image-template" type="text/x-handlebars-template">
+      <img id="uv" autoplay loop width="{{ width }}" height="{{ height }}"
+           {{#each uv}}
+           src="{{ src }}"
+           {{/each}}
+           />
+      <canvas id="uvhidden" width="{{ width }}" height="{{ height }}"></canvas>
+    </script>
+
 
   </head>
   <body>
@@ -108,6 +122,7 @@
           <div class="sidebar-pane" id="paint-pane">
 
             <h4>Paintings</h4>
+            <painting-palettes></painting-palettes>
             <div id="paintings" class="container-fluid"></div>
             <button class="btn btn-default" id="paintingsclear">deselect</button>
             <button class="btn btn-default" id="paintingsall">select all</button>

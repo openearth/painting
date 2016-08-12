@@ -16,7 +16,6 @@
           return response.json();
         })
         .then((json) => {
-          console.log('this', this);
           this.models = json.models;
           // select first model
           document.dispatchEvent(
@@ -34,7 +33,6 @@
     methods: {
       selectModel: function(model) {
         // find the model and add a click event to the cog link
-        console.log('model selected', model);
         var event = new CustomEvent(
           'model-selected',
           {'detail': model}
