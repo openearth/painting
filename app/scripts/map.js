@@ -111,11 +111,13 @@ function loadModel(map, model) {
     }
   );
   layers.push(L.imageOverlay.canvas(bounds, {id: 'webgl'}).addTo(map));
-  layers.push(L.imageOverlay.canvas(bounds, {id: 'drawing'}).addTo(map));
-  bus.$emit('model-loaded-in-map', {
-    map: map,
+  var drawingLayer = L.imageOverlay.canvas(bounds, {id: 'drawing'}).addTo(map);
+  layers.push();
+  bus.$emit('drawing-layer-added', {
+    drawingElement: drawingLayer.canvas,
+    drawingLayer: drawingLayer,
     model: model,
-    drawingElement: document.getElementById('drawing')
+    map: map
   });
 }
 
