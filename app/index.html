@@ -28,22 +28,22 @@
     <script src="/bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
 
-    <script id="model-template" type="text/x-handlebars-template">
-      {{#each models}}
-      <div class="model" id="{{ id }}">
-        <h2>{{ title }} </h2>
-        <p>{{ abstract }}</p>
-        <div class="row">
-          <div class="col-xs-1">
-            <i class="fa fa-stop"></i>
-          </div>
-          <div class="col-xs-1">
-            <a href="#" class="load-model" data-id="{{ id }}"><i class="fa fa-play"></i></a>
+    <template id="model-overview-template" >
+      <div>
+        <div v-for="model in models" class="model" id="{{ model.id }}">
+          <h2>{{ model.title }} </h2>
+          <p>{{ model.abstract }}</p>
+          <div class="row">
+            <div class="col-xs-1">
+              <i class="fa fa-stop"></i>
+            </div>
+            <div class="col-xs-1">
+              <a @click="selectModel(model)" class="load-model" data-id="{{ model.id }}"><i class="fa fa-play"></i></a>
+            </div>
           </div>
         </div>
       </div>
-      {{/each}}
-    </script>
+    </template>
     <script id="video-template" type="text/x-handlebars-template">
       <video id="uv" autoplay loop width="{{ width }}" height="{{ height }}">
         {{#each uv}}
@@ -92,18 +92,20 @@
       <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
-          <li><a href="#models" role="tab"><i class="fa fa-bars"></i></a></li>
-          <li><a href="#paint" role="tab"><i class="fa fa-paint-brush"></i></a></li>
-          <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>
-          <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+          <li><a href="#model-pane" role="tab"><i class="fa fa-bars"></i></a></li>
+          <li><a href="#paint-pane" role="tab"><i class="fa fa-paint-brush"></i></a></li>
+          <li><a href="#profile-pane" role="tab"><i class="fa fa-user"></i></a></li>
+          <li><a href="#settings-pane" role="tab"><i class="fa fa-gear"></i></a></li>
         </ul>
 
         <!-- Tab panes -->
         <div class="sidebar-content active">
-          <div class="sidebar-pane" id="models">
+          <div class="sidebar-pane" id="model-pane">
+
             <h1 class="">Models</h1>
+            <model-overview></model-overview>
           </div>
-          <div class="sidebar-pane" id="paint">
+          <div class="sidebar-pane" id="paint-pane">
 
             <h4>Paintings</h4>
             <div id="paintings" class="container-fluid"></div>
@@ -196,12 +198,12 @@
               </div>
             </div>
           </div>
-          <div class="sidebar-pane" id="profile">
+          <div class="sidebar-pane" id="profile-pane">
             <p>
               Created by Fedor Baart.
             </p>
           </div>
-          <div class="sidebar-pane" id="settings">
+          <div class="sidebar-pane" id="settings-pane">
             <div id="particles" class="row">
               <div class="col-xs-2 text-right">
 

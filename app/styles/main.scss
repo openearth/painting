@@ -96,6 +96,12 @@ body {
 
 }
 
+// always style with pointer, also when href is missing and only click is attached
+a:hover {
+  cursor:pointer;
+}
+
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .footer {
