@@ -1,19 +1,20 @@
 (function () {
 
   // Vue application
-  new Vue({
+  var app = new Vue({
     el: '#app',
-    data: {
+    ready: function() {
     },
-    events: {
-      'model-selected': function(model) {
-        console.log('app detected model selected', model);
-      },
-      'palette-selected': function(palette) {
-        console.log('app detected palette selected', palette);
-      }
+    data: function() {
+      return {
+        palette: []
+      };
     }
-  })
+  });
+  bus.$on('palette-selected', function(palette){
+    app.$set('palette', palette);
+  });
+
   Vue.config.debug = true;
 
 

@@ -55,7 +55,14 @@
           </div>
         </div>
       </div>
-
+    </template>
+    <template id="palette-chart-template">
+      <div id="palette" class="container-fluid">
+        <svg>
+          <!-- circles -->
+          <g></g>
+        </svg>
+      </div>
     </template>
     <script id="colours-template" type="text/x-handlebars-template">
       {{#each palettes}}
@@ -123,9 +130,8 @@
 
             <h4>Paintings</h4>
             <painting-palettes></painting-palettes>
-            <div id="paintings" class="container-fluid"></div>
-            <button class="btn btn-default" id="paintingsclear">deselect</button>
-            <button class="btn btn-default" id="paintingsall">select all</button>
+            <!-- bind palette to app palette -->
+            <palette-chart :palette="palette"></palette-chart>
             <h4>Clear canvas</h4>
             <p><input  class="checkbox" type="checkbox" id="cleardrawing" checked name="cleardrawing" value="" /><button class="btn btn-default" id="clear3d">reset</button>
               <h4>Lock map</h4>
@@ -291,6 +297,7 @@
     <!-- custom version of sketch -->
     <script src="scripts-external/sketch.js"></script>
     <!-- main files -->
+    <script src="scripts/bus.js"></script>
     <script src="scripts/map.js"></script>
     <script src="scripts/advection.js"></script>
     <script src="scripts/graphics.js"></script>

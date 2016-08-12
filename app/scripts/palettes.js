@@ -22,30 +22,79 @@
     },
     methods: {
       select: function(painting){
-        this.$dispatch('palette-selected', painting.palette);
-        selectPalette(painting.palette);
+        console.log('palette selected');
+        bus.$emit('palette-selected', painting.palette);
+      }
+    }
+  });
+  Vue.component('palette-chart', {
+    template: '#palette-chart-template',
+    data: () => {
+      return {};
+    },
+    ready: () => {
+    },
+    props: {
+      palette: {
+        type: Array,
+        default: function() {return [];}
+      }
+    },
+    ready: function() {
+      /* global sketch */
+      this.$watch('palette', function(){
+        this.updateChart();
+      });
+    },
+    methods: {
+      updateChart: function() {
+        var width = 300,
+            height = 200;
+        var svg = d3.select('#palette').select('svg');
+        var circles = svg
+          .select('g');
+
+        svg
+          .attr('width', width)
+          .attr('height', height);
+        var x = d3.scale.linear()
+              .range([0, width])
+              .domain([-0.1, 1.1]).nice();
+
+        var y = d3.scale.linear()
+              .range([height, 0])
+              .domain([-0.1, 1.1]).nice();
+        circles
+          .selectAll('circle')
+          .remove();
+        circles
+          .selectAll('circle')
+          .data(this.palette)
+          .enter()
+          .append('circle')
+          .attr('cx', function(d){return x(d.x); })
+          .attr('cy', function(d){return y(d.y); })
+          .attr('r', 10)
+          .style('fill', function(d) {
+            return d3.rgb(d.rgb[0] * 255, d.rgb[1] * 255, d.rgb[2] * 255);
+          })
+          .on('click', function(d){
+            // toggle active
+            d3.select(this)
+              .classed('active', !d3.select(this).classed('active'));
+            updateColors();
+          });
+        // by default select all circles
+        circles
+          .selectAll('circle')
+          .classed('active', true);
+        updateColors();
+
       }
     }
   });
 
 
-  /* global sketch */
-  var width = 300,
-      height = 200;
-  var svg = d3.select('#paintings').append('svg');
-  var circles = svg
-        .append('g');
-
-  svg
-    .attr('width', width)
-    .attr('height', height);
-  var x = d3.scale.linear()
-        .range([0, width])
-        .domain([-0.1, 1.1]).nice();
-
-  var y = d3.scale.linear()
-        .range([height, 0])
-        .domain([-0.1, 1.1]).nice();
 
 
   function updateColors(){
@@ -59,50 +108,9 @@
   }
 
 
-  d3.select('#paintingsclear')
-    .on('click', function(){
-      d3.selectAll('circle.active').classed('active', false);
-      updateColors();
-    });
-
-  d3.select('#paintingsall')
-    .on('click', function(){
-      d3.selectAll('circle').classed('active', true);
-      updateColors();
-    });
 
 
 
-  function selectPalette(palette) {
-    // use palette
-    circles
-      .selectAll('circle')
-      .remove();
-    circles
-      .selectAll('circle')
-      .data(palette)
-      .enter()
-      .append('circle')
-      .attr('cx', function(d){return x(d.x); })
-      .attr('cy', function(d){return y(d.y); })
-      .attr('r', 10)
-      .style('fill', function(d) {
-        return d3.rgb(d.rgb[0] * 255, d.rgb[1] * 255, d.rgb[2] * 255);
-      })
-      .on('click', function(d){
-        // toggle active
-        d3.select(this)
-          .classed('active', !d3.select(this).classed('active'));
-        updateColors();
-      });
-    // by default select all circles
-    circles
-      .selectAll('circle')
-      .classed('active', true);
-    updateColors();
-
-
-  }
 
 
   // select palette if model is loaded

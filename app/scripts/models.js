@@ -39,7 +39,7 @@
         );
         document.dispatchEvent(event);
         // dispatch to parent
-        this.$dispatch('model-selected', model);
+        bus.$emit('model-selected', model);
 
       }
     }
