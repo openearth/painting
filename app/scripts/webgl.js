@@ -6,8 +6,6 @@ $(function() {
   document.addEventListener('model-started', function(modelEvent) {
 
     var model = modelEvent.detail;
-    console.log('model started', model);
-    console.log('looking for webgl context', $('#webgl'));
 
 
     // Create WebGL renderer
@@ -25,8 +23,6 @@ $(function() {
         'transparent': true
       }
     );
-    console.log('created renderer', renderer);
-
     // Create a container with all elements
     var stage = new PIXI.Container();
 
@@ -45,14 +41,12 @@ $(function() {
 
     // Load the video texture
     var video = $('#uv')[0];
-    console.log('video', video);
     // into a texture
     var videoTexture = PIXI.Texture.fromVideo(video);
     var videoSprite = new PIXI.Sprite(videoTexture);
     videoSprite.width = width;
     videoSprite.height = height;
     // Create a render texture
-    console.log('scale', model.scale);
     displacementFilter = new AdvectionFilter(
       videoSprite,
       {
@@ -78,7 +72,6 @@ $(function() {
     container.addChild(drawingSprite);
 
     particles = new Particles(model, drawing, container);
-    console.log('created particles', particles);
 
 
     function animate() {
@@ -135,11 +128,9 @@ $(function() {
     });
 
     $(document).keydown(function(evt) {
-      console.log('processing key', evt.which);
 
       if (evt.which === 80) {
         // p
-        console.log('setting particles to', particles.particles.length + 50);
         // updating particles
         particles.culling(particles.particles.length + 50);
       }

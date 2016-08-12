@@ -94,7 +94,10 @@ function loadModel(map, model) {
   // remove all layers
   while(layers.length) {
     var layer = layers.pop();
-    console.log('removing', layer);
+    // if it is bound to vue, destroy vue object.
+    if (_.has(layer, 'canvas.__vue__')) {
+      layer.canvas.__vue__.$destroy();
+    }
     map.removeLayer(layer);
   }
 
@@ -109,6 +112,11 @@ function loadModel(map, model) {
   );
   layers.push(L.imageOverlay.canvas(bounds, {id: 'webgl'}).addTo(map));
   layers.push(L.imageOverlay.canvas(bounds, {id: 'drawing'}).addTo(map));
+  bus.$emit('model-loaded-in-map', {
+    map: map,
+    model: model,
+    drawingElement: document.getElementById('drawing')
+  });
 }
 
 function lockMap(map) {
@@ -208,7 +216,6 @@ $(function(){
   // Listen for selected models
   document.addEventListener('model-selected', function(evt) {
     var model = evt.detail;
-    console.log('model selected', model);
     loadModel(map, model);
     // layers available
     var event = new CustomEvent(
@@ -223,7 +230,6 @@ $(function(){
     unlockMap(map);
   }
   $('#lockmap').on('switchChange.bootstrapSwitch', function(evt){
-    console.log(evt );
     if ($('#lockmap').is(':checked')) {
       lockMap(map);
     } else {

@@ -1,7 +1,8 @@
+var app;
 (function () {
 
   // Vue application
-  var app = new Vue({
+  app = new Vue({
     el: '#app',
     ready: function() {
     },

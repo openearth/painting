@@ -22,7 +22,6 @@
     },
     methods: {
       select: function(painting){
-        console.log('palette selected');
         bus.$emit('palette-selected', painting.palette);
       }
     }

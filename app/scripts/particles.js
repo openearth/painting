@@ -1,6 +1,5 @@
 function Particles(model, canvas, container) {
   'use strict';
-  console.log('creating particle system');
   this.canvas = canvas;
   this.width = canvas.width;
   this.height = canvas.height;
