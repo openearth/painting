@@ -120,13 +120,6 @@ var sketch;
 
   $(function(){
 
-    // Add the slider
-    var slider = $('#brush-size').slider();
-    slider.on('change', function(evt){
-      sketch.radius = evt.value.newValue;
-    });
-
-
     // Add event handlers to images
     $('#images a.thumbnail').click(
       function(evt){
