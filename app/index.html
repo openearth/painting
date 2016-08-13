@@ -99,6 +99,9 @@
       </div>
 
     </template>
+    <template id="map-container-template">
+      <div id="map" class="sidebar-map"></div>
+    </template>
     <script id="video-template" type="text/x-handlebars-template">
       <video id="uv" autoplay loop width="{{ width }}" height="{{ height }}">
         {{#each uv}}
@@ -154,7 +157,8 @@
           </div>
         </div>
       </div>
-      <div id="map" class="sidebar-map"></div>
+      <map-container v-ref:map-container></map-container>
+
     </div>
 
     <!-- Hidden layers -->
@@ -210,7 +214,7 @@
 
     <!-- custom overlay -->
     <script src="scripts/leaflet-canvas-overlay.js"></script>
-
+    <script src="scripts/toggle-controls.js"></script>
     <!-- main files -->
     <script src="scripts/bus.js"></script>
     <script src="scripts/map.js"></script>
