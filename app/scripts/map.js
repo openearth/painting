@@ -161,6 +161,7 @@
     // remove all layers
     while(layers.length) {
       var layer = layers.pop();
+      console.log('destroying layer', layer);
       // if it is bound to vue, destroy vue object.
       if (_.has(layer, 'canvas.__vue__')) {
         layer.canvas.__vue__.$destroy();
@@ -179,7 +180,7 @@
     );
     layers.push(L.imageOverlay.canvas(bounds, {id: 'webgl'}).addTo(map));
     var drawingLayer = L.imageOverlay.canvas(bounds, {id: 'drawing'}).addTo(map);
-    layers.push();
+    layers.push(drawingLayer);
     bus.$emit('drawing-layer-added', {
       drawingElement: drawingLayer.canvas,
       drawingLayer: drawingLayer,
