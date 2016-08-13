@@ -1,9 +1,16 @@
 (function () {
 
   'use strict';
+  Vue.component('model-details', {
+    template: '#model-details-template',
+    props: ['model'],
+    data: function() {
+      return {};
+    }
+  });
 
-  Vue.component('model-overview', {
-    template: '#model-overview-template',
+  Vue.component('models-overview', {
+    template: '#models-overview-template',
     data: function() {
       return {
         models: []
@@ -18,12 +25,7 @@
         .then((json) => {
           this.models = json.models;
           // select first model
-          document.dispatchEvent(
-            new CustomEvent(
-              'model-selected',
-              {'detail': json.models[0]}
-            )
-          );
+          this.selectModel(this.models[0]);
         })
         .catch(function(ex) {
           console.log('parsing failed', ex);
@@ -39,6 +41,7 @@
         );
         document.dispatchEvent(event);
         // dispatch to parent
+        console.log('selecting model', model);
         bus.$emit('model-selected', model);
 
       }

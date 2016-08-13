@@ -120,12 +120,6 @@ $(function() {
 
 
 
-    slider.on('change', function(evt){
-      var n = evt.value.newValue;
-      particles.culling(n);
-
-
-    });
 
     $(document).keydown(function(evt) {
 

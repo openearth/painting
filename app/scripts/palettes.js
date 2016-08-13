@@ -103,7 +103,9 @@
       var color = d3.rgb(d.rgb[0] * 255, d.rgb[1] * 255, d.rgb[2] * 255);
       colors.push(color);
     });
-    sketch.palette = colors;
+    if (!_.isNil(sketch)) {
+      sketch.palette = colors;
+    }
   }
 
 

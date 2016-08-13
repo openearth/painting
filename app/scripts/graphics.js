@@ -4,13 +4,22 @@ var sketch;
   'use strict';
   /*exported sketch */
 
+  Vue.component('drawing-controls', {
+    // controls to change the drawing
+    template: '#drawing-controls-template',
+    props: ['sketch'],
+    data: function() {
+      return {
+      };
+    }
+  });
 
   var Drawing = Vue.component('drawing-canvas', {
     // overwrite data in object constructor
     data: function() {
       return {
-        model: {},
-        layer: null
+        layer: null,
+        sketch: null
       };
     },
     ready: function(){
@@ -85,7 +94,10 @@ var sketch;
             }
           }
         });
-        this.sketch = sketch;
+        // set on self
+        this.$set('sketch', sketch);
+        // emit so it can be caught by app and synced in properties
+        bus.$emit('sketch-created', sketch);
       }
     }
   });
@@ -97,7 +109,6 @@ var sketch;
     // pass along the global parent here
     var drawing = new Drawing({
       data: {
-        model: obj.model,
         layer: obj.drawingLayer
       },
       el: obj.drawingElement,
@@ -105,6 +116,8 @@ var sketch;
     });
   });
 
+
+  // Code yet to me merged
   function loadVideo(model) {
     var source = $('#video-template').html();
     var template = Handlebars.compile(source);
@@ -118,6 +131,7 @@ var sketch;
     $('#uv-container').html(html);
   }
 
+  // hook up to all thumbnails
   $(function(){
 
     // Add event handlers to images

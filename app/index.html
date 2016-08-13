@@ -28,7 +28,7 @@
     <script src="/bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
 
-    <template id="model-overview-template" >
+    <template id="models-overview-template" >
       <div>
         <div v-for="model in models" class="model" id="{{ model.id }}">
           <h2>{{ model.title }} </h2>
@@ -42,6 +42,13 @@
             </div>
           </div>
         </div>
+      </div>
+    </template>
+    <template id="model-details-template">
+      <div>
+        <pre>
+          {{ model | json }}
+        </pre>
       </div>
     </template>
     <template id="paintings-template">
@@ -63,6 +70,27 @@
           <g></g>
         </svg>
       </div>
+    </template>
+    <template id="drawing-controls-template">
+      <div class="form-group">
+        <label for="cleardrawing">Clear drawing</label>
+        <div>
+          <input  class="checkbox" type="checkbox" id="cleardrawing" checked name="cleardrawing" value="" />
+          <button class="btn btn-default" id="clear3d">reset</button>
+        </div>
+      </div>
+
+
+    </template>
+    <template id="map-controls-template">
+      <div class="form-group">
+        <label for="lockmap">Lock map <small>to draw on touch devices</small></label>
+        <div>
+          <input  class="checkbox" type="checkbox" id="lockmap" checked name="lockmap" value="" />
+        </div>
+
+      </div>
+
     </template>
     <script id="video-template" type="text/x-handlebars-template">
       <video id="uv" autoplay loop width="{{ width }}" height="{{ height }}">
@@ -98,109 +126,24 @@
         <ul class="sidebar-tabs" role="tablist">
           <li><a href="#model-pane" role="tab"><i class="fa fa-bars"></i></a></li>
           <li><a href="#paint-pane" role="tab"><i class="fa fa-paint-brush"></i></a></li>
-          <li><a href="#profile-pane" role="tab"><i class="fa fa-user"></i></a></li>
-          <li><a href="#settings-pane" role="tab"><i class="fa fa-gear"></i></a></li>
         </ul>
 
         <!-- Tab panes -->
         <div class="sidebar-content active">
           <div class="sidebar-pane" id="model-pane">
-
-            <h1 class="">Models</h1>
-            <model-overview></model-overview>
+            <h1>Models</h1>
+            <models-overview></models-overview>
+            <h1>Current model</h1>
+            <model-details :model="model"></model-details>
           </div>
           <div class="sidebar-pane" id="paint-pane">
-
             <h4>Paintings</h4>
             <painting-palettes></painting-palettes>
             <!-- bind palette to app palette -->
             <palette-chart :palette="palette"></palette-chart>
-            <h4>Clear canvas</h4>
-            <p><input  class="checkbox" type="checkbox" id="cleardrawing" checked name="cleardrawing" value="" /><button class="btn btn-default" id="clear3d">reset</button>
-              <h4>Lock map</h4>
-            <p><input  class="checkbox" type="checkbox" id="lockmap" checked name="lockmap" value="" /></p>
-            </p>
-            <h4>Images</h4>
-            <div class="container-fluid" id="images">
-              <div class="row" >
-                <div class="col-xs-3 nopadding">
-                  <a href="#" class="thumbnail" id="static">
-                    <img src="images/static.png" alt="" />
-                  </a>
-                </div>
-                <div class="col-xs-3 nopadding">
-                  <a href="#" class="thumbnail" id="chessboard">
-                    <img src="images/chessboard.png" alt="" />
-                  </a>
-                </div>
-                <div class="col-xs-3 nopadding">
-                  <a href="#" class="thumbnail" id="chessboard">
-                    <img src="images/transparent.png" alt="" />
-                  </a>
-                </div>
-                <div class="col-xs-3 nopadding">
-                  <a href="#" class="thumbnail" id="monolisa">
-                    <img src="images/monolisa.jpg" alt="" />
-                  </a>
-                </div>
-              </div>
-              <div class="row" >
-                <div class="col-xs-3 nopadding">
-                  <a href="#" class="thumbnail" id="blackdots">
-                    <img src="images/blackdots.png" alt="" />
-                  </a>
-                </div>
-                <div class="col-xs-3 nopadding">
-                  <a href="#" class="thumbnail" id="whitedots">
-                    <img src="images/whitedots.png" alt="" />
-                  </a>
-                </div>
-                <div class="col-xs-3 nopadding">
-                  <a href="#" class="thumbnail" id="grid">
-                    <img src="images/grid.png" alt="" />
-                  </a>
-                </div>
-                <div class="col-xs-3 nopadding">
-                  <a href="#" class="thumbnail" id="gridsmall">
-                    <img src="images/gridsmall.png" alt="" />
-                  </a>
-                </div>
-              </div>
-              <div class="row" >
-                <div class="col-xs-3 nopadding">
-                  <a href="#" class="thumbnail" id="zebra">
-                    <img src="images/zebra.png" alt="" />
-                  </a>
-                </div>
-                <div class="col-xs-3 nopadding">
-                  <a href="#" class="thumbnail" id="white">
-                    <img src="images/white.png" alt="" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="sidebar-pane" id="profile-pane">
-            <p>
-              Created by Fedor Baart.
-            </p>
-          </div>
-          <div class="sidebar-pane" id="settings-pane">
-            <div id="particles" class="row">
-              <div class="col-xs-2 text-right">
-
-                <i class="fa fa-circle-o fa-lg"></i>
-              </div>
-              <div class="col-xs-8">
-                <input
-                   id="n-particles"
-                   type="text"
-                   class="slider"
-                   data-slider-ticks="[0, 3000]"
-                   data-slider-ticks-snap-bounds="10"
-                   />
-              </div>
-            </div>
+            <h4>Controls for drawing and map</h4>
+            <drawing-controls :sketch="sketch"></drawing-controls>
+            <map-controls v-ref:map-controls :map="map" ></map-controls>
           </div>
         </div>
       </div>
