@@ -45,7 +45,7 @@
       </div>
     </template>
     <template id="model-details-template">
-      <div>
+      <div v-if="model">
         <h2>{{ model.title }} <small>{{ model.engine }}</small></h2>
         <dl>
           <dt>Abstract</dt>
@@ -207,6 +207,10 @@
     <!-- build:js scripts/main.js -->
     <!-- custom version of sketch -->
     <script src="scripts-external/sketch.js"></script>
+
+    <!-- custom overlay -->
+    <script src="scripts/leaflet-canvas-overlay.js"></script>
+
     <!-- main files -->
     <script src="scripts/bus.js"></script>
     <script src="scripts/map.js"></script>
