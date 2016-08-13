@@ -20,6 +20,8 @@ var app;
 
   bus.$on('model-selected', function(model){
     app.$set('model', model);
+    // load model in map
+    app.$refs.mapContainer.loadModel(model);
   });
   bus.$on('palette-selected', function(palette){
     app.$set('palette', palette);

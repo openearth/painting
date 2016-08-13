@@ -12,7 +12,7 @@
       };
     },
     watch: {
-      locked: 'locked'
+      locked: 'lockedChanged'
     },
     ready: function() {
 
@@ -25,7 +25,7 @@
       });
     },
     methods: {
-      locked: function(oldVal, newVal) {
+      lockedChanged: function(oldVal, newVal) {
         if (newVal) {
           this.lockMap();
         } else {
@@ -68,113 +68,112 @@
     }
   });
 
-  var layers = [];
 
 
-
-
-  function loadModel(map, model) {
-    'use strict';
-    // remove all layers
-    while(layers.length) {
-      var layer = layers.pop();
-      console.log('destroying layer', layer);
-      // if it is bound to vue, destroy vue object.
-      if (_.has(layer, 'canvas.__vue__')) {
-        layer.canvas.__vue__.$destroy();
-      }
-      map.removeLayer(layer);
-    }
-
-    var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
-        ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
-    var bounds = L.latLngBounds(sw, ne);
-    map.fitBounds(
-      bounds,
-      {
-        animate: true
-      }
-    );
-    layers.push(L.imageOverlay.canvas(bounds, {id: 'webgl'}).addTo(map));
-    var drawingLayer = L.imageOverlay.canvas(bounds, {id: 'drawing'}).addTo(map);
-    layers.push(drawingLayer);
-    bus.$emit('drawing-layer-added', {
-      drawingElement: drawingLayer.canvas,
-      drawingLayer: drawingLayer,
-      model: model,
-      map: map
-    });
-  }
-
-
-
-  var ToggleControl = L.Control.extend({
-    options: {
-      position: 'topright'
+  Vue.component('map-container', {
+    // overwrite data in object constructor
+    template: '#map-container-template',
+    data: function() {
+      return {
+        layers: [],
+        map: null
+      };
     },
+    ready: function(){
+      this.createMap();
+    },
+    methods: {
+      createMap: function() {
+        L.mapbox.accessToken = 'pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA';
+        var map = L.mapbox.map('map', 'siggyf.c74e2e04');
 
-    onAdd: function (map) {
-      'use strict';
-      // create the control container with a particular class name
-      var container = L.DomUtil.create('div', 'my-custom-control leaflet-control leaflet-bar');
+        // add the sidebar
+        L.control.sidebar('sidebar').addTo(map);
 
-      var toggleDraw = $('<a id="drawtoggle"></a>');
-      toggleDraw.append($('<span class="fa-stack"><i class="fa fa-paint-brush fa-stack-1x"></i><i id="drawingban" class="hide fa fa-ban fa-stack-2x"></i></span>'));
-      toggleDraw.on('click', function(){
-        sketch.painting = !sketch.painting;
-        if (sketch.painting) {
-          $('#drawing').addClass('crosshair');
-          $('#drawingban').addClass('hide');
+        var ToggleControl = L.Control.extend({
+          options: {
+            position: 'topright'
+          },
+
+          onAdd: function (map) {
+            'use strict';
+            // create the control container with a particular class name
+            var container = L.DomUtil.create('div', 'my-custom-control leaflet-control leaflet-bar');
+
+            var toggleDraw = $('<a id="drawtoggle"></a>');
+            toggleDraw.append($('<span class="fa-stack"><i class="fa fa-paint-brush fa-stack-1x"></i><i id="drawingban" class="hide fa fa-ban fa-stack-2x"></i></span>'));
+            toggleDraw.on('click', function(){
+              sketch.painting = !sketch.painting;
+              if (sketch.painting) {
+                $('#drawing').addClass('crosshair');
+                $('#drawingban').addClass('hide');
+              }
+              else {
+                $('#drawing').removeClass('crosshair');
+                $('#drawingban').removeClass('hide');
+              }
+
+            });
+            $(container).append(toggleDraw);
+
+            var toggleMap = $('<a id="maptoggle"></a>');
+            toggleMap.append($('<span class="fa-stack"><i class="fa fa-map-o fa-stack-1x"></i><i id="mapban" class="fa hide fa-ban fa-stack-2x"></i></span>'));
+            toggleMap.on('click', function(){
+              app.$refs.mapControls.locked = !app.$refs.mapControls.locked;
+            });
+            $(container).append(toggleMap);
+
+
+
+
+            return container;
+          }
+        });
+        var drawToggle = new ToggleControl({});
+        drawToggle.addTo(map);
+        this.$set('map', map);
+        bus.$emit('map-created', this.map);
+      },
+      loadModel: function(model) {
+        var layers = this.layers;
+        var map = this.map;
+        // remove all layers
+        while(layers.length) {
+          var layer = layers.pop();
+          console.log('destroying layer', layer);
+          // if it is bound to vue, destroy vue object.
+          if (_.has(layer, 'canvas.__vue__')) {
+            layer.canvas.__vue__.$destroy();
+          }
+          map.removeLayer(layer);
         }
-        else {
-          $('#drawing').removeClass('crosshair');
-          $('#drawingban').removeClass('hide');
-        }
 
-      });
-      $(container).append(toggleDraw);
-
-      var toggleMap = $('<a id="maptoggle"></a>');
-      toggleMap.append($('<span class="fa-stack"><i class="fa fa-map-o fa-stack-1x"></i><i id="mapban" class="fa hide fa-ban fa-stack-2x"></i></span>'));
-      toggleMap.on('click', function(){
-        app.$refs.mapControls.locked = !app.$refs.mapControls.locked;
-      });
-      $(container).append(toggleMap);
-
-
-
-
-      return container;
+        var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
+            ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
+        var bounds = L.latLngBounds(sw, ne);
+        map.fitBounds(
+          bounds,
+          {
+            animate: true
+          }
+        );
+        layers.push(L.imageOverlay.canvas(bounds, {id: 'webgl'}).addTo(map));
+        var drawingLayer = L.imageOverlay.canvas(bounds, {id: 'drawing'}).addTo(map);
+        layers.push(drawingLayer);
+        bus.$emit('drawing-layer-added', {
+          drawingElement: drawingLayer.canvas,
+          drawingLayer: drawingLayer,
+          model: model,
+          map: map
+        });
+        var event = new CustomEvent(
+          'model-layers',
+          {'detail': model}
+        );
+        document.dispatchEvent(event);
+      }
     }
   });
 
-
-  $(function(){
-    'use strict';
-    L.mapbox.accessToken = 'pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA';
-    var map = L.mapbox.map('map', 'siggyf.c74e2e04');
-
-    // add the sidebar
-    L.control.sidebar('sidebar').addTo(map);
-
-    var drawToggle = new ToggleControl({});
-    drawToggle.addTo(map);
-
-    bus.$emit('map-created', map);
-
-    // Listen for selected models
-    document.addEventListener('model-selected', function(evt) {
-      var model = evt.detail;
-      loadModel(map, model);
-      // layers available
-      var event = new CustomEvent(
-        'model-layers',
-        {'detail': model}
-      );
-      document.dispatchEvent(event);
-    });
-
-
-  });
 
 }());

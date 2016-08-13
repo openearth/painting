@@ -41,7 +41,6 @@
         );
         document.dispatchEvent(event);
         // dispatch to parent
-        console.log('selecting model', model);
         bus.$emit('model-selected', model);
 
       }
