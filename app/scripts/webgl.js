@@ -11,9 +11,14 @@ $(function() {
     data: function() {
       return {
         model: null,
+        modelElement: null,
+        drawingElement: null,
         renderTextureFrom: null,
         renderTextureTo: null
       };
+    },
+    ready: function() {
+      this.createContext();
     },
     methods: {
       clear3d: function () {
@@ -47,7 +52,7 @@ $(function() {
 
 
         // load the drawing texture
-        var drawing = $('#drawing')[0];
+        var drawing = this.drawingElement;
         var drawingContext = drawing.getContext('2d');
         var drawingTexture = PIXI.Texture.fromCanvas(drawing);
         var drawingSprite = new PIXI.Sprite(drawingTexture);
@@ -127,7 +132,6 @@ $(function() {
         // user interface interactions
         $('#clear3d').click(this.clear3d);
 
-        var slider = $('#n-particles').slider();
 
 
 
@@ -157,6 +161,8 @@ $(function() {
     var modelCanvas = new ModelCanvas({
       data: {
         layer: obj.modelLayer,
+        modelElement: obj.modelElement,
+        drawingElement: obj.drawingElement,
         model: obj.model
       },
       el: obj.modelElement,

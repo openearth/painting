@@ -159,13 +159,14 @@
         );
         var modelLayer = L.imageOverlay.canvas(bounds, {id: 'webgl'}).addTo(map);
         layers.push(modelLayer);
+        var drawingLayer = L.imageOverlay.canvas(bounds, {id: 'drawing'}).addTo(map);
+        layers.push(drawingLayer);
         bus.$emit('model-layer-added', {
+          drawingElement: drawingLayer.canvas,
           modelElement: modelLayer.canvas,
           modelLayer: modelLayer,
           model: model
         });
-        var drawingLayer = L.imageOverlay.canvas(bounds, {id: 'drawing'}).addTo(map);
-        layers.push(drawingLayer);
         bus.$emit('drawing-layer-added', {
           drawingElement: drawingLayer.canvas,
           drawingLayer: drawingLayer,
