@@ -26,6 +26,9 @@ var app;
   bus.$on('palette-selected', function(palette){
     app.$set('palette', palette);
   });
+  bus.$on('model-layer-added', function(obj){
+    console.log('model layer added', obj);
+  });
   bus.$on('sketch-created', function(sketch){
     app.$set('sketch', sketch);
   });

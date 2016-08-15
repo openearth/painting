@@ -45,7 +45,8 @@
       </div>
     </template>
     <template id="model-details-template">
-      <div v-if="model">
+      <div>
+        <div v-if="model">
         <h2>{{ model.title }} <small>{{ model.engine }}</small></h2>
         <dl>
           <dt>Abstract</dt>
@@ -56,7 +57,12 @@
           <dd>{{ model.width * model.height }} ({{model.width}} x {{ model.height}})</dd>
         </dl>
 
+        </div>
+        <div v-else>
+          no model loaded
+        </div>
       </div>
+
     </template>
     <template id="paintings-template">
       <div class="container-fluid">
@@ -214,7 +220,6 @@
 
     <!-- custom overlay -->
     <script src="scripts/leaflet-canvas-overlay.js"></script>
-    <script src="scripts/toggle-controls.js"></script>
     <!-- main files -->
     <script src="scripts/bus.js"></script>
     <script src="scripts/map.js"></script>
