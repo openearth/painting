@@ -2,17 +2,22 @@
 var displacementFilter;
 var particles;
 
+(function () {
+
+
   Vue.component('uv-source', {
     template: '#uv-source-template',
     props: ['uv'],
     ready: function() {
+    },
+    methods: {
+      loadModel: function() {
+        console.log('vidoe loaded');
+      }
     }
   });
 
 
-
-$(function() {
-  'use strict';
 
   var ModelCanvas = Vue.component('model-canvas', {
     data: function() {
@@ -20,6 +25,7 @@ $(function() {
         model: null,
         modelElement: null,
         drawingElement: null,
+        uvElement: null,
         renderTextureFrom: null,
         renderTextureTo: null
       };
@@ -65,11 +71,8 @@ $(function() {
         var drawingSprite = new PIXI.Sprite(drawingTexture);
         // drawings go in the container
 
-        if (_.isNil($('#uv')[0])) {
-          return;
-        }
         // Load the video texture
-        var video = $('#uv')[0];
+        var video = this.uvElement;
         // into a texture
         var videoTexture = PIXI.Texture.fromVideo(video);
         var videoSprite = new PIXI.Sprite(videoTexture);
@@ -184,4 +187,5 @@ $(function() {
 
 
   });
-});
+
+}());
