@@ -117,20 +117,6 @@ var sketch;
   });
 
 
-  // Code yet to me merged
-  function loadVideo(model) {
-    var source = $('#video-template').html();
-    var template = Handlebars.compile(source);
-    var html = template(model);
-    $('#uv-container').html(html);
-  }
-  function loadImage(model) {
-    var source = $('#image-template').html();
-    var template = Handlebars.compile(source);
-    var html = template(model);
-    $('#uv-container').html(html);
-  }
-
   // hook up to all thumbnails
   $(function(){
 
@@ -151,22 +137,6 @@ var sketch;
       }
     );
 
-    // Listen for loaded models
-    document.addEventListener('model-layers', function(evt){
-      var model = evt.detail;
-      if (_.startsWith(_.first(model.uv).type, 'image') ) {
-        loadImage(model);
-      } else {
-        loadVideo(model);
-      }
-      // Add model to drawing layer
-      var event = new CustomEvent(
-        'model-loaded',
-        {'detail': model}
-      );
-      document.dispatchEvent(event);
-
-    });
 
 
   });

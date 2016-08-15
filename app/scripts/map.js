@@ -72,7 +72,7 @@
 
   Vue.component('map-container', {
     // overwrite data in object constructor
-    template: '#map-container-template',
+    template: '<div id="map" class="sidebar-map"></div>',
     data: function() {
       return {
         layers: [],

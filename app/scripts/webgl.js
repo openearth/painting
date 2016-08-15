@@ -2,6 +2,13 @@
 var displacementFilter;
 var particles;
 
+  Vue.component('uv-source', {
+    template: '#uv-source-template',
+    props: ['uv'],
+    ready: function() {
+    }
+  });
+
 
 
 $(function() {
@@ -58,7 +65,9 @@ $(function() {
         var drawingSprite = new PIXI.Sprite(drawingTexture);
         // drawings go in the container
 
-
+        if (_.isNil($('#uv')[0])) {
+          return;
+        }
         // Load the video texture
         var video = $('#uv')[0];
         // into a texture
@@ -163,6 +172,7 @@ $(function() {
         layer: obj.modelLayer,
         modelElement: obj.modelElement,
         drawingElement: obj.drawingElement,
+        uvElement: obj.uvElement,
         model: obj.model
       },
       el: obj.modelElement,

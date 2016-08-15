@@ -47,15 +47,15 @@
     <template id="model-details-template">
       <div>
         <div v-if="model">
-        <h2>{{ model.title }} <small>{{ model.engine }}</small></h2>
-        <dl>
-          <dt>Abstract</dt>
-          <dd>{{ model.abstract }}</dd>
-        </dl>
-        <dl>
-          <dt>Number of advection cells</dt>
-          <dd>{{ model.width * model.height }} ({{model.width}} x {{ model.height}})</dd>
-        </dl>
+          <h2>{{ model.title }} <small>{{ model.engine }}</small></h2>
+          <dl>
+            <dt>Abstract</dt>
+            <dd>{{ model.abstract }}</dd>
+          </dl>
+          <dl>
+            <dt>Number of advection cells</dt>
+            <dd>{{ model.width * model.height }} ({{model.width}} x {{ model.height}})</dd>
+          </dl>
 
         </div>
         <div v-else>
@@ -105,28 +105,28 @@
       </div>
 
     </template>
-    <template id="map-container-template">
-      <div id="map" class="sidebar-map"></div>
+    <template id="uv-source-template">
+
+      <div id="uv-container">
+        <video v-if="uv.tag == 'video'"
+               id="uv" autoplay loop
+               width="{{ width }}"
+               height="{{ height }}">
+          <source v-for="source in uv.sources"
+                  :src="source.src"
+                  type="{{ source.type }}"></source>
+        </video>
+        <!-- 2d canvas to capture pixels from uv map -->
+        <img v-if="uv.tag == 'img'"
+             id="uv"
+             autoplay loop
+             width="{{ width }}"
+             height="{{ height }}"
+             :src="uv.src"
+             />
+        <canvas id="uvhidden" width="{{ uv.width }}" height="{{ uv.height }}"></canvas>
+      </div>
     </template>
-    <script id="video-template" type="text/x-handlebars-template">
-      <video id="uv" autoplay loop width="{{ width }}" height="{{ height }}">
-        {{#each uv}}
-        <source src="{{ src }}" type="{{ type }}"></source>
-        {{/each}}
-      </video>
-      <!-- 2d canvas to capture pixels from uv map -->
-      <canvas id="uvhidden" width="{{ width }}" height="{{ height }}"></canvas>
-    </script>
-    <script id="image-template" type="text/x-handlebars-template">
-      <img id="uv" autoplay loop width="{{ width }}" height="{{ height }}"
-           {{#each uv}}
-           src="{{ src }}"
-           {{/each}}
-           />
-      <canvas id="uvhidden" width="{{ width }}" height="{{ height }}"></canvas>
-    </script>
-
-
   </head>
   <body>
     <!--[if lt IE 10]>
@@ -164,17 +164,16 @@
         </div>
       </div>
       <map-container v-ref:map-container></map-container>
+      <!-- Hidden layers -->
+      <div class="layer">
+        <uv-source :uv="model.uv" v-if="model"></uv-source>
+        <div>
+          <canvas id="canvas-icon" width="10" height="10"></canvas>
+        </div>
+      </div>
 
     </div>
 
-    <!-- Hidden layers -->
-    <div class="hidden layer">
-      <div id="uv-container">
-      </div>
-      <div>
-        <canvas id="canvas-icon" width="10" height="10"></canvas>
-      </div>
-    </div>
 
 
     <!-- build:js scripts/vendor.js -->
