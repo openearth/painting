@@ -7,13 +7,10 @@ var particles;
 
   Vue.component('uv-source', {
     template: '#uv-source-template',
-    props: ['uv'],
+    props: ['model'],
     ready: function() {
     },
     methods: {
-      loadModel: function() {
-        console.log('vidoe loaded');
-      }
     }
   });
 
@@ -25,7 +22,6 @@ var particles;
         model: null,
         modelElement: null,
         drawingElement: null,
-        uvElement: null,
         renderTextureFrom: null,
         renderTextureTo: null
       };
@@ -39,6 +35,7 @@ var particles;
         this.renderTextureFrom.clear();
       },
       createContext: function() {
+        console.log('creating new canvas context');
         var model = this.model;
 
         // Create WebGL renderer
@@ -72,7 +69,7 @@ var particles;
         // drawings go in the container
 
         // Load the video texture
-        var video = this.uvElement;
+        var video = document.getElementById('uv');
         // into a texture
         var videoTexture = PIXI.Texture.fromVideo(video);
         var videoSprite = new PIXI.Sprite(videoTexture);
@@ -175,17 +172,13 @@ var particles;
         layer: obj.modelLayer,
         modelElement: obj.modelElement,
         drawingElement: obj.drawingElement,
-        uvElement: obj.uvElement,
         model: obj.model
       },
       el: obj.modelElement,
       parent: app
     });
-  });
-
-  document.addEventListener('model-started', function(modelEvent) {
-
 
   });
+
 
 }());
