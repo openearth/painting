@@ -103,7 +103,7 @@ Particles.prototype.step = function () {
   uvctx.drawImage(uv, 0, 0, width, height);
   var frame = uvctx.getImageData(0, 0, width, height);
 
-  _.each(this.particles, function(particle){
+  _.each(this.particles, (particle) => {
     var idx = (
       Math.round(height - particle.position.y) * width +
         Math.round(particle.position.x)

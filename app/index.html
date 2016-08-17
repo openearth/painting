@@ -111,10 +111,9 @@
           <video v-if="model.uv.tag == 'video'"
                  id="uv" autoplay loop
                  width="{{ model.width }}"
-                 height="{{ model.height }}">
-            <source v-for="source in model.uv.sources"
-                    :src="source.src"
-                    type="{{ source.type }}"></source>
+                 height="{{ model.height }}"
+                 :src="model.uv.src"
+                 >
           </video>
           <!-- 2d canvas to capture pixels from uv map -->
           <img v-if="model.uv.tag == 'img'"

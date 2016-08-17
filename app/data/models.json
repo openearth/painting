@@ -6,10 +6,8 @@
       "id": "E719CD9A-339A-11E5-BA2D-4963B6C90E9A",
       "engine": "delft3d flow",
       "uv": {
-        "sources": [
-          {"src": "models/movies/wadden.mp4", "type": "video/mp4"},
-          {"src": "models/movies/wadden.webm", "type": "video/webm"}
-        ],
+        "src": "models/movies/wadden.webm",
+        "type": "video/webm",
         "tag": "video",
         "width": 1024,
         "height": 1024
@@ -30,9 +28,8 @@
       "id": "51139bae-a380-11e5-b02f-3c15c2d29372",
       "engine": "delft3d flow",
       "uv": {
-        "sources": [
-          {"src": "models/movies/ameland.mp4", "type": "video/mp4"}
-        ],
+        "src": "models/movies/ameland.mp4",
+        "type": "video/mp4",
         "tag": "video",
         "width": 1024,
         "height": 1024
@@ -54,10 +51,8 @@
       "id": "F24A0CB6-339A-11E5-98F4-4963B6C90E9A",
       "engine": "delft3d flexible mesh",
       "uv": {
-        "sources": [
-          {"src": "models/movies/im2.webm", "type": "video/webm"},
-          {"src": "models/movies/im2.mp4", "type": "video/mp4"}
-        ],
+        "src": "models/movies/im2.webm",
+        "type": "video/webm",
         "tag": "video"
       },
       "extent": {
@@ -76,10 +71,8 @@
       "id": "b2a7146a-6a8a-11e5-905d-3c15c2d29372",
       "engine": "HIRLAM",
       "uv": {
-        "sources": [
-          {"src": "models/movies/knmi.webm", "type": "video/webm"},
-          {"src": "models/movies/knmi.mp4", "type": "video/mp4"}
-        ],
+        "src": "models/movies/knmi.webm",
+        "type": "video/webm",
         "tag": "video"
       },
       "extent": {
@@ -98,10 +91,8 @@
       "engine": "hycom",
       "id": "15bb1006-8c50-11e5-a43d-3c15c2d29372",
       "uv": {
-        "sources": [
-          {"src": "models/movies/mh370.webm", "type": "video/webm"},
-          {"src": "models/movies/mh370.mp4", "type": "video/mp4"}
-        ],
+        "src": "models/movies/mh370.webm",
+        "type": "video/webm",
         "tag": "video",
         "width": 1024,
         "height": 1024
