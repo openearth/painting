@@ -160,14 +160,14 @@
             <palette-chart :palette="palette"></palette-chart>
             <h4>Controls for drawing and map</h4>
             <drawing-controls :sketch="sketch"></drawing-controls>
-            <map-controls v-ref:map-controls :map="map" ></map-controls>
+            <map-controls v-ref:map-controls :map="map"></map-controls>
           </div>
         </div>
       </div>
-      <map-container v-ref:map-container></map-container>
+      <map-container v-ref:map-container :model="model"></map-container>
       <!-- Hidden layers -->
       <div class="hidden layer">
-        <uv-source :model="model"></uv-source>
+        <uv-source :model="model" v-ref:uv-source></uv-source>
         <div>
           <canvas id="canvas-icon" width="10" height="10"></canvas>
         </div>

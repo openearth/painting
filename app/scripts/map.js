@@ -73,6 +73,7 @@
   Vue.component('map-container', {
     // overwrite data in object constructor
     template: '<div id="map" class="sidebar-map"></div>',
+    props: ['model'],
     data: function() {
       return {
         layers: [],
@@ -134,9 +135,10 @@
         this.$set('map', map);
         bus.$emit('map-created', this.map);
       },
-      loadModel: function(model) {
+      loadModel: function() {
         var layers = this.layers;
         var map = this.map;
+        var model = this.model;
         // remove all layers
         while(layers.length) {
           var layer = layers.pop();

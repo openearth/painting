@@ -8,9 +8,38 @@ var particles;
   Vue.component('uv-source', {
     template: '#uv-source-template',
     props: ['model'],
+    data: function() {
+      return {
+        loaded: false
+      };
+    },
+    watch: {
+      'model': 'modelUpdate'
+    },
     ready: function() {
+      // find the first video in this container
     },
     methods: {
+      modelUpdate: function(){
+        this.loaded = false;
+        // model was updated
+        // wait for the dom to be updated
+        this.$nextTick(() => {
+          console.log('watching video for load');
+          if (!(this.model.uv.tag === 'video')) {
+            // no video available
+            console.log('no video model', this.model.uv);
+            return;
+          }
+          var video = $(this.$el).find('video').first();
+          video[0].currentTime = video[0].currentTime;
+          video.bind('loadeddata', () => {
+            console.log('video loaded');
+            this.loaded = true;
+          });
+
+        });
+      }
     }
   });
 
