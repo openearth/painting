@@ -1,4 +1,4 @@
-# painting
+# Painting
 Painting in numerical models
 
 
