@@ -14,44 +14,65 @@
 'use strict';
 
 var fragmentSource = [
-  'precision mediump float;',
-  'varying vec2 vMapCoord;',
-  'varying vec2 vTextureCoord;',
-  'varying vec4 vColor;',
-  'uniform vec2 scale;',
-  'uniform bool flipv;',
-  'uniform bool upwind;',
-  'uniform sampler2D uSampler;',
-  'uniform sampler2D mapSampler;',
-  'void main(void)',
-  '{',
-  // lookup in 0-1 space
-  'vec4 map =  texture2D(mapSampler, vMapCoord);',
-  'float extrascale = 1.0;',
-  'map -= 0.5;',
-  'map.xy *= (scale * extrascale);',
-  'if (flipv) {',
-  'map.y = - map.y;',
-  '}',
-  'vec2 lookup = vec2(vTextureCoord.x - map.x, vTextureCoord.y - map.y);',
-  'if (upwind) {',
-  ' vec4 vUpwind = texture2D(mapSampler, vec2(vMapCoord.x - map.x, vMapCoord.y - map.y ));',
-  ' vUpwind -= 0.5;',
-  ' if (flipv) {',
-  '  vUpwind.y = - vUpwind.y;',
-  ' }',
-  ' vUpwind.xy *= scale *extrascale;',
-  ' /* overwrite lookup with upwind */',
-  ' lookup = vec2(vTextureCoord.x - 0.5*(map.x + vUpwind.x), vTextureCoord.y - 0.5* (map.y + vUpwind.y));',
-  '}',
-  '/* stop rendering if masked */',
-  'gl_FragColor = texture2D(uSampler, lookup);',
-  'if (map.z > 0.0) {',
-  'gl_FragColor *= 0.0;',
-  '}',
-  '}'
+    'precision mediump float;',
+    'varying vec2 vMapCoord;',
+    'varying vec2 vTextureCoord;',
+    'uniform vec2 scale;',
+    'uniform bool flipv;',
+    'uniform sampler2D uSampler;',
+    'uniform sampler2D mapSampler;',
+    'void main(void)',
+    '{',
+    '  // lookup in 0-1 space',
+    '  vec2 onePixel = vec2(1.0, 1.0) * scale;',
+    
+    '  // locations',
+    '  vec2 me = vTextureCoord;',
+    '  vec2 top = vec2(vTextureCoord.x, vTextureCoord.y - onePixel.y);',
+    '  vec2 bottom = vec2(vTextureCoord.x, vTextureCoord.y + onePixel.y);',
+    '  vec2 left = vec2(vTextureCoord.x - onePixel.x, vTextureCoord.y);',
+    '  vec2 right = vec2(vTextureCoord.x + onePixel.x, vTextureCoord.y);',
+
+    '  // colors',
+    '  vec4 cMe = texture2D(uSampler, me);',
+    '  vec4 cTop = texture2D(uSampler, top);',
+    '  vec4 cBottom = texture2D(uSampler, bottom);',
+    '  vec4 cLeft = texture2D(uSampler, left);',
+    '  vec4 cRight = texture2D(uSampler, right);',
+
+    '  // velocities',
+    '  float extrascale = 1.0;',
+    '  float fade = 1.0;',
+    '  float uMe_x = abs(texture2D(mapSampler, me).x - 0.5) * 2.0 * extrascale * fade;',
+    '  float uMe_y = abs(texture2D(mapSampler, me).y - 0.5) * 2.0 * extrascale * fade;',
+    '  float uTop = (texture2D(mapSampler, top).y - 0.5) * 2.0 * extrascale;',
+    '  float uBottom = (texture2D(mapSampler, bottom).y - 0.5) * 2.0 * extrascale;',
+    '  float uLeft = (texture2D(mapSampler, left).x - 0.5) * 2.0 * extrascale;',
+    '  float uRight = (texture2D(mapSampler, right).x - 0.5) * 2.0 * extrascale;',
+
+    '  if (flipv) {',
+    '    uTop = -uTop;',
+    '    uBottom = -uBottom;',
+    '  }',
+
+    '  // new color',
+    '  vec4 colorSum = ',
+    '    cMe ',
+    '    - cMe * uMe_x ',
+    '    - cMe * uMe_y ',
+    '    + cTop * max(0.0, uTop) ',
+    '    - cBottom * min(0.0, uBottom) ',
+    '    + cLeft * max(0.0, uLeft) ',
+    '    - cRight * min(0.0, uRight) ',
+    '  ;',
+
+    '  // mask',
+    '  gl_FragColor = colorSum;',
+    '  if (cMe.z > 0.0) {',
+    '    gl_FragColor *= 0.0;',
+    '  }',
+    '}',
 ].join('\n');
-console.log(fragmentSource);
 
 function AdvectionFilter(sprite, settings)
 {
@@ -80,7 +101,7 @@ function AdvectionFilter(sprite, settings)
       '}'
     ].join('\n'),
     fragmentSource,
-
+      
     // uniforms
     {
       mapSampler: { type: 'sampler2D', value: sprite.texture },
