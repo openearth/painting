@@ -73,11 +73,10 @@
   Vue.component('map-container', {
     // overwrite data in object constructor
     template: '<div id="map" class="sidebar-map"></div>',
-    props: ['model'],
+    props: ['model', 'map'],
     data: function() {
       return {
-        layers: [],
-        map: null
+        layers: []
       };
     },
     ready: function(){
@@ -133,7 +132,6 @@
         var drawToggle = new ToggleControl({});
         drawToggle.addTo(map);
         this.$set('map', map);
-        bus.$emit('map-created', this.map);
       },
       loadModel: function() {
         var layers = this.layers;

@@ -11,6 +11,7 @@ var app;
         settings: {
         },
         palette: [],
+        pipeline: {},
         model: null,
         map: null,
         sketch: null
@@ -37,8 +38,8 @@ var app;
   bus.$on('sketch-created', function(sketch){
     app.$set('sketch', sketch);
   });
-  bus.$on('map-created', function(map){
-    app.$set('map', map);
+  bus.$on('pipeline-created', function(pipeline){
+    app.$set('pipeline', pipeline);
   });
 
   Vue.config.debug = true;

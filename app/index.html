@@ -123,10 +123,17 @@
                height="{{ model.height }}"
                :src="model.uv.src"
                />
-          <canvas id="uvhidden" width="{{ model.uv.width }}" height="{{ model.uv.height }}"></canvas>
         </div>
       </div>
 
+    </template>
+    <template id="particle-component-template">
+      <div class="hidden layer">
+        <div v-if="model">
+          <canvas id="uvhidden" width="{{ model.uv.width }}" height="{{ model.uv.height }}"></canvas>
+        </div>
+
+      </div>
     </template>
   </head>
   <body>
@@ -160,11 +167,21 @@
             <palette-chart :palette="palette"></palette-chart>
             <h4>Controls for drawing and map</h4>
             <drawing-controls :sketch="sketch"></drawing-controls>
-            <map-controls v-ref:map-controls :map="map"></map-controls>
+            <map-controls v-ref:map-controls :map="map" ></map-controls>
           </div>
         </div>
       </div>
-      <map-container v-ref:map-container :model="model"></map-container>
+      <!-- This is the main map object, if it changes sync up -->
+      <map-container
+         v-ref:map-container
+         :map.sync="map"
+         :model="model">
+      </map-container>
+      <particle-component
+         v-ref:particle-component
+         :sketch="sketch"
+         :pipeline="pipeline"
+         :model="model"></particle-component>
       <!-- Hidden layers -->
       <div class="hidden layer">
         <uv-source :model="model" v-ref:uv-source></uv-source>

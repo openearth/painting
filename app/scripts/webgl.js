@@ -52,7 +52,8 @@ var particles;
         modelElement: null,
         drawingElement: null,
         renderTextureFrom: null,
-        renderTextureTo: null
+        renderTextureTo: null,
+        pipeline: null
       };
     },
     ready: function() {
@@ -129,9 +130,10 @@ var particles;
         container.addChild(renderSpriteFrom);
         container.addChild(drawingSprite);
 
-        particles = new Particles(model, drawing, container);
-
-
+        // render pipeline is setup, expose
+        this.pipeline = container;
+        bus.$emit('pipeline-created', container);
+        // define animation function.
         function animate () {
           // request next animation frame
           requestAnimationFrame(animate);
@@ -158,28 +160,33 @@ var particles;
           renderTextureTo = temp;
           renderTextureTo.clear();
 
-          particles.step();
-          if (particles.particles.length > 500) {
-            renderTextureFrom.clear();
+          if (!_.isNil(model.particles)) {
+            model.particles.step();
+            if (model.particles.particles.length > 500) {
+              renderTextureFrom.clear();
+            }
           }
 
         }
         animate();
 
 
+        // TODO: move these out of here
         // user interface interactions
         $('#clear3d').click(this.clear3d);
 
-
-
-
-
-        $(document).keydown(function(evt) {
-
+        $(document).keydown((evt) => {
+          if (_.isNil(this.model)) {
+            console.warn('no model in keydown', this.model);
+            return;
+          }
           if (evt.which === 80) {
             // p
             // updating particles
-            particles.culling(particles.particles.length + 50);
+            if (!_.isNil(this.model.particles)) {
+              particles = this.model.particles;
+              particles.culling(particles.particles.length + 50);
+            }
           }
           if (evt.which === 67) {
             // clearing screen
@@ -206,6 +213,8 @@ var particles;
       el: obj.modelElement,
       parent: app
     });
+    console.log('modelCanvas', modelCanvas);
+
 
   });
 
