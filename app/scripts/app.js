@@ -8,14 +8,14 @@ var app;
   function urlParams () {
     // parse url parameters, adapted from http://stackoverflow.com/a/2880929/386327
     var match,
-        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        pl = /\+/g,  // Regex for replacing addition symbol with a space
         search = /([^&=]+)=?([^&]*)/g,
         decode = function (s) { return decodeURIComponent(s.replace(pl, ' ')); },
-        query  = window.location.search.substring(1);
+        query = window.location.search.substring(1);
 
     var result = {};
-    while (match = search.exec(query)) {
-      result[decode(match[1])] = eval(decode(match[2]));
+    while ((match = search.exec(query)) !== null) {
+      result[decode(match[1])] = decode(match[2]) === 'true';
     }
     return result;
 

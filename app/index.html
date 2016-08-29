@@ -167,39 +167,40 @@
        class="vertical-columns"
        >
       <!-- Sidebar if settings.sidebar is active -->
-      <div id="sidebar" class="sidebar collapsed" v-if="settings.sidebar">
-        <!-- Nav tabs -->
-        <ul class="sidebar-tabs" role="tablist">
-          <li><a href="#model-pane" role="tab"><i class="fa fa-bars"></i></a></li>
-          <li><a href="#paint-pane" role="tab"><i class="fa fa-paint-brush"></i></a></li>
-        </ul>
 
-        <!-- Tab panes -->
-        <div class="sidebar-content active">
-          <div class="sidebar-pane" id="model-pane">
-            <h1>Current model</h1>
-            <model-details :model="model"></model-details>
-            <h1>Models</h1>
-            <models-overview></models-overview>
-          </div>
-          <div class="sidebar-pane" id="paint-pane">
-            <h4>Paintings</h4>
-            <painting-palettes></painting-palettes>
-            <!-- bind palette to app palette -->
-            <palette-chart :palette="palette"></palette-chart>
-            <h4>Controls for drawing and map</h4>
-            <drawing-controls :sketch="sketch"></drawing-controls>
-            <map-controls v-ref:map-controls :map="map" ></map-controls>
-          </div>
-        </div>
-      </div>
       <!-- hidden components if no sidebar -->
-      <div v-else v-show="false">
+      <!-- This is the main map object, if it changes sync up -->
+      <div v-if="!settings.sidebar" v-show="false">
         <models-overview></models-overview>
         <painting-palettes></painting-palettes>
       </div>
-      <!-- This is the main map object, if it changes sync up -->
       <div class="vertical-box">
+        <div id="sidebar" class="sidebar collapsed" v-if="settings.sidebar">
+          <!-- Nav tabs -->
+          <ul class="sidebar-tabs" role="tablist">
+            <li><a href="#model-pane" role="tab"><i class="fa fa-bars"></i></a></li>
+            <li><a href="#paint-pane" role="tab"><i class="fa fa-paint-brush"></i></a></li>
+          </ul>
+
+          <!-- Tab panes -->
+          <div class="sidebar-content active">
+            <div class="sidebar-pane" id="model-pane">
+              <h1>Current model</h1>
+              <model-details :model="model"></model-details>
+              <h1>Models</h1>
+              <models-overview></models-overview>
+            </div>
+            <div class="sidebar-pane" id="paint-pane">
+              <h4>Paintings</h4>
+              <painting-palettes></painting-palettes>
+              <!-- bind palette to app palette -->
+              <palette-chart :palette="palette"></palette-chart>
+              <h4>Controls for drawing and map</h4>
+              <drawing-controls :sketch="sketch"></drawing-controls>
+              <map-controls v-ref:map-controls :map="map" ></map-controls>
+            </div>
+          </div>
+        </div>
         <map-container
            v-ref:map-container
            :map.sync="map"

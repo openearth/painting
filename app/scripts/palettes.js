@@ -69,11 +69,11 @@
         svg
           .attr('width', width)
           .attr('height', height);
-        var x = d3.scale.linear()
+        var x = d3.scaleLinear()
               .range([0, width])
               .domain([-0.1, 1.1]).nice();
 
-        var y = d3.scale.linear()
+        var y = d3.scaleLinear()
               .range([height, 0])
               .domain([-0.1, 1.1]).nice();
         circles
