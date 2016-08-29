@@ -11,7 +11,7 @@ $tab-active-bg: #23527c;
 
 $OpenSansPath: '../fonts';
 
-$brand-info: rgba(20, 20, 20, 0.8);
+$brand-info: #64FF64;
 
 
 // bower:scss
@@ -56,11 +56,14 @@ $brand-info: rgba(20, 20, 20, 0.8);
   flex: none;
   height: 30vh;
   svg {
-    width: 100px;
-    height: 300px;
-    rect {
+    width: 100%;
+    height: 100%;
+    path {
       fill: none;
+    }
+    .line {
       stroke: $brand-info;
+      stroke-opacity: 0.5;
     }
   }
 }

@@ -4,7 +4,7 @@
   "items": [
     {
       "title": "De Wadden",
-      "text": "De waddenzee is een binnenzee die loopt van Texel tot Esjberg.",
+      "text": "De Waddenzee is het grootste ononderbroken gebied van wadden en barrière eilanden ter wereld. De zee loopt van Den Helder tot Esjberg. Wadden zijn zandplaten die zich bevinden tussen hoog en laag water.",
       "img": {
         "src": "data/stories/images/waddenkaart.png",
         "caption": "bron: Aotearoa - Eigen werk",
@@ -26,6 +26,7 @@
       "text": "De Wadden zijn op de lijst gezet omdat het een rijke voedselbron is voor planten en dieren. ",
       "img": {
         "src": "data/stories/images/vin.jpg",
+        "caption": "bron: nrc.nl",
         "width": 320,
         "height": 320
       },
@@ -50,71 +51,40 @@
 
     },
     {
-      "title": "Het getij",
-      "text": "De bekkens van de Wadden vullen zich elke 12 uur met x liter water."
+      "title": "Wachten...",
+      "text": "Wacht tot het water omhoog gaat in de grafiek linksonder."
     },
     {
-      "title": "Laat verf los in de geul",
+      "title": "Laat verf los!",
       "text": "Teken een lijn van Den Helder naar Texel. De verf wordt opgepakt door de stroming van het oppervlaktewater. ",
       "latlng": {
         "lat": 52.9810755,
         "lng": 4.73
       },
-      "zoom": 12,
+      "zoom": 11,
       "img": {
         "src": "data/stories/images/painting.png",
         "width": 320,
         "height": 320
-
       }
     },
     {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
+      "title": "De Wadden vullen zich",
+      "text": "Doordat het water in Noordzee hoger staat dan in de Wadden, stroomt het naar binnen. Dit gaat met een snelheid van X m/s",
+      "latlng": {
+        "lat": 52.9810755,
+        "lng": 4.73
+      },
+      "zoom": 9
     },
     {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
-    },
-    {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
-    },
-    {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
-    },
-    {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
-    },
-    {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
-    },
-    {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
-    },
-    {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
-    },
-    {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
-    },
-    {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
-    },
-    {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
-    },
-    {
-      "title": "Tutorial",
-      "text": "this is a tutorial"
+      "title": "Getij voedt de delta",
+      "text": "Langs de Hollandse kust ligt veel zand. Als het stormt woelen de golven het zand op. Het zand stroomt langzaam naar het Noorden. Als het zand Den Helder bereikt wordt het bij de overgang tussen hoog en laag water naar binnen gezogen.",
+      "img": {
+        "src": "data/stories/images/history.png",
+        "width": 320,
+        "height": 220
+      }
     }
   ]
 }

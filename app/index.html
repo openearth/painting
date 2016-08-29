@@ -151,12 +151,6 @@
     </template>
     <template id="chart-container-template">
       <div class="chart">
-        <div v-if="model && model.currentTime">
-          <svg viewBox="0 0 1 1">
-            <rect x="0" y="1" height="1" :width="model.currentTime/model.duration"></rect>
-          </svg>
-
-        </div>
       </div>
     </template>
   </head>
