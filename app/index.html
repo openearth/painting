@@ -135,6 +135,30 @@
 
       </div>
     </template>
+    <template id="story-container-template">
+      <div class="story-container">
+        <div id="trigger-top" class="spacer s0"></div>
+        <div v-if="story">
+          <div v-for="item in story.items" class="story-item">
+            <h2>{{ item.title }}</h2>
+            <p v-if="item.text">{{ item.text }}</p>
+            <video v-if="item.video" :src="item.video" autoplay loop></video>
+            <img v-if="item.img && item.img.src" :src="item.img.src" :width="item.img.width" :height="item.img.height">
+            <p v-if="item.img && item.img.caption">{{ item.img.caption }}</p>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template id="chart-container-template">
+      <div class="chart">
+        <div v-if="model && model.currentTime">
+          <svg viewBox="0 0 1 1">
+            <rect x="0" y="1" height="1" :width="model.currentTime/model.duration"></rect>
+          </svg>
+
+        </div>
+      </div>
+    </template>
   </head>
   <body>
     <!--[if lt IE 10]>
@@ -146,7 +170,9 @@
 
     <div
        id="app"
+       class="vertical-columns"
        >
+      <!-- Sidebar if settings.sidebar is active -->
       <div id="sidebar" class="sidebar collapsed" v-if="settings.sidebar">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
@@ -176,15 +202,20 @@
       <!-- hidden components if no sidebar -->
       <div v-else v-show="false">
         <models-overview></models-overview>
+        <painting-palettes></painting-palettes>
       </div>
       <!-- This is the main map object, if it changes sync up -->
-      <map-container
-         v-ref:map-container
-         :map.sync="map"
-         :model="model"
-         :sidebar="settings.sidebar"
-         >
-      </map-container>
+      <div class="vertical-box">
+        <map-container
+           v-ref:map-container
+           :map.sync="map"
+           :model="model"
+           :sidebar="settings.sidebar"
+           >
+        </map-container>
+        <chart-container v-if="settings.chart" :model="model"></chart-container>
+      </div>
+      <story-container v-if="settings.story"></story-container>
       <particle-component
          v-ref:particle-component
          :sketch="sketch"
@@ -222,6 +253,8 @@
     <script src="/bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
     <script src="/bower_components/vue-router/dist/vue-router.js"></script>
     <script src="/bower_components/vue/dist/vue.js"></script>
+    <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js"></script>
+    <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -258,6 +291,8 @@
     <script src="scripts/palettes.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/key-bindings.js"></script>
+    <script src="scripts/story.js"></script>
+    <script src="scripts/chart.js"></script>
     <script src="scripts/app.js"></script>
     <!-- endbuild -->
   </body>

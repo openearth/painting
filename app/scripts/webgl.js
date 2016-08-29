@@ -36,6 +36,10 @@ var particles;
           video.bind('loadeddata', () => {
             console.log('video loaded');
             this.loaded = true;
+            this.$set('model.duration', video[0].duration);
+          });
+          video.bind('timeupdate', () => {
+            this.$set('model.currentTime', video[0].currentTime);
           });
 
         });

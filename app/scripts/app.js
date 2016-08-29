@@ -12,7 +12,9 @@ var app;
     data: function() {
       return {
         settings: {
-          sidebar: false
+          sidebar: false,
+          story: true,
+          chart: true
         },
         palette: [],
         pipeline: {},

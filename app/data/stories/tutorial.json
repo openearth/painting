@@ -1,0 +1,120 @@
+{
+  "title": "Tutorial",
+  "model": "wadden",
+  "items": [
+    {
+      "title": "De Wadden",
+      "text": "De waddenzee is een binnenzee die loopt van Texel tot Esjberg.",
+      "img": {
+        "src": "data/stories/images/waddenkaart.png",
+        "caption": "bron: Aotearoa - Eigen werk",
+        "width": "300",
+        "height": "200"
+      },
+      "latlng": {
+        "lat": 54,
+        "lng": 6
+      },
+      "zoom": 7
+    },
+    {
+      "title": "Werelderfgoed",
+      "text": "In 2009 heeft Unesco de Waddenzee uitgeroepen tot Werelderfgoed. Op de werelderfgoedlijst staan de meest bijzondere, onvervangbare natuurgebieden. Andere bekende natuurgebieden op de lijst zijn de Great Barrier Reef en het Yellowstone park."
+    },
+    {
+      "title": "De Wadden zijn uniek",
+      "text": "De Wadden zijn op de lijst gezet omdat het een rijke voedselbron is voor planten en dieren. ",
+      "img": {
+        "src": "data/stories/images/vin.jpg",
+        "width": 320,
+        "height": 320
+      },
+      "latlng": {
+        "lat": 53,
+        "lng": 5
+      },
+      "zoom": 10
+
+    },
+    {
+      "title": "De Wadden in beweging",
+      "text": "De wadden zijn continu in beweging doordat het hoog en laagtij elkaar elke 6 uur afwisselen.  ",
+      "video": "data/stories/movies/griend.mp4",
+      "caption": "De satellietbeelden van de afgelopen 20 jaar laten zien hoe de eilanden en de Griend in het midden bewegen.",
+      "latlng": {
+        "lat": 53,
+        "lng": 5
+      },
+      "zoom": 8
+
+
+    },
+    {
+      "title": "Het getij",
+      "text": "De bekkens van de Wadden vullen zich elke 12 uur met x liter water."
+    },
+    {
+      "title": "Laat verf los in de geul",
+      "text": "Teken een lijn van Den Helder naar Texel. De verf wordt opgepakt door de stroming van het oppervlaktewater. ",
+      "latlng": {
+        "lat": 52.9810755,
+        "lng": 4.73
+      },
+      "zoom": 12,
+      "img": {
+        "src": "data/stories/images/painting.png",
+        "width": 320,
+        "height": 320
+
+      }
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    },
+    {
+      "title": "Tutorial",
+      "text": "this is a tutorial"
+    }
+  ]
+}
