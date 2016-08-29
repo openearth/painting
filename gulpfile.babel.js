@@ -2,13 +2,25 @@
 import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import githubPages from 'gulp-gh-pages';
-
+import debug from 'gulp-debug';
 import browserSync from 'browser-sync';
 import del from 'del';
 import {stream as wiredep} from 'wiredep';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
+const es6LintOptions = {
+  extends: "eslint:recommended",
+  baseConfig: {
+    parser: "babel-eslint"
+  },
+  ecmaFeatures: {
+    "modules": true
+  },
+  env: {
+    es6: true
+  }
+};
 
 gulp.task('styles', () => {
   return gulp.src('app/styles/*.scss')
@@ -22,6 +34,18 @@ gulp.task('styles', () => {
     .pipe($.autoprefixer({browsers: ['last 1 version']}))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/styles'))
+    .pipe(reload({stream: true}));
+});
+
+gulp.task("scripts", () => {
+  return gulp.src([
+    "app/scripts/**/*.js"
+  ])
+    .pipe($.plumber())
+    .pipe($.sourcemaps.init())
+    .pipe($.babel())
+    .pipe($.sourcemaps.write("."))
+    .pipe(gulp.dest(".tmp/scripts"))
     .pipe(reload({stream: true}));
 });
 
@@ -48,17 +72,12 @@ const testLintOptions = {
 gulp.task('lint', lint('app/scripts/**/*.js'));
 gulp.task('lint:test', lint('test/spec/**/*.js', testLintOptions));
 
-gulp.task('html', ['styles'], () => {
-  const assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
-
-  return gulp.src('app/*.html')
-    .pipe($.plumber())
-
-    .pipe(assets)
+gulp.task('html', ['styles', 'scripts'], () => {
+  return gulp.src('app/**/*.html')
+    .pipe($.useref({searchPath: [".tmp", "app", "."]}))
+    .pipe($.debug())
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.minifyCss({compatibility: '*'})))
-    .pipe(assets.restore())
-    .pipe($.useref())
     .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
     .pipe(gulp.dest('dist'));
 });
@@ -129,7 +148,7 @@ gulp.task('models', () => {
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
-gulp.task('serve', ['styles', 'fonts'], () => {
+gulp.task('serve', ['styles', 'scripts', 'fonts'], () => {
   browserSync({
     notify: false,
     port: 9000,

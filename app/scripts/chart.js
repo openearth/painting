@@ -1,4 +1,5 @@
 (function () {
+  'use strict';
 
   Vue.component('chart-container', {
     template: '#chart-container-template',
@@ -22,7 +23,6 @@
         var width = this.$el.clientWidth - margin.left - margin.right;
         var height = this.$el.clientHeight - margin.top - margin.bottom;
 
-        var parseDate = d3.timeParse('%b %Y');
         var xTime = d3.scaleTime()
               .range([0, width]);
         var xLinear = d3.scaleLinear()
@@ -47,32 +47,32 @@
           var lineWaterlevel = d3.line()
                 .x(function(d) { return xTime(d3.isoParse(d.date)); })
                 .y(function(d) { return yWaterlevel(d.h); });
-          var pathWaterlevel = svg
-                .datum(data)
-                .append('path')
-                .attr('class', 'line waterlevel')
-                .attr('d', lineWaterlevel);
+          svg
+            .datum(data)
+            .append('path')
+            .attr('class', 'line waterlevel')
+            .attr('d', lineWaterlevel);
 
-          svg.append("g")
-            .attr("class", "axis axis--x")
-            .attr("transform", "translate(0," + height + ")")
+          svg.append('g')
+            .attr('class', 'axis axis--x')
+            .attr('transform', 'translate(0,' + height + ')')
             .call(d3.axisBottom(xTime));
 
-          svg.append("g")
-            .attr("class", "axis axis--y")
+          svg.append('g')
+            .attr('class', 'axis axis--y')
             .call(d3.axisLeft(yWaterlevel))
-            .append("text")
-            .attr("class", "axis-title")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end");
+            .append('text')
+            .attr('class', 'axis-title')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 6)
+            .attr('dy', '.71em')
+            .style('text-anchor', 'end');
 
         });
 
         var dataProgress = [
-          {x: this.progress, y:0},
-          {x: this.progress, y:1.0}
+          {x: this.progress, y: 0},
+          {x: this.progress, y: 1.0}
         ];
         var lineProgress = d3.line()
               .x(function(d) { return xLinear(d.x); })
@@ -96,8 +96,8 @@
     watch: {
       progress: function(newVal) {
         var data = [
-          {x: newVal, y:0},
-          {x: newVal, y:1.0}
+          {x: newVal, y: 0},
+          {x: newVal, y: 1.0}
         ];
         this.chart.pathProgress
           .datum(data)
@@ -111,7 +111,7 @@
           if (!_.has(this.model, 'currentTime')) {
             return 0.0;
           }
-          var progress = this.model.currentTime/this.model.duration;
+          var progress = this.model.currentTime / this.model.duration;
           return progress;
         }
       }

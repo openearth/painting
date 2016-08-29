@@ -1,10 +1,12 @@
+/*eslint no-underscore-dangle: 0 */
 (function () {
+  'use strict';
 
   Vue.component('story-container', {
     template: '#story-container-template',
     data: function() {
       return {
-        storyUrl: "data/stories/tutorial.json",
+        storyUrl: 'data/stories/tutorial.json',
         story: null
       };
     },
@@ -25,27 +27,21 @@
             var storyElements = this.$el.getElementsByClassName('story-item');
             console.log('story elements', storyElements, storyElements.length);
             _.each(storyElements, function(element) {
-              console.log('adding story element', element.__v_frag.raw);
               var item = element.__v_frag.raw;
               var scene = new ScrollMagic.Scene({
                 triggerElement: element,
                 duration: element.clientHeight
               })
                     .addTo(controller)
-                    .on("enter", function (e) {
-						          console.log(
-                        this,
-                        e.type == "enter" ? "inside" : "outside",
-                        this.triggerElement(),
-                        item
-                      );
+                    .on('enter', function () {
                       if (_.has(item, 'latlng')) {
                         // replace by flyTo after upgrade
                         app.map.setView(item.latlng, item.zoom);
 
-                      };
-					          })
+                      }
+                    })
                     .addIndicators();
+              console.log('add scene', scene);
 
             });
 
