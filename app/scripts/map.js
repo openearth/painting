@@ -6,7 +6,9 @@
 
   Vue.component('map-controls', {
     template: '#map-controls-template',
-    props: ['map'],
+    props: {
+      map: Object
+    },
     data: function() {
       return {
         locked: true
@@ -71,8 +73,15 @@
 
   Vue.component('map-container', {
     // overwrite data in object constructor
-    template: '<div id="map" class="sidebar-map"></div>',
-    props: ['model', 'map'],
+    template: '<div id="map" :class="{\'sidebar-map\': sidebar}"></div>',
+    props: {
+      model: Object,
+      map: Object,
+      sidebar: {
+        type: Boolean,
+        default: function() { return true; }
+      }
+    },
     data: function() {
       return {
         layers: []
@@ -87,7 +96,10 @@
         var map = L.mapbox.map('map', 'siggyf.c74e2e04');
 
         // add the sidebar
-        L.control.sidebar('sidebar').addTo(map);
+        if (this.sidebar) {
+          L.control.sidebar('sidebar').addTo(map);
+
+        }
 
         var ToggleControl = L.Control.extend({
           options: {

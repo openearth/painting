@@ -4,6 +4,22 @@
 var app;
 (function () {
   'use strict';
+
+  function urlParams () {
+    // parse url parameters, adapted from http://stackoverflow.com/a/2880929/386327
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, ' ')); },
+        query  = window.location.search.substring(1);
+
+    var result = {};
+    while (match = search.exec(query)) {
+      result[decode(match[1])] = eval(decode(match[2]));
+    }
+    return result;
+
+  }
   // Vue application
   app = new Vue({
     el: '#app',
@@ -13,8 +29,12 @@ var app;
       });
     },
     data: function() {
-      return {
+      var params = urlParams();
+      var defaults = {
         settings: {
+          sidebar: true,
+          story: false,
+          chart: false
         },
         palette: [],
         pipeline: {},
@@ -22,6 +42,8 @@ var app;
         map: null,
         sketch: null
       };
+      _.assign(defaults.settings, params);
+      return defaults;
     },
     methods: {
     }
