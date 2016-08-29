@@ -1,6 +1,6 @@
 [
   {
-    "url": "/images/paintings/botticelli.jpg",
+    "url": "images/paintings/botticelli.jpg",
     "info": "https://en.wikipedia.org/wiki/The_Birth_of_Venus",
     "palette": [
       {
@@ -1108,7 +1108,7 @@
     "title": "the Birth of Venus"
   },
   {
-    "url": "/images/paintings/monet.jpg",
+    "url": "images/paintings/monet.jpg",
     "info": "https://en.wikipedia.org/wiki/Le_Bassin_Aux_Nymph%C3%A9as",
     "palette": [
       {
@@ -2266,7 +2266,7 @@
     "title": "Le Bassin Aux Nympheas"
   },
   {
-    "url": "/images/paintings/rembrandt.jpg",
+    "url": "images/paintings/rembrandt.jpg",
     "info": "",
     "palette": [
       {
@@ -3394,7 +3394,7 @@
     "title": "de Nachtwacht"
   },
   {
-    "url": "/images/paintings/scream.jpg",
+    "url": "images/paintings/scream.jpg",
     "info": "",
     "palette": [
       {
@@ -4552,7 +4552,7 @@
     "title": "Skrik"
   },
   {
-    "url": "/images/paintings/parel.jpg",
+    "url": "images/paintings/parel.jpg",
     "info": "",
     "palette": [
       {
@@ -5690,7 +5690,7 @@
     "title": "Meisje met de parel"
   },
   {
-    "url": "/images/paintings/picasso.jpg",
+    "url": "images/paintings/picasso.jpg",
     "info": "",
     "palette": [
       {
@@ -6818,7 +6818,7 @@
     "title": "Guernica "
   },
   {
-    "url": "/images/paintings/michelangelo.jpg",
+    "url": "images/paintings/michelangelo.jpg",
     "info": "",
     "palette": [
       {
@@ -7946,7 +7946,7 @@
     "title": "Creazione di Adamo"
   },
   {
-    "url": "/images/paintings/vinci.jpg",
+    "url": "images/paintings/vinci.jpg",
     "info": "",
     "palette": [
       {
