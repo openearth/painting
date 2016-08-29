@@ -1,0 +1,90 @@
+{
+  "title": "Tutorial",
+  "model": "wadden",
+  "items": [
+    {
+      "title": "De Wadden",
+      "text": "De Waddenzee is het grootste ononderbroken gebied van wadden en barrière eilanden ter wereld. De zee loopt van Den Helder tot Esjberg. Wadden zijn zandplaten die zich bevinden tussen hoog en laag water.",
+      "img": {
+        "src": "data/stories/images/waddenkaart.png",
+        "caption": "bron: Aotearoa - Eigen werk",
+        "width": "300",
+        "height": "200"
+      },
+      "latlng": {
+        "lat": 54,
+        "lng": 6
+      },
+      "zoom": 7
+    },
+    {
+      "title": "Werelderfgoed",
+      "text": "In 2009 heeft Unesco de Waddenzee uitgeroepen tot Werelderfgoed. Op de werelderfgoedlijst staan de meest bijzondere, onvervangbare natuurgebieden. Andere bekende natuurgebieden op de lijst zijn de Great Barrier Reef en het Yellowstone park."
+    },
+    {
+      "title": "De Wadden zijn uniek",
+      "text": "De Wadden zijn op de lijst gezet omdat het een rijke voedselbron is voor planten en dieren. ",
+      "img": {
+        "src": "data/stories/images/vin.jpg",
+        "caption": "bron: nrc.nl",
+        "width": 320,
+        "height": 320
+      },
+      "latlng": {
+        "lat": 53,
+        "lng": 5
+      },
+      "zoom": 10
+
+    },
+    {
+      "title": "De Wadden in beweging",
+      "text": "De wadden zijn continu in beweging doordat het hoog en laagtij elkaar elke 6 uur afwisselen.  ",
+      "video": "data/stories/movies/griend.mp4",
+      "caption": "De satellietbeelden van de afgelopen 20 jaar laten zien hoe de eilanden en de Griend in het midden bewegen.",
+      "latlng": {
+        "lat": 53,
+        "lng": 5
+      },
+      "zoom": 8
+
+
+    },
+    {
+      "title": "Wachten...",
+      "text": "Wacht tot het water omhoog gaat in de grafiek linksonder."
+    },
+    {
+      "title": "Laat verf los!",
+      "text": "Teken een lijn van Den Helder naar Texel. De verf wordt opgepakt door de stroming van het oppervlaktewater. ",
+      "latlng": {
+        "lat": 52.9810755,
+        "lng": 4.73
+      },
+      "zoom": 11,
+      "img": {
+        "src": "data/stories/images/painting.png",
+        "width": 320,
+        "height": 320
+      }
+    },
+    {
+      "title": "De Wadden vullen zich",
+      "text": "Doordat het water in Noordzee hoger staat dan in de Wadden, stroomt het naar binnen. Dit gaat met een snelheid van X m/s",
+      "latlng": {
+        "lat": 52.9810755,
+        "lng": 4.73
+      },
+      "zoom": 9
+    },
+    {
+      "title": "Getij voedt de delta",
+      "text": "Langs de Hollandse kust ligt veel zand. Als het stormt woelen de golven het zand op. Het zand stroomt langzaam naar het Noorden. Als het zand Den Helder bereikt wordt het bij de overgang tussen hoog en laag water naar binnen gezogen.",
+      "img": {
+        "src": "data/stories/images/history.png",
+        "width": 320,
+        "height": 220
+      }
+    }
+  ]
+}
