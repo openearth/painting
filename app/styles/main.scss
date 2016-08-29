@@ -31,6 +31,14 @@ circle.active {
   cursor: crosshair;
 }
 
+.leaflet-bar, .leaflet-control-layers {
+  background-color: rgba(20, 20, 20, 0.0);
+}
+.leaflet-bar a {
+  background-color: rgba(20, 20, 20, 0.5);
+  color: rgba(220, 255, 220, 0.9);
+}
+
 
 .panel.sidebar-pane {
   padding: 0px;
@@ -40,7 +48,8 @@ circle.active {
   color: rgba(255, 255, 255, 0.9);
 }
 #paintings  .row  img {
-  height: 50px;
+  min-height: 50px;
+  min-width: 50px;
 }
 .sidebar-tabs {
   background-color: rgba(20, 20, 20, 0.5);
@@ -86,6 +95,12 @@ div .row img {
 body {
 
 }
+
+// always style with pointer, also when href is missing and only click is attached
+a:hover {
+  cursor:pointer;
+}
+
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,

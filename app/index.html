@@ -28,57 +28,113 @@
     <script src="/bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
 
-    <script id="model-template" type="text/x-handlebars-template">
-      {{#each models}}
-      <div class="model" id="{{ id }}">
-        <h2>{{ title }} </h2>
-        <p>{{ abstract }}</p>
-        <div class="row">
-          <div class="col-xs-1">
-            <i class="fa fa-stop"></i>
+    <template id="models-overview-template" >
+      <div>
+        <div v-for="model in models" class="model" id="{{ model.id }}">
+          <div class="row">
+            <div class="col-xs-12">
+              <h2>{{ model.title }}</h2>
+              <p>{{ model.abstract }}</p>
+              <a @click="selectModel(model)" class="btn btn-primary btn-xs load-model" data-id="{{ model.id }}">
+                <i class="fa fa-play"></i>
+              </a>
+            </div>
           </div>
-          <div class="col-xs-1">
-            <a href="#" class="load-model" data-id="{{ id }}"><i class="fa fa-play"></i></a>
-          </div>
-        </div>
-      </div>
-      {{/each}}
-    </script>
-    <script id="video-template" type="text/x-handlebars-template">
-      <video id="uv" autoplay loop width="{{ width }}" height="{{ height }}">
-        {{#each uv}}
-        <source src="{{ src }}" type="{{ type }}"></source>
-        {{/each}}
-      </video>
-      <!-- 2d canvas to capture pixels from uv map -->
-      <canvas id="uvhidden" width="{{ width }}" height="{{ height }}"></canvas>
-    </script>
-    <script id="image-template" type="text/x-handlebars-template">
-      <img id="uv" autoplay loop width="{{ width }}" height="{{ height }}"
-           {{#each uv}}
-           src="{{ src }}"
-           {{/each}}
-           />
-      <canvas id="uvhidden" width="{{ width }}" height="{{ height }}"></canvas>
-    </script>
-    <script id="colours-template" type="text/x-handlebars-template">
-      {{#each palettes}}
-      <div class="palette row" id="palette{{ id }}">
-        <div class="colors col-xs-8" >
-          {{#each colors}}
-          <div class="color" style="background-color: #{{this}}">&nbsp;</div>
-          {{/each}}
-        </div>
-        <div class="col-xs-2 text-left">
-          <span class="title" title="{{ title }} by {{ userName }}">
-            <a href="{{ url }}"><li class="fa fa-info-circle"></li></a>
-          </span>
-        </div>
-      </div>
-      {{/each}}
-      <p>Colours from <a href="http://colourlovers.com">colourlovers</a></p>
-    </script>
 
+        </div>
+      </div>
+    </template>
+    <template id="model-details-template">
+      <div>
+        <div v-if="model">
+          <h2>{{ model.title }} <small>{{ model.engine }}</small></h2>
+          <dl>
+            <dt>Abstract</dt>
+            <dd>{{ model.abstract }}</dd>
+          </dl>
+          <dl>
+            <dt>Number of advection cells</dt>
+            <dd>{{ model.width * model.height }} ({{model.width}} x {{ model.height}})</dd>
+          </dl>
+
+        </div>
+        <div v-else>
+          no model loaded
+        </div>
+      </div>
+
+    </template>
+    <template id="paintings-template">
+      <div class="container-fluid">
+        <div class="row">
+          <div v-for="painting in paintings" class="col-xs-3 thumbnail">
+            <a @click="select(painting)">
+              <img width="50" height="50" :src="painting.url" :title="painting.painter">
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </template>
+    <template id="palette-chart-template">
+      <div id="palette" class="container-fluid">
+        <svg>
+          <!-- circles -->
+          <g></g>
+        </svg>
+      </div>
+    </template>
+    <template id="drawing-controls-template">
+      <div class="form-group">
+        <label for="cleardrawing">Clear drawing</label>
+        <div>
+          <input  class="checkbox" type="checkbox" id="cleardrawing" checked name="cleardrawing" value="" />
+          <button class="btn btn-default" id="clear3d">reset</button>
+        </div>
+      </div>
+
+
+    </template>
+    <template id="map-controls-template">
+      <div class="form-group">
+        <label for="lockmap">Lock map <small>to draw on touch devices</small></label>
+        <div>
+          <input  class="checkbox" type="checkbox" id="lockmap" checked name="lockmap" value="" />
+        </div>
+
+      </div>
+
+    </template>
+    <template id="uv-source-template">
+      <div>
+        <div id="uv-container" v-if="model">
+          <video v-if="model.uv.tag == 'video'"
+                 id="uv" autoplay loop
+                 width="{{ model.width }}"
+                 height="{{ model.height }}"
+                 :src="model.uv.src"
+                 >
+          </video>
+          <!-- 2d canvas to capture pixels from uv map -->
+          <img v-if="model.uv.tag == 'img'"
+               id="uv"
+               autoplay loop
+               width="{{ model.width }}"
+               height="{{ model.height }}"
+               :src="model.uv.src"
+               />
+        </div>
+      </div>
+
+    </template>
+    <template id="particle-component-template">
+      <div class="hidden layer">
+        <div v-if="model">
+          <canvas id="uvhidden" width="{{ model.uv.width }}" height="{{ model.uv.height }}"></canvas>
+        </div>
+
+      </div>
+    </template>
   </head>
   <body>
     <!--[if lt IE 10]>
@@ -87,147 +143,59 @@
 
     <!-- Map -->
 
-    <div id="sidebar" class="sidebar collapsed">
-      <!-- Nav tabs -->
-      <ul class="sidebar-tabs" role="tablist">
-        <li><a href="#models" role="tab"><i class="fa fa-bars"></i></a></li>
-        <li><a href="#paint" role="tab"><i class="fa fa-paint-brush"></i></a></li>
-        <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>
-        <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
-      </ul>
 
-      <!-- Tab panes -->
-      <div class="sidebar-content active">
-        <div class="sidebar-pane" id="models">
-          <h1 class="">Models</h1>
-        </div>
-        <div class="sidebar-pane" id="paint">
+    <div
+       id="app"
+       >
+      <div id="sidebar" class="sidebar collapsed">
+        <!-- Nav tabs -->
+        <ul class="sidebar-tabs" role="tablist">
+          <li><a href="#model-pane" role="tab"><i class="fa fa-bars"></i></a></li>
+          <li><a href="#paint-pane" role="tab"><i class="fa fa-paint-brush"></i></a></li>
+        </ul>
 
-          <h4>Paintings</h4>
-          <div id="paintings" class="container-fluid"></div>
-          <button class="btn btn-default" id="paintingsclear">deselect</button>
-          <button class="btn btn-default" id="paintingsall">select all</button>
-          <h4>Clear canvas</h4>
-          <p><input  class="checkbox" type="checkbox" id="cleardrawing" checked name="cleardrawing" value="" /><button class="btn btn-default" id="clear3d">reset</button>
-            <h4>Lock map</h4>
-          <p><input  class="checkbox" type="checkbox" id="lockmap" checked name="lockmap" value="" /></p>
-          </p>
-          <h4>Brush size</h4>
-          <div id="brush" class="row">
-            <div class="col-xs-2 text-right">
-
-              <i class="fa fa-paint-brush fa-lg"></i>
-            </div>
-            <div class="col-xs-8">
-              <input
-                 id="brush-size"
-                 type="text"
-                 class="slider"
-                 data-slider-ticks="[1, 50]"
-                 data-slider-ticks-snap-bounds="3"
-                 />
-            </div>
-            <div class="col-xs-2 text-left">
-              <i class="fa fa-paint-brush fa-2x"></i>
-            </div>
+        <!-- Tab panes -->
+        <div class="sidebar-content active">
+          <div class="sidebar-pane" id="model-pane">
+            <h1>Current model</h1>
+            <model-details :model="model"></model-details>
+            <h1>Models</h1>
+            <models-overview></models-overview>
           </div>
-          <h4>Popular colors</h4>
-          <div id="colours" class="container-fluid">
-          </div>
-          <h4>Images</h4>
-          <div class="container-fluid" id="images">
-            <div class="row" >
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="static">
-                  <img src="images/static.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="chessboard">
-                  <img src="images/chessboard.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="chessboard">
-                  <img src="images/transparent.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="monolisa">
-                  <img src="images/monolisa.jpg" alt="" />
-                </a>
-              </div>
-            </div>
-            <div class="row" >
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="blackdots">
-                  <img src="images/blackdots.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="whitedots">
-                  <img src="images/whitedots.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="grid">
-                  <img src="images/grid.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="gridsmall">
-                  <img src="images/gridsmall.png" alt="" />
-                </a>
-              </div>
-            </div>
-            <div class="row" >
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="zebra">
-                  <img src="images/zebra.png" alt="" />
-                </a>
-              </div>
-              <div class="col-xs-3 nopadding">
-                <a href="#" class="thumbnail" id="white">
-                  <img src="images/white.png" alt="" />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="sidebar-pane" id="profile">
-          <p>
-            Created by Fedor Baart.
-          </p>
-        </div>
-        <div class="sidebar-pane" id="settings">
-          <div id="particles" class="row">
-            <div class="col-xs-2 text-right">
-
-              <i class="fa fa-circle-o fa-lg"></i>
-            </div>
-            <div class="col-xs-8">
-              <input
-                 id="n-particles"
-                 type="text"
-                 class="slider"
-                 data-slider-ticks="[0, 3000]"
-                 data-slider-ticks-snap-bounds="10"
-                 />
-            </div>
+          <div class="sidebar-pane" id="paint-pane">
+            <h4>Paintings</h4>
+            <painting-palettes></painting-palettes>
+            <!-- bind palette to app palette -->
+            <palette-chart :palette="palette"></palette-chart>
+            <h4>Controls for drawing and map</h4>
+            <drawing-controls :sketch="sketch"></drawing-controls>
+            <map-controls v-ref:map-controls :map="map" ></map-controls>
           </div>
         </div>
       </div>
+      <!-- This is the main map object, if it changes sync up -->
+      <map-container
+         v-ref:map-container
+         :map.sync="map"
+         :model="model"
+         >
+      </map-container>
+      <particle-component
+         v-ref:particle-component
+         :sketch="sketch"
+         :pipeline="pipeline"
+         :model="model"
+         ></particle-component>
+      <!-- Hidden layers -->
+      <div class="hidden layer">
+        <uv-source :model="model" v-ref:uv-source></uv-source>
+        <div>
+          <canvas id="canvas-icon" width="10" height="10"></canvas>
+        </div>
+      </div>
+      <key-bindings></key-bindings>
     </div>
-    <div id="map" class="sidebar-map"></div>
 
-    <!-- Hidden layers -->
-    <div class="hidden layer">
-      <div id="uv-container">
-      </div>
-      <div>
-        <canvas id="canvas-icon" width="10" height="10"></canvas>
-      </div>
-    </div>
 
 
     <!-- build:js scripts/vendor.js -->
@@ -236,18 +204,19 @@
     <script src="/bower_components/fetch/fetch.js"></script>
     <script src="/bower_components/es6-promise/promise.js"></script>
     <script src="/bower_components/lodash/lodash.js"></script>
-    <script src="/bower_components/leaflet/dist/leaflet.js"></script>
     <script src="/bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="/bower_components/mapbox.js/mapbox.js"></script>
     <script src="/bower_components/sidebar-v2/js/jquery-sidebar.js"></script>
     <script src="/bower_components/sidebar-v2/js/leaflet-sidebar.js"></script>
     <script src="/bower_components/handlebars/handlebars.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="/bower_components/jquery-bridget/jquery.bridget.js"></script>
+    <script src="/bower_components/jquery-bridget/jquery-bridget.js"></script>
     <script src="/bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>
     <script src="/bower_components/pixi.js/bin/pixi.js"></script>
     <script src="/bower_components/d3/d3.js"></script>
     <script src="/bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+    <script src="/bower_components/vue-router/dist/vue-router.js"></script>
+    <script src="/bower_components/vue/dist/vue.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -269,7 +238,11 @@
     <!-- build:js scripts/main.js -->
     <!-- custom version of sketch -->
     <script src="scripts-external/sketch.js"></script>
+
+    <!-- custom overlay -->
+    <script src="scripts/leaflet-canvas-overlay.js"></script>
     <!-- main files -->
+    <script src="scripts/bus.js"></script>
     <script src="scripts/map.js"></script>
     <script src="scripts/advection.js"></script>
     <script src="scripts/graphics.js"></script>
@@ -279,6 +252,8 @@
     <script src="scripts/webgl.js"></script>
     <script src="scripts/palettes.js"></script>
     <script src="scripts/main.js"></script>
+    <script src="scripts/key-bindings.js"></script>
+    <script src="scripts/app.js"></script>
     <!-- endbuild -->
   </body>
 </html>

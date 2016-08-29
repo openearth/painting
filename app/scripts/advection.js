@@ -51,7 +51,6 @@ var fragmentSource = [
   '}',
   '}'
 ].join('\n');
-console.log(fragmentSource);
 
 function AdvectionFilter(sprite, settings)
 {
@@ -96,8 +95,6 @@ function AdvectionFilter(sprite, settings)
 
   var scale = _.get(settings, 'scale', 10.0);
   this.scale = new PIXI.Point(scale, scale);
-  console.log('scale in advection', this.scale, scale, this);
-
   var flipv = _.get(settings, 'flipv', false);
   this.flipv = flipv;
 
