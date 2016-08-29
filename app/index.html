@@ -147,7 +147,7 @@
     <div
        id="app"
        >
-      <div id="sidebar" class="sidebar collapsed">
+      <div id="sidebar" class="sidebar collapsed" v-if="settings.sidebar">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
           <li><a href="#model-pane" role="tab"><i class="fa fa-bars"></i></a></li>
@@ -173,11 +173,16 @@
           </div>
         </div>
       </div>
+      <!-- hidden components if no sidebar -->
+      <div v-else v-show="false">
+        <models-overview></models-overview>
+      </div>
       <!-- This is the main map object, if it changes sync up -->
       <map-container
          v-ref:map-container
          :map.sync="map"
          :model="model"
+         :sidebar="settings.sidebar"
          >
       </map-container>
       <particle-component

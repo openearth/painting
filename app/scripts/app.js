@@ -5,10 +5,14 @@ var app;
   app = new Vue({
     el: '#app',
     ready: function() {
+      if (!this.settings.sidebar) {
+        console.log('loading model');
+      }
     },
     data: function() {
       return {
         settings: {
+          sidebar: false
         },
         palette: [],
         pipeline: {},
