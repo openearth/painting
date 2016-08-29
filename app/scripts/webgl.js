@@ -170,30 +170,12 @@ var particles;
         }
         animate();
 
-
+        this.$set('renderTextureFrom', renderTextureFrom);
+        this.$set('renderTextureTo', renderTextureTo);
         // TODO: move these out of here
         // user interface interactions
         $('#clear3d').click(this.clear3d);
 
-        $(document).keydown((evt) => {
-          if (_.isNil(this.model)) {
-            console.warn('no model in keydown', this.model);
-            return;
-          }
-          if (evt.which === 80) {
-            // p
-            // updating particles
-            if (!_.isNil(this.model.particles)) {
-              particles = this.model.particles;
-              particles.culling(particles.particles.length + 50);
-            }
-          }
-          if (evt.which === 67) {
-            // clearing screen
-            this.clear3d();
-            particles.clear();
-          }
-        });
       }
     }
   });
@@ -204,6 +186,7 @@ var particles;
     // remove the old drawing element
     // pass along the global parent here
     var modelCanvas = new ModelCanvas({
+      _ref: 'modelCanvas',
       data: {
         layer: obj.modelLayer,
         modelElement: obj.modelElement,

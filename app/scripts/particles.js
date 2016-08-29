@@ -9,6 +9,7 @@
     },
     ready: function() {
       // find the first video in this container
+
     },
     watch: {
       'model': 'resetParticles',
@@ -24,7 +25,18 @@
           console.warn('no pipeline, no particles', this.pipeline);
           return;
         }
-        this.model.particles = new Particles(this.model, this.sketch, this.pipeline);
+
+        this.model.particles = new Particles(this.model, this.sketch.element, this.pipeline);
+      },
+      addParticles: function() {
+        console.log('adding particles');
+        if (!_.isNil(this.model.particles)) {
+          var particles = this.model.particles;
+          particles.culling(particles.particles.length + 50);
+        }
+      },
+      removeParticles: function() {
+        this.model.particles.culling(0);
       }
     }
   });
@@ -56,14 +68,11 @@
 
   Particles.prototype.drawIcon = function(){
     var ctx = this.canvasIcon.getContext('2d');
-    ctx.clearRect(0,0, 10, 10);
-    ctx.strokeStyle = d3.hsl(Math.random()*360, 0.5, Math.random());
-    ctx.strokeWidth = 1.0;
+    ctx.clearRect(0, 0, 10, 10);
+    ctx.strokeStyle = 'white';
+    ctx.strokeWidth = 0.01;
     ctx.beginPath();
-    ctx.moveTo(0, 5);
-    ctx.lineTo(10, 5);
-    ctx.moveTo(5,5);
-    ctx.lineTo(5, 10);
+    ctx.ellipse(5, 5, 2, 5, 0, 0, 2 * Math.PI);
     ctx.stroke();
     if (this.iconTexture) {
       this.iconTexture.update();
@@ -102,7 +111,7 @@
     var nNew = n;
 
     // culling
-    for (var i = nCurrent - 1; i > nNew; i--) {
+    for (var i = nCurrent - 1; i >= nNew; i--) {
       _.pullAt(this.particles, i);
       this.sprites.removeChildAt(i);
     }
@@ -118,6 +127,10 @@
 
   Particles.prototype.step = function () {
     'use strict';
+
+    if (!this.particles.length) {
+      return;
+    }
     var uv = $('#uv')[0];
     if (uv.paused || uv.ended) {
       return;
@@ -131,8 +144,12 @@
     var uvctx = uvhidden.getContext('2d');
     var width = uvhidden.width,
         height = uvhidden.height;
+
+    // TODO: this is expensive
     uvctx.drawImage(uv, 0, 0, width, height);
     var frame = uvctx.getImageData(0, 0, width, height);
+    // TODO: use this instead of frame.data
+    var frameBuffer = new Uint32Array(frame.data.buffer);
 
     _.each(this.particles, (particle) => {
       var idx = (

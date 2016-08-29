@@ -144,7 +144,9 @@
     <!-- Map -->
 
 
-    <div id="app">
+    <div
+       id="app"
+       >
       <div id="sidebar" class="sidebar collapsed">
         <!-- Nav tabs -->
         <ul class="sidebar-tabs" role="tablist">
@@ -175,13 +177,15 @@
       <map-container
          v-ref:map-container
          :map.sync="map"
-         :model="model">
+         :model="model"
+         >
       </map-container>
       <particle-component
          v-ref:particle-component
          :sketch="sketch"
          :pipeline="pipeline"
-         :model="model"></particle-component>
+         :model="model"
+         ></particle-component>
       <!-- Hidden layers -->
       <div class="hidden layer">
         <uv-source :model="model" v-ref:uv-source></uv-source>
@@ -189,7 +193,7 @@
           <canvas id="canvas-icon" width="10" height="10"></canvas>
         </div>
       </div>
-
+      <key-bindings></key-bindings>
     </div>
 
 
@@ -248,6 +252,7 @@
     <script src="scripts/webgl.js"></script>
     <script src="scripts/palettes.js"></script>
     <script src="scripts/main.js"></script>
+    <script src="scripts/key-bindings.js"></script>
     <script src="scripts/app.js"></script>
     <!-- endbuild -->
   </body>

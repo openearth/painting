@@ -16,6 +16,8 @@ var app;
         map: null,
         sketch: null
       };
+    },
+    methods: {
     }
   });
 

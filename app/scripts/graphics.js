@@ -26,6 +26,9 @@ var sketch;
       this.addDrawing();
     },
     methods: {
+      clear: function() {
+        this.sketch.clear();
+      },
       addDrawing: function() {
         sketch = Sketch.create({
           element: this.$el,
@@ -108,6 +111,7 @@ var sketch;
     // remove the old drawing element
     // pass along the global parent here
     var drawing = new Drawing({
+      _ref: 'drawingCanvas',
       data: {
         layer: obj.drawingLayer
       },
