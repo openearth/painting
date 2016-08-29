@@ -33,9 +33,9 @@
   },
   "eslintConfig": {
     "env": {
-      "node": true,
       "browser": true,
-      "jquery": true
+      "jquery": true,
+      "es6": true
     },
     "globals": {
       "_": true,
@@ -44,7 +44,8 @@
       "PIXI": true,
       "Sketch": true,
       "d3": true,
-      "sketch": true
+      "sketch": true,
+      "Vue": true
     },
     "rules": {
       "quotes": [

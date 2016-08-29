@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /*
  * L.ImageOverlay.Canvas is used to overlay images over the map (to specific geographical bounds).
  */

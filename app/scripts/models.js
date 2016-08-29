@@ -1,3 +1,4 @@
+/* global bus */
 (function () {
 
   'use strict';

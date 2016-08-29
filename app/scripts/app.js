@@ -1,10 +1,16 @@
+/* global bus  */
+
+// app is global, prefer to use this.$root
 var app;
 (function () {
-
+  'use strict';
   // Vue application
   app = new Vue({
     el: '#app',
     ready: function() {
+      this.$nextTick(function() {
+        $('input[type="checkbox"]').bootstrapSwitch();
+      });
     },
     data: function() {
       return {
@@ -35,12 +41,12 @@ var app;
   bus.$on('palette-selected', function(palette){
     app.$set('palette', palette);
   });
-  bus.$on('model-layer-added', function(obj){
+  bus.$on('model-layer-added', function() {
   });
-  bus.$on('sketch-created', function(sketch){
+  bus.$on('sketch-created', function(sketch) {
     app.$set('sketch', sketch);
   });
-  bus.$on('pipeline-created', function(pipeline){
+  bus.$on('pipeline-created', function(pipeline) {
     app.$set('pipeline', pipeline);
   });
 

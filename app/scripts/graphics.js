@@ -1,3 +1,5 @@
+/* global bus, app  */
+
 var sketch;
 (function () {
 
@@ -118,6 +120,7 @@ var sketch;
       el: obj.drawingElement,
       parent: app
     });
+    bus.$emit('drawing-canvas-created', drawing);
   });
 
 

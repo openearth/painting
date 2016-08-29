@@ -1,4 +1,5 @@
 (function () {
+  'use strict';
 
   Vue.component('key-bindings', {
     template: '<div></div>',

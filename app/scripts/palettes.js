@@ -1,3 +1,5 @@
+/* global bus */
+
 (function () {
   'use strict';
 
@@ -26,17 +28,28 @@
       }
     }
   });
+
+  function updateColors(){
+    // Select all colors
+    var colors = [];
+    d3.selectAll('circle.active').each(function(d){
+      var color = d3.rgb(d.rgb[0] * 255, d.rgb[1] * 255, d.rgb[2] * 255);
+      colors.push(color);
+    });
+    if (!_.isNil(sketch)) {
+      sketch.palette = colors;
+    }
+  }
+
   Vue.component('palette-chart', {
     template: '#palette-chart-template',
     data: () => {
       return {};
     },
-    ready: () => {
-    },
     props: {
       palette: {
         type: Array,
-        default: function() {return [];}
+        default: function() {return []; }
       }
     },
     ready: function() {
@@ -77,7 +90,7 @@
           .style('fill', function(d) {
             return d3.rgb(d.rgb[0] * 255, d.rgb[1] * 255, d.rgb[2] * 255);
           })
-          .on('click', function(d){
+          .on('click', function() {
             // toggle active
             d3.select(this)
               .classed('active', !d3.select(this).classed('active'));
@@ -96,17 +109,7 @@
 
 
 
-  function updateColors(){
-    // Select all colors
-    var colors = [];
-    d3.selectAll('circle.active').each(function(d){
-      var color = d3.rgb(d.rgb[0] * 255, d.rgb[1] * 255, d.rgb[2] * 255);
-      colors.push(color);
-    });
-    if (!_.isNil(sketch)) {
-      sketch.palette = colors;
-    }
-  }
+
 
 
 
@@ -115,8 +118,7 @@
 
 
   // select palette if model is loaded
-  document.addEventListener('model-loaded', function(evt){
-    var model = evt.detail;
+  document.addEventListener('model-loaded', function(){
     updateColors();
   });
 

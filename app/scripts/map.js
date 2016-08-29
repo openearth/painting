@@ -1,7 +1,8 @@
+/* eslint no-underscore-dangle: 0  */
+/* global app, bus */
 (function () {
+  'use strict';
 
-  /*  eslint no-underscore-dangle: 0  */
-  /* global: sketch */
 
   Vue.component('map-controls', {
     template: '#map-controls-template',
@@ -16,7 +17,7 @@
     },
     ready: function() {
 
-      $('#lockmap').on('switchChange.bootstrapSwitch', (evt) => {
+      $('#lockmap').on('switchChange.bootstrapSwitch', () => {
         if ($('#lockmap').is(':checked')) {
           this.locked = true;
         } else {
@@ -33,7 +34,6 @@
         }
       },
       lockMap: function() {
-        'use strict';
         var map = this.map;
         // Disable drag and zoom handlers.
         map.dragging.disable();
@@ -50,7 +50,6 @@
 
       },
       unlockMap: function() {
-        'use strict';
         var map = this.map;
         // Disable drag and zoom handlers.
         map.dragging.enable();
@@ -95,8 +94,7 @@
             position: 'topright'
           },
 
-          onAdd: function (map) {
-            'use strict';
+          onAdd: function () {
             // create the control container with a particular class name
             var container = L.DomUtil.create('div', 'my-custom-control leaflet-control leaflet-bar');
 

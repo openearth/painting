@@ -1,9 +1,6 @@
-/* global AdvectionFilter, Particles */
-var displacementFilter;
-var particles;
-
+/* global AdvectionFilter, bus, app */
 (function () {
-
+  'use strict';
 
   Vue.component('uv-source', {
     template: '#uv-source-template',
@@ -106,7 +103,7 @@ var particles;
         videoSprite.width = width;
         videoSprite.height = height;
         // Create a render texture
-        displacementFilter = new AdvectionFilter(
+        var displacementFilter = new AdvectionFilter(
           videoSprite,
           {
             scale: model.scale,

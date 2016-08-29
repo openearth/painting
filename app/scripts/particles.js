@@ -1,48 +1,7 @@
 (function () {
-
-  Vue.component('particle-component', {
-    template: '#particle-component-template',
-    props: ['model', 'sketch', 'pipeline'],
-    data: function() {
-      return {
-      };
-    },
-    ready: function() {
-      // find the first video in this container
-
-    },
-    watch: {
-      'model': 'resetParticles',
-      'sketch': 'resetParticles'
-    },
-    methods: {
-      resetParticles: function(){
-        if (_.isNil(this.sketch)){
-          console.warn('no canvas, no particles', this.sketch);
-          return;
-        }
-        if (_.isNil(this.pipeline)) {
-          console.warn('no pipeline, no particles', this.pipeline);
-          return;
-        }
-
-        this.model.particles = new Particles(this.model, this.sketch.element, this.pipeline);
-      },
-      addParticles: function() {
-        console.log('adding particles');
-        if (!_.isNil(this.model.particles)) {
-          var particles = this.model.particles;
-          particles.culling(particles.particles.length + 50);
-        }
-      },
-      removeParticles: function() {
-        this.model.particles.culling(0);
-      }
-    }
-  });
+  'use strict';
 
   function Particles(model, canvas, container) {
-    'use strict';
     this.canvas = canvas;
     this.width = canvas.width;
     this.height = canvas.height;
@@ -80,10 +39,9 @@
   };
 
   Particles.prototype.create = function() {
-    'use strict';
     // replace it
     // var newParticle = PIXI.Sprite.fromImage(this.icon);
-    this.iconTexture = new PIXI.Texture.fromCanvas(this.canvasIcon);
+    this.iconTexture = PIXI.Texture.fromCanvas(this.canvasIcon);
     var newParticle = new PIXI.Sprite(this.iconTexture);
     // set anchor to center
     newParticle.anchor.set(0.5);
@@ -96,14 +54,12 @@
   };
 
   Particles.prototype.clear = function () {
-    'use strict';
     // clear particles
     this.particles = [];
     this.sprites.removeChildren();
   };
 
   Particles.prototype.culling = function (n) {
-    'use strict';
     // make sure we have n particles by breeding or culling
     // also update the sprites
 
@@ -126,8 +82,6 @@
   };
 
   Particles.prototype.step = function () {
-    'use strict';
-
     if (!this.particles.length) {
       return;
     }
@@ -149,7 +103,7 @@
     uvctx.drawImage(uv, 0, 0, width, height);
     var frame = uvctx.getImageData(0, 0, width, height);
     // TODO: use this instead of frame.data
-    var frameBuffer = new Uint32Array(frame.data.buffer);
+    // var frameBuffer = new Uint32Array(frame.data.buffer);
 
     _.each(this.particles, (particle) => {
       var idx = (
@@ -194,7 +148,7 @@
           // add to array and to particle container
           this.particles.push(newParticle);
           this.sprites.addChild(newParticle);
-        };
+        }
 
       }
       if (this.particles.length < 300 ) {
@@ -222,6 +176,49 @@
     }, this);
     this.counter++;
   };
+
+
+
+  Vue.component('particle-component', {
+    template: '#particle-component-template',
+    props: ['model', 'sketch', 'pipeline'],
+    data: function() {
+      return {
+      };
+    },
+    ready: function() {
+      // find the first video in this container
+
+    },
+    watch: {
+      'model': 'resetParticles',
+      'sketch': 'resetParticles'
+    },
+    methods: {
+      resetParticles: function(){
+        if (_.isNil(this.sketch)){
+          console.warn('no canvas, no particles', this.sketch);
+          return;
+        }
+        if (_.isNil(this.pipeline)) {
+          console.warn('no pipeline, no particles', this.pipeline);
+          return;
+        }
+
+        this.model.particles = new Particles(this.model, this.sketch.element, this.pipeline);
+      },
+      addParticles: function() {
+        console.log('adding particles');
+        if (!_.isNil(this.model.particles)) {
+          var particles = this.model.particles;
+          particles.culling(particles.particles.length + 50);
+        }
+      },
+      removeParticles: function() {
+        this.model.particles.culling(0);
+      }
+    }
+  });
 
 
 
