@@ -34,7 +34,7 @@ var displacementSprite = PIXI.Sprite.fromImage('images/displace.png');
 var displacementFilter = new AdvectionFilter(displacementSprite, {
     scale: 1.0,
     flipv: false,
-    upwind: false
+    fade: 1.0
 }
 );
 
@@ -49,10 +49,6 @@ displacementFilter.scale.y = s * 2;
 requestAnimationFrame( animate );
 
 function animate() {
-
-  // just for fun, lets rotate mr rabbit a little
-  //bunny.rotation += 0.1;
-  //bunny.position.x -= 1;
 
   // render the stage
   renderer.render(stage);

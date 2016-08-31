@@ -19,6 +19,7 @@ var fragmentSource = [
     'varying vec2 vTextureCoord;',
     'uniform vec2 scale;',
     'uniform bool flipv;',
+    //'uniform float fade;',
     'uniform sampler2D uSampler;',
     'uniform sampler2D mapSampler;',
     'void main(void)',
@@ -63,10 +64,10 @@ var fragmentSource = [
 
     '  // velocities',
     '  float extrascale = 0.5;',
-    '  float fade = 1.0;',
     '  vec4 uMe = texture2D(mapSampler, mMe);', // map
-    '  float uMe_x = abs(uMe.x - 0.5) * 2.0 * extrascale * fade;',
-    '  float uMe_y = abs(uMe.y - 0.5) * 2.0 * extrascale * fade;',
+    '  float uMe_x = abs(uMe.x - 0.5) * 2.0 * extrascale;',
+    '  float uMe_y = abs(uMe.y - 0.5) * 2.0 * extrascale;',
+    '  float uMe_z = uMe.z - 0.5;',
     '  float uLeft = (texture2D(mapSampler, mLeft).x - 0.5) * 2.0 * extrascale;',
     '  float uRight = (texture2D(mapSampler, mRight).x - 0.5) * 2.0 * extrascale;',
     '  float uTop = (texture2D(mapSampler, mTop).y - 0.5) * 2.0 * extrascale;',
@@ -78,8 +79,9 @@ var fragmentSource = [
     '  }',
 
     '  // new color',
+    '  float fade = 0.99;', 
     '  vec4 colorSum = ',
-    '    cMe ',
+    '    cMe * fade ',
     '    - cMe * uMe_x ',
     '    - cMe * uMe_y ',
     '    - cLeft * min(0.0, uLeft) ',
@@ -90,7 +92,7 @@ var fragmentSource = [
 
     '  // mask',
     '  gl_FragColor = colorSum;',
-    '  if (uMe.z > 0.0) {',
+    '  if (uMe_z > 0.0) {',
     '    gl_FragColor *= 0.0;',
     '  }',
     '}',
@@ -130,7 +132,7 @@ function AdvectionFilter(sprite, settings)
       otherMatrix: { type: 'mat3', value: maskMatrix.toArray(true) },
       scale: { type: 'v2', value: { x: 0, y: 0 } },
       flipv: { type: 'bool', value: settings.flipv },
-      upwind: { type: 'bool', value: settings.upwind}
+      fade: { type: 'float', value: settings.fade }
     }
   );
 
@@ -143,9 +145,11 @@ function AdvectionFilter(sprite, settings)
 
   var flipv = _.get(settings, 'flipv', false);
   this.flipv = flipv;
+  console.log('flip in advection', this.flipv, flipv, this);
 
-  // var upwind = _.get(settings, 'upwind', false);
-  // this.upwind = upwind;
+  var fade = _.get(settings, 'fade', 1.00);
+  this.fade = fade;
+  console.log('fade in advection', this.fade, fade, this);
 
 }
 
@@ -161,9 +165,9 @@ AdvectionFilter.prototype.applyFilter = function (renderer, input, output)
   this.uniforms.otherMatrix.value = this.maskMatrix.toArray(true);
   this.uniforms.scale.value.x = this.scale.x * (1 / input.frame.width);
   this.uniforms.scale.value.y = this.scale.y * (1 / input.frame.height);
-  // // apply vertical flip
+
   this.uniforms.flipv.value = this.flipv;
-  // this.uniforms.upwind.value = this.upwind;
+  this.uniforms.fade.value = this.fade;
 
   var shader = this.getShader(renderer);
   // draw the filter...
