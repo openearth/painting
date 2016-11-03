@@ -6,7 +6,7 @@
     template: '#story-container-template',
     data: function() {
       return {
-        storyUrl: 'data/stories/tutorial.json',
+        storyUrl: 'data/stories/ecomare.json',
         story: null
       };
     },
@@ -45,7 +45,12 @@
 
             });
 
-
+            var jssorSliders = Array.from(this.$el.getElementsByClassName('jssor-slider-container'));
+            console.log('sliders', jssorSliders)
+            _.each(jssorSliders, function(el) {
+              var slider = new $JssorSlider$(el.id, {$AutoPlay: true});
+              console.log('slider', el['id']);
+            })
           });
         });
 

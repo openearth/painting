@@ -1,0 +1,87 @@
+{
+	"title": "Ecomare",
+	"model": "wadden",
+	"items": [{
+		"title": "De Waddenzee",
+		"text": "De Waddenzee is het grootste ononderbroken gebied van wadden en barrière eilanden ter wereld. Eb en vloed zijn zeer bepalend voor de Waddenzee. Met laagwater ligt de helft van de Waddenzee droog. In 2009 is het waddengebied uitgeroepen tot werelderfgoed vanwege de rijke natuur en cultuur. Miljoenen trekvogels, die van hun broedgebieden in het hoge noorden naar tropisch Afrika vliegen, maken een stop in het waddengebied om te eten en uit te rusten. Daarom is het gebied van internationaal belang.",
+		"images": [{
+			"src": "data/stories/images/satmwad.png",
+			"caption": "bron: Aotearoa - Eigen werk",
+			"width": "300",
+			"height": "200"
+		},
+		{
+			"src": "data/stories/images/painting.png",
+			"caption": "bron: Aotearoa - Eigen werk",
+			"width": "300",
+			"height": "200"
+		}],
+		"latlng": {
+			"lat": 54,
+			"lng": 6
+		},
+		"zoom": 7
+	}, {
+		"title": "De Wadden in beweging",
+		"text": "Niet alleen het water is constant in beweging door eb en vloed, ook het zand verplaatst zich langzaam. De wadden is dus een zeer dynamisch gebied. Op dit scherm zie je hoe het water stroomt…",
+		"video": "data/stories/movies/griend.mp4",
+		"caption": "De satellietbeelden van de afgelopen 20 jaar laten zien hoe de eilanden en de Griend in het midden bewegen.",
+		"latlng": {
+			"lat": 53,
+			"lng": 5
+		},
+		"zoom": 8
+
+
+	}, {
+		"title": "Ontdek hoe het water stroomt",
+		"text": "Trek een lijn of zet een stip in de Waddenzee en kijk hoe het water dit verplaatst.",
+		"latlng": {
+			"lat": 52.9810755,
+			"lng": 4.73
+		},
+		"zoom": 11,
+		"img": {
+			"src": "data/stories/images/painting.png",
+			"width": 320,
+			"height": 320
+		}
+	}, {
+		"title": "Flessenpost",
+		"text": "Kijk waar de stroming je flessenpost naar toe brengt. Dit hangt af van het getij en de plek waar je de fles in zee gooit.",
+		"latlng": {
+			"lat": 52.9810755,
+			"lng": 4.73
+		},
+		"zoom": 9,
+		"img": {
+			"src": "data/stories/images/pp-flessenpost.jpg",
+			"width": 320,
+			"height": 320
+		}
+	}, {
+		"title": "Wantij",
+		"text": "Trek een lijn aan de Noordzeekant van de eilanden en zie hoe de twee vloedstromen elkaar raken onder de eilanden. Die plek heet wantij, daar is de bodem het hoogst, omdat er veel zand en slib ligt.",
+		"img": {
+			"src": "data/stories/images/history.png",
+			"width": 320,
+			"height": 220
+		}
+	}, {
+		"title": "Vervuiling",
+		"text": "Op 31 maart 2016 was er olievervuiling in de haven van Oudeschild. Door een ongeluk stroomde er 72 kuub gasolie de haven in. Kijk hoe die vervuiling zich over de Waddenzee verspreidt, als je er niets aan doet.",
+		"img": {
+			"src": "data/stories/images/vervuiling.jpg",
+			"width": 320,
+			"height": 220
+		}
+	}, {
+		"title": "Spelen met het getij",
+		"text": "Door het scherm aan te raken kun je spelen met het getij. Kijk maar wat er gebeurt!",
+		"img": {
+			"src": "data/stories/images/painting.png",
+			"width": 320,
+			"height": 320
+		}
+	}]
+}
