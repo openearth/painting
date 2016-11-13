@@ -1,0 +1,12 @@
+<template id="paintings-template">
+  <div class="container-fluid">
+    <div class="row">
+      <div v-for="painting in paintings" class="col-xs-3 thumbnail">
+        <a @click="select(painting)">
+          <img width="50" height="50" :src="painting.url" :title="painting.painter">
+        </a>
+
+      </div>
+    </div>
+  </div>
+</template>

@@ -46,11 +46,10 @@
             });
 
             var jssorSliders = Array.from(this.$el.getElementsByClassName('jssor-slider-container'));
-            console.log('sliders', jssorSliders)
-            _.each(jssorSliders, function(el) {
+            _.map(jssorSliders, function(el) {
               var slider = new $JssorSlider$(el.id, {$AutoPlay: true});
-              console.log('slider', el['id']);
-            })
+              return slider;
+            });
           });
         });
 

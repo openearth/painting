@@ -2,6 +2,7 @@
 import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import githubPages from 'gulp-gh-pages';
+import concat from "gulp-concat";
 import debug from 'gulp-debug';
 import browserSync from 'browser-sync';
 import del from 'del';
@@ -148,7 +149,7 @@ gulp.task('models', () => {
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
-gulp.task('serve', ['styles', 'scripts', 'fonts'], () => {
+gulp.task('serve', ['styles', 'scripts', 'fonts', 'templates'], () => {
   browserSync({
     notify: false,
     port: 9000,
@@ -162,6 +163,7 @@ gulp.task('serve', ['styles', 'scripts', 'fonts'], () => {
 
   gulp.watch([
     'app/*.html',
+    'app/templates/*.html',
     'app/scripts/**/*.js',
     'app/images/**/*',
     '.tmp/fonts/**/*'
@@ -213,6 +215,15 @@ gulp.task('wiredep', () => {
       ignorePath: /^(\.\.\/)*\.\./
     }))
     .pipe(gulp.dest('app'));
+});
+
+gulp.task("templates", [], () => {
+  return gulp.src("app/templates/*.html")
+    .pipe($.htmlmin({collapseWhitespace: true}))
+    .pipe(concat("templates.html"))
+  // this is used in serve and in build
+    .pipe(gulp.dest(".tmp/templates"))
+    .pipe(gulp.dest("dist/templates"));
 });
 
 gulp.task('build', ['lint', 'html', 'images', 'moreimages', 'fonts', 'morefonts', 'extras', 'data', 'models'], () => {
