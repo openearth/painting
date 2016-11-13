@@ -6,10 +6,14 @@
 
   Vue.component('map-controls', {
     template: '#map-controls-template',
+    props: {
+      map: {
+        type: Object
+      }
+    },
     data: function() {
       return {
-        locked: true,
-        map: this.$root.map
+        locked: true
       };
     },
     watch: {
