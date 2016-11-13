@@ -198,7 +198,7 @@
       parent: app
     });
     console.log('modelCanvas', modelCanvas);
-
+    bus.$emit('model-canvas-created', modelCanvas);
 
   });
 

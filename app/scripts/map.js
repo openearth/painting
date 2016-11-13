@@ -182,6 +182,11 @@
           drawingLayer._image = drawing.$el;
           drawingLayer.canvas = drawing.$el;
         });
+        bus.$on('model-canvas-created', function(model) {
+          // once a new canvas is created replace the current one with it
+          modelLayer._image = model.$el;
+          modelLayer.canvas = model.$el;
+        });
 
         bus.$emit('model-layer-added', {
           drawingElement: drawingLayer.canvas,
