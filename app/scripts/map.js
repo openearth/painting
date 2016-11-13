@@ -155,8 +155,10 @@
           var layer = layers.pop();
           console.log('destroying layer', layer);
           // if it is bound to vue, destroy vue object.
-          if (_.has(layer, 'canvas.__vue__')) {
+          if (_.has(layer, 'canvas.__vue__.$destroy')) {
             layer.canvas.__vue__.$destroy();
+          } else {
+            console.warn('cannot delete', layer);
           }
           map.removeLayer(layer);
         }
@@ -174,6 +176,13 @@
         layers.push(modelLayer);
         var drawingLayer = L.imageOverlay.canvas(bounds, {id: 'drawing'}).addTo(map);
         layers.push(drawingLayer);
+
+        bus.$on('drawing-canvas-created', function(drawing) {
+          // once a new canvas is created replace the current one with it
+          drawingLayer._image = drawing.$el;
+          drawingLayer.canvas = drawing.$el;
+        });
+
         bus.$emit('model-layer-added', {
           drawingElement: drawingLayer.canvas,
           modelElement: modelLayer.canvas,
