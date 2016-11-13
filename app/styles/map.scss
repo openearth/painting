@@ -1,6 +1,7 @@
 #map {
-    height: 100vh;
+  flex: auto;
 }
+
 #webgl {
 }
 #drawing {
@@ -8,10 +9,12 @@
 
 }
 #uv {
+  image-rendering: pixelated;
 }
 #uvhidden {
   /* hide, used for computation */
   display: none;
+  image-rendering: pixelated;
 }
 .layer {
 }

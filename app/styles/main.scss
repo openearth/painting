@@ -1,10 +1,19 @@
 $icon-font-path: '../fonts/';
 $font-family-base: 'Open Sans', sans-serif;
 $headings-font-weight: 300 !default;
-$tab-fg: #43535A ;
-$tab-active-fg: #8BA2A4;
-$tab-active-bg: #23527C;
+
+$foreground: #eee;
+$sea-color: #43535a;
+
+$tab-fg: #43535a;
+$tab-active-fg: #8ba2a4;
+$tab-active-bg: #23527c;
+
 $OpenSansPath: '../fonts';
+
+$brand-info: #64FF64;
+
+
 // bower:scss
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 @import "bower_components/sidebar-v2/scss/leaflet-sidebar.scss";
@@ -15,32 +24,102 @@ $OpenSansPath: '../fonts';
 
 @import "map.scss";
 
+.vertical-columns {
+  display: flex;
+}
+
+.vertical-box {
+  flex: auto;
+  height: 100vh;
+  display: flex;
+  flex-flow: column;
+}
+
+.story-container {
+  background-color: $sea-color;
+  color: $foreground;
+  flex: none;
+  width: 30vw;
+  max-height: 100vh;
+  overflow-y: scroll;
+  padding: 10px;
+}
+.story-item {
+  video,img {
+    max-width: 100%;
+  }
+  .jssor-slider-container {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+  }
+  .jssor-slider {
+    cursor: move;
+    position: static;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 300px;
+  }
+}
+
+.chart {
+  background-color: $sea-color;
+  color: $foreground;
+  flex: none;
+  height: 30vh;
+  svg {
+    width: 100%;
+    height: 100%;
+    path {
+      fill: none;
+    }
+    .line {
+      stroke: $brand-info;
+      stroke-opacity: 0.5;
+    }
+  }
+}
+
 
 circle.active {
+  stroke: #000;
   stroke-width: 2;
-  stroke: black;
 }
 
 
 .nopadding {
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .crosshair {
   cursor: crosshair;
 }
 
+/* .leaflet-bar, .leaflet-control-layers { */
+/*   background-color: rgba(20, 20, 20, 0.0); */
+/* } */
+
+/* .leaflet-bar a { */
+/*   background-color: rgba(20, 20, 20, 0.5); */
+/*   color: rgba(220, 255, 220, 0.9); */
+/* } */
+
 
 .panel.sidebar-pane {
-  padding: 0px;
+  padding: 0;
 }
 .sidebar-content {
   background-color: rgba(20, 20, 20, 0.8);
   color: rgba(255, 255, 255, 0.9);
 }
 #paintings  .row  img {
-  height: 50px;
+  min-height: 50px;
+  min-width: 50px;
 }
 .sidebar-tabs {
   background-color: rgba(20, 20, 20, 0.5);
@@ -50,7 +129,7 @@ circle.active {
   }
 }
 .sidebar-pane .panel-heading {
-  border-top-left-radius: 0px;
+  border-top-left-radius: 0;
 
 }
 .color {
@@ -60,7 +139,7 @@ circle.active {
 }
 div .colors {
   display: flex;
-  padding: 0px;
+  padding: 0;
 }
 div .palette {
   margin-top: 5px;
@@ -86,6 +165,12 @@ div .row img {
 body {
 
 }
+
+// always style with pointer, also when href is missing and only click is attached
+a:hover {
+  cursor:pointer;
+}
+
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,

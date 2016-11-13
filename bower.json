@@ -14,12 +14,14 @@
     "handlebars": "~3.0.3",
     "seiyria-bootstrap-slider": "~4.13.1",
     "pixi.js": "~3.0.7",
-    "d3": "~3.5.6",
+    "d3": "~4.2.2",
     "open-sans-fontface": "~1.4.2",
     "bootstrap-switch": "~3.3.2",
-    "vue-router": "^0.7.13",
-    "vue": "^1.0.26",
-    "modernizr": "^2"
+    "vue-router": "^2.0.0",
+    "vue": "^2.0.0",
+    "modernizr": "^2",
+    "scrollmagic": "^2.0.5",
+    "jssor-slider": "jssor#^21.1.5"
   },
   "overrides": {
     "pixi.js": {
@@ -48,6 +50,17 @@
       "main": [
         "./open-sans.scss",
         "./fonts/**/*"
+      ]
+    },
+    "scrollmagic": {
+      "main": [
+        "scrollmagic/uncompressed/ScrollMagic.js",
+        "scrollmagic/uncompressed/plugins/debug.addIndicators.js"
+      ]
+    },
+    "vue": {
+      "main": [
+        "dist/vue.js"
       ]
     },
     "fontawesome": {

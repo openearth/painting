@@ -8,12 +8,15 @@
   },
   "devDependencies": {
     "babel-core": "^6.2.1",
+    "babel-eslint": "^6.1.2",
     "babel-preset-es2015": "^6.1.18",
     "browser-sync": "^2.2.1",
     "del": "^1.1.1",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
+    "gulp-babel": "^6.1.2",
     "gulp-cache": "^0.2.8",
+    "gulp-debug": "^2.1.2",
     "gulp-eslint": "^0.13.2",
     "gulp-gh-pages": "^0.5.4",
     "gulp-if": "^1.2.5",
@@ -26,16 +29,19 @@
     "gulp-size": "^1.2.1",
     "gulp-sourcemaps": "^1.5.0",
     "gulp-uglify": "^1.1.0",
-    "gulp-useref": "^1.1.1",
+    "gulp-useref": "^3.1.0",
     "main-bower-files": "^2.5.0",
     "opn": "^1.0.1",
     "wiredep": "^2.2.2"
   },
   "eslintConfig": {
     "env": {
-      "node": true,
       "browser": true,
-      "jquery": true
+      "jquery": true,
+      "es6": true
+    },
+    "ecmaFeatures": {
+      "arrowFunctions": true
     },
     "globals": {
       "_": true,
@@ -44,7 +50,9 @@
       "PIXI": true,
       "Sketch": true,
       "d3": true,
-      "sketch": true
+      "sketch": true,
+      "Vue": true,
+      "ScrollMagic": true
     },
     "rules": {
       "quotes": [
