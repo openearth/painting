@@ -100,7 +100,7 @@ var sketch;
           }
         });
         // set on self
-        this.$set('sketch', sketch);
+        Vue.set(this, 'sketch', sketch);
         // emit so it can be caught by app and synced in properties
         bus.$emit('sketch-created', sketch);
       }
