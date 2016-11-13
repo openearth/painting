@@ -13,7 +13,7 @@
     watch: {
       'model': 'modelUpdate'
     },
-    ready: function() {
+    mounted: function() {
       // find the first video in this container
     },
     methods: {
@@ -33,10 +33,10 @@
           video.bind('loadeddata', () => {
             console.log('video loaded');
             this.loaded = true;
-            this.$set('model.duration', video[0].duration);
+            this.$set('model', 'duration', video[0].duration);
           });
           video.bind('timeupdate', () => {
-            this.$set('model.currentTime', video[0].currentTime);
+            this.$set('model', 'currentTime', video[0].currentTime);
           });
 
         });
@@ -57,7 +57,7 @@
         pipeline: null
       };
     },
-    ready: function() {
+    mounted: function() {
       this.createContext();
     },
     methods: {

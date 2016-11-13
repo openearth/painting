@@ -24,7 +24,7 @@ var sketch;
         sketch: null
       };
     },
-    ready: function(){
+    mounted: function(){
       this.addDrawing();
     },
     methods: {

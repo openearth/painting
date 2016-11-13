@@ -17,7 +17,7 @@
     watch: {
       locked: 'lockedChanged'
     },
-    ready: function() {
+    mounted: function() {
 
       $('#lockmap').on('switchChange.bootstrapSwitch', () => {
         if ($('#lockmap').is(':checked')) {
@@ -87,7 +87,7 @@
         layers: []
       };
     },
-    ready: function(){
+    mounted: function(){
       this.createMap();
     },
     methods: {

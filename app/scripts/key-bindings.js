@@ -20,7 +20,7 @@
         ]
       };
     },
-    ready: function() {
+    mounted: function() {
       window.addEventListener('keyup', this.keyUp);
     },
     methods: {

@@ -10,7 +10,7 @@
         story: null
       };
     },
-    ready: function(){
+    mounted: function(){
       var controller = new ScrollMagic.Controller({
         container: this.$el
       });

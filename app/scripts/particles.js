@@ -186,7 +186,7 @@
       return {
       };
     },
-    ready: function() {
+    mounted: function() {
       // find the first video in this container
 
     },

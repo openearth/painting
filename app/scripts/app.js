@@ -23,7 +23,7 @@ var app;
   // Vue application
   app = new Vue({
     el: '#app',
-    ready: function() {
+    mounted: function() {
       this.$nextTick(function() {
         $('input[type="checkbox"]').bootstrapSwitch();
       });
@@ -71,8 +71,6 @@ var app;
   bus.$on('pipeline-created', function(pipeline) {
     app.$set('pipeline', pipeline);
   });
-
-  Vue.config.debug = true;
 
 
 

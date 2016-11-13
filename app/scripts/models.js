@@ -17,7 +17,7 @@
         models: []
       };
     },
-    ready: function() {
+    mounted: function() {
       // get models.json
       fetch('data/models.json')
         .then((response) => {

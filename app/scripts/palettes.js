@@ -10,7 +10,7 @@
         paintings: []
       };
     },
-    ready: function() {
+    mounted: function() {
       fetch('data/paintings.json')
         .then((resp) => {
           return resp.json();
@@ -52,7 +52,7 @@
         default: function() {return []; }
       }
     },
-    ready: function() {
+    mounted: function() {
       /* global sketch */
       this.$watch('palette', function(){
         this.updateChart();
