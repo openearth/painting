@@ -28,13 +28,13 @@ L.ImageOverlay.Canvas = L.ImageOverlay.extend({
     var size = bottomRight._subtract(topLeft);
 
     // The image is the canvas
-    this._image = this.canvas = L.DomUtil.create('canvas', 'leaflet-canvas-layer');
+    this._image = this.canvas = L.DomUtil.create('canvas', 'leaflet-image-layer');
     if (this.options.id) {
       this._image.id = this.options.id;
     }
     // Set the width and height properties, custom or depending on view size
     this._image.width = this.options.width || size.x;
-    this._image.height = this.options.height || size.y;
+    this._image.height = this.options.width || size.y;
 
     if (this._map.options.zoomAnimation && L.Browser.any3d) {
       L.DomUtil.addClass(this._image, 'leaflet-zoom-animated');
@@ -52,6 +52,7 @@ L.ImageOverlay.Canvas = L.ImageOverlay.extend({
       onload: L.Util.bind(this._onImageLoad, this)
     });
   },
+
   _reset: function () {
     'use strict';
     var image = this._image;
@@ -61,7 +62,7 @@ L.ImageOverlay.Canvas = L.ImageOverlay.extend({
     var size = bottomRight._subtract(topLeft);
 
     image.width = this.options.width || size.x;
-    image.height = this.options.height || size.y;
+    image.height = this.options.width || size.y;
 
     // reposition the image on reset
     L.DomUtil.setPosition(image, topLeft);
