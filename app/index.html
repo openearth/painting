@@ -139,12 +139,19 @@
       <div class="story-container">
         <div id="trigger-top" class="spacer s0"></div>
         <div v-if="story">
-          <div v-for="item in story.items" class="story-item">
+          <div v-for="(index, item) in story.items" class="story-item">
             <h2>{{ item.title }}</h2>
             <p v-if="item.text">{{ item.text }}</p>
             <video v-if="item.video" :src="item.video" autoplay loop></video>
             <img v-if="item.img && item.img.src" :src="item.img.src" :width="item.img.width" :height="item.img.height">
             <p v-if="item.img && item.img.caption">{{ item.img.caption }}</p>
+            <div v-if="item.images" class="jssor-slider-container" :id="'slider-'+index">
+              <div data-u="slides" class="jssor-slider">
+                <div v-for="img in item.images">
+                  <img  data-u="image" :src="img.src" :width="img.width" :height="img.height">
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -233,7 +240,7 @@
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/fetch/fetch.js"></script>
-    <script src="/bower_components/es6-promise/promise.js"></script>
+    <script src="/bower_components/es6-promise/es6-promise.js"></script>
     <script src="/bower_components/lodash/lodash.js"></script>
     <script src="/bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="/bower_components/mapbox.js/mapbox.js"></script>
@@ -250,6 +257,7 @@
     <script src="/bower_components/vue/dist/vue.js"></script>
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js"></script>
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
+    <script src="/bower_components/jssor-slider/js/jssor.slider.mini.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
