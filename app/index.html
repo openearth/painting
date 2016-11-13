@@ -30,12 +30,12 @@
 
     <template id="models-overview-template" >
       <div>
-        <div v-for="model in models" class="model" id="{{ model.id }}">
+        <div v-for="model in models" class="model" :id="model.id">
           <div class="row">
             <div class="col-xs-12">
               <h2>{{ model.title }}</h2>
               <p>{{ model.abstract }}</p>
-              <a @click="selectModel(model)" class="btn btn-primary btn-xs load-model" data-id="{{ model.id }}">
+              <a @click="selectModel(model)" class="btn btn-primary btn-xs load-model" :data-id="model.id">
                 <i class="fa fa-play"></i>
               </a>
             </div>
@@ -110,8 +110,8 @@
         <div id="uv-container" v-if="model">
           <video v-if="model.uv.tag == 'video'"
                  id="uv" autoplay loop
-                 width="{{ model.width }}"
-                 height="{{ model.height }}"
+                 :width="model.width"
+                 :height="model.height"
                  :src="model.uv.src"
                  >
           </video>
@@ -119,8 +119,8 @@
           <img v-if="model.uv.tag == 'img'"
                id="uv"
                autoplay loop
-               width="{{ model.width }}"
-               height="{{ model.height }}"
+               :width="model.width"
+               :height="model.height"
                :src="model.uv.src"
                />
         </div>
@@ -130,7 +130,10 @@
     <template id="particle-component-template">
       <div class="hidden layer">
         <div v-if="model">
-          <canvas id="uvhidden" width="{{ model.uv.width }}" height="{{ model.uv.height }}"></canvas>
+          <canvas
+             id="uvhidden"
+             :width="model.uv.width"
+             :height="model.uv.height"></canvas>
         </div>
 
       </div>
@@ -139,7 +142,7 @@
       <div class="story-container">
         <div id="trigger-top" class="spacer s0"></div>
         <div v-if="story">
-          <div v-for="(index, item) in story.items" class="story-item">
+          <div v-for="(item, index) in story.items" class="story-item">
             <h2>{{ item.title }}</h2>
             <p v-if="item.text">{{ item.text }}</p>
             <video v-if="item.video" :src="item.video" autoplay loop></video>
@@ -204,13 +207,14 @@
               <palette-chart :palette="palette"></palette-chart>
               <h4>Controls for drawing and map</h4>
               <drawing-controls :sketch="sketch"></drawing-controls>
-              <map-controls v-ref:map-controls :map="map" ></map-controls>
+              <map-controls ref="mapControls" :map="map" ></map-controls>
             </div>
           </div>
         </div>
         <map-container
-           v-ref:map-container
-           :map.sync="map"
+           ref="mapContainer"
+           name="map-container"
+           :map="map"
            :model="model"
            :sidebar="settings.sidebar"
            >
@@ -219,14 +223,14 @@
       </div>
       <story-container v-if="settings.story"></story-container>
       <particle-component
-         v-ref:particle-component
-         :sketch="sketch"
+         ref="particleComponent
+         :sketch="sketch""
          :pipeline="pipeline"
          :model="model"
          ></particle-component>
       <!-- Hidden layers -->
       <div class="hidden layer">
-        <uv-source :model="model" v-ref:uv-source></uv-source>
+        <uv-source :model="model" ref="uvSource"></uv-source>
         <div>
           <canvas id="canvas-icon" width="10" height="10"></canvas>
         </div>
