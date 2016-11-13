@@ -64,6 +64,11 @@
         "scss/font-awesome.scss",
         "fonts/**/*"
       ]
+    },
+    "vue": {
+      "main": [
+        "dist/vue.js"
+      ]
     }
   },
   "devDependencies": {

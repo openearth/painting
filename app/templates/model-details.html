@@ -1,0 +1,19 @@
+<template id="model-details-template">
+  <div>
+    <div v-if="model">
+      <h2>{{ model.title }} <small>{{ model.engine }}</small></h2>
+      <dl>
+        <dt>Abstract</dt>
+        <dd>{{ model.abstract }}</dd>
+      </dl>
+      <dl>
+        <dt>Number of advection cells</dt>
+        <dd>{{ model.width * model.height }} ({{model.width}} x {{ model.height}})</dd>
+      </dl>
+
+    </div>
+    <div v-else>
+      no model loaded
+    </div>
+  </div>
+</template>
