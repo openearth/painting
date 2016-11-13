@@ -6,18 +6,16 @@
 
   Vue.component('map-controls', {
     template: '#map-controls-template',
-    props: {
-      map: Object
-    },
     data: function() {
       return {
-        locked: true
+        locked: true,
+        map: this.$root.map
       };
     },
     watch: {
       locked: 'lockedChanged'
     },
-    ready: function() {
+    mounted: function() {
 
       $('#lockmap').on('switchChange.bootstrapSwitch', () => {
         if ($('#lockmap').is(':checked')) {
@@ -76,7 +74,6 @@
     template: '<div id="map" :class="{\'sidebar-map\': sidebar}"></div>',
     props: {
       model: Object,
-      map: Object,
       sidebar: {
         type: Boolean,
         default: function() { return true; }
@@ -84,10 +81,11 @@
     },
     data: function() {
       return {
+        map: this.$root.map,
         layers: []
       };
     },
-    ready: function(){
+    mounted: function(){
       this.createMap();
     },
     methods: {
@@ -141,7 +139,8 @@
         });
         var drawToggle = new ToggleControl({});
         drawToggle.addTo(map);
-        this.$set('map', map);
+        Vue.set(this.$root, 'map', map);
+        this.map = map;
       },
       loadModel: function() {
         var layers = this.layers;

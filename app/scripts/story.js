@@ -10,7 +10,7 @@
         story: null
       };
     },
-    ready: function(){
+    mounted: function(){
       var controller = new ScrollMagic.Controller({
         container: this.$el
       });
@@ -21,7 +21,7 @@
           return resp.json();
         })
         .then((json) => {
-          this.$set('story', json);
+          Vue.set(this, 'story', json);
 
           this.$nextTick(() => {
             var storyElements = this.$el.getElementsByClassName('story-item');

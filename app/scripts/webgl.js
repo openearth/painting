@@ -13,7 +13,7 @@
     watch: {
       'model': 'modelUpdate'
     },
-    ready: function() {
+    mounted: function() {
       // find the first video in this container
     },
     methods: {
@@ -33,10 +33,10 @@
           video.bind('loadeddata', () => {
             console.log('video loaded');
             this.loaded = true;
-            this.$set('model.duration', video[0].duration);
+            Vue.set(this.model, 'duration', video[0].duration);
           });
           video.bind('timeupdate', () => {
-            this.$set('model.currentTime', video[0].currentTime);
+            Vue.set(this.model, 'currentTime', video[0].currentTime);
           });
 
         });
@@ -57,7 +57,7 @@
         pipeline: null
       };
     },
-    ready: function() {
+    mounted: function() {
       this.createContext();
     },
     methods: {
@@ -171,8 +171,8 @@
         }
         animate();
 
-        this.$set('renderTextureFrom', renderTextureFrom);
-        this.$set('renderTextureTo', renderTextureTo);
+        Vue.set(this, 'renderTextureFrom', renderTextureFrom);
+        Vue.set(this, 'renderTextureTo', renderTextureTo);
         // TODO: move these out of here
         // user interface interactions
         $('#clear3d').click(this.clear3d);

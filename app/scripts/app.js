@@ -23,7 +23,7 @@ var app;
   // Vue application
   app = new Vue({
     el: '#app',
-    ready: function() {
+    mounted: function() {
       this.$nextTick(function() {
         $('input[type="checkbox"]').bootstrapSwitch();
       });
@@ -51,7 +51,7 @@ var app;
 
   bus.$on('model-selected', function(model){
     // set the model in the app
-    app.$set('model', model);
+    Vue.set(app, 'model', model);
     // this propagates to the components on the next tick
     Vue.nextTick(function() {
       // we should have a model in the uv-source
@@ -61,18 +61,16 @@ var app;
     });
   });
   bus.$on('palette-selected', function(palette){
-    app.$set('palette', palette);
+    Vue.set(app, 'palette', palette);
   });
   bus.$on('model-layer-added', function() {
   });
   bus.$on('sketch-created', function(sketch) {
-    app.$set('sketch', sketch);
+    Vue.set(app, 'sketch', sketch);
   });
   bus.$on('pipeline-created', function(pipeline) {
-    app.$set('pipeline', pipeline);
+    Vue.set(app, 'pipeline', pipeline);
   });
-
-  Vue.config.debug = true;
 
 
 

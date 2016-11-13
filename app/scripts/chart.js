@@ -10,7 +10,7 @@
         chart: null
       };
     },
-    ready: function(){
+    mounted: function(){
       console.log('create chart in ', this.$el);
       // wait for other elements to load as well
       this.$nextTick(function(){
