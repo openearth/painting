@@ -50,8 +50,6 @@
     data: function() {
       return {
         model: null,
-        modelElement: null,
-        drawingElement: null,
         renderTextureFrom: null,
         renderTextureTo: null,
         pipeline: null
@@ -59,6 +57,12 @@
     },
     mounted: function() {
       this.createContext();
+      this.$nextTick(()=> {
+        bus.$emit('model-canvas-created', this);
+        bus.$on('drawing-canvas-created', (drawing) => {
+          this.createContext();
+        });
+      });
     },
     methods: {
       clear3d: function () {
@@ -66,7 +70,7 @@
         this.renderTextureFrom.clear();
       },
       createContext: function() {
-        console.log('creating new canvas context');
+        console.log('creating new canvas context', this);
         var model = this.model;
 
         // Create WebGL renderer
@@ -93,7 +97,8 @@
 
 
         // load the drawing texture
-        var drawing = this.drawingElement;
+        var drawing = $('#drawing')[0];
+        console.log('drawing used in render', drawing);
         var drawingContext = drawing.getContext('2d');
         var drawingTexture = PIXI.Texture.fromCanvas(drawing);
         var drawingSprite = new PIXI.Sprite(drawingTexture);
@@ -190,15 +195,11 @@
       _ref: 'modelCanvas',
       data: {
         layer: obj.modelLayer,
-        modelElement: obj.modelElement,
-        drawingElement: obj.drawingElement,
         model: obj.model
       },
       el: obj.modelElement,
       parent: app
     });
-    console.log('modelCanvas', modelCanvas);
-    bus.$emit('model-canvas-created', modelCanvas);
 
   });
 

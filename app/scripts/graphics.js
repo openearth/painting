@@ -26,6 +26,10 @@ var sketch;
     },
     mounted: function(){
       this.addDrawing();
+      this.$nextTick(() => {
+        bus.$emit('drawing-canvas-created', this);
+      });
+
     },
     methods: {
       clear: function() {
@@ -120,7 +124,6 @@ var sketch;
       el: obj.drawingElement,
       parent: app
     });
-    bus.$emit('drawing-canvas-created', drawing);
   });
 
 

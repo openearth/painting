@@ -181,11 +181,16 @@
           // once a new canvas is created replace the current one with it
           drawingLayer._image = drawing.$el;
           drawingLayer.canvas = drawing.$el;
+          // recreate the context
+          console.log('got a new drawing canvas', drawing.$el, this.$root.$refs.modelCanvas);
+
+
         });
         bus.$on('model-canvas-created', function(model) {
           // once a new canvas is created replace the current one with it
           modelLayer._image = model.$el;
           modelLayer.canvas = model.$el;
+          console.log('got a new model canvas', model.$el, this.$root.$refs.modelCanvas);
         });
 
         bus.$emit('model-layer-added', {
