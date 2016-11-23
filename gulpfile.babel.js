@@ -2,7 +2,7 @@
 import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import githubPages from 'gulp-gh-pages';
-import concat from "gulp-concat";
+import concat from 'gulp-concat';
 import debug from 'gulp-debug';
 import browserSync from 'browser-sync';
 import del from 'del';
@@ -11,12 +11,12 @@ import {stream as wiredep} from 'wiredep';
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
 const es6LintOptions = {
-  extends: "eslint:recommended",
+  extends: 'eslint:recommended',
   baseConfig: {
-    parser: "babel-eslint"
+    parser: 'babel-eslint'
   },
   ecmaFeatures: {
-    "modules": true
+    'modules': true
   },
   env: {
     es6: true
@@ -38,15 +38,15 @@ gulp.task('styles', () => {
     .pipe(reload({stream: true}));
 });
 
-gulp.task("scripts", () => {
+gulp.task('scripts', () => {
   return gulp.src([
-    "app/scripts/**/*.js"
+    'app/scripts/**/*.js'
   ])
     .pipe($.plumber())
     .pipe($.sourcemaps.init())
     .pipe($.babel())
-    .pipe($.sourcemaps.write("."))
-    .pipe(gulp.dest(".tmp/scripts"))
+    .pipe($.sourcemaps.write('.'))
+    .pipe(gulp.dest('.tmp/scripts'))
     .pipe(reload({stream: true}));
 });
 
@@ -75,7 +75,7 @@ gulp.task('lint:test', lint('test/spec/**/*.js', testLintOptions));
 
 gulp.task('html', ['styles', 'scripts'], () => {
   return gulp.src('app/**/*.html')
-    .pipe($.useref({searchPath: [".tmp", "app", "."]}))
+    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
     .pipe($.debug())
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.minifyCss({compatibility: '*'})))
@@ -218,16 +218,16 @@ gulp.task('wiredep', () => {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task("templates", [], () => {
-  return gulp.src("app/templates/*.html")
+gulp.task('templates', [], () => {
+  return gulp.src('app/templates/*.html')
     .pipe($.htmlmin({collapseWhitespace: true}))
-    .pipe(concat("templates.html"))
+    .pipe(concat('templates.html'))
   // this is used in serve and in build
-    .pipe(gulp.dest(".tmp/templates"))
-    .pipe(gulp.dest("dist/templates"));
+    .pipe(gulp.dest('.tmp/templates'))
+    .pipe(gulp.dest('dist/templates'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'moreimages', 'fonts', 'morefonts', 'extras', 'data', 'models'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'moreimages', 'fonts', 'morefonts', 'extras', 'data', 'models', 'templates'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
