@@ -124,6 +124,7 @@ var sketch;
       el: obj.drawingElement,
       parent: app
     });
+    console.log('drawing layer added', drawing);
   });
 
 

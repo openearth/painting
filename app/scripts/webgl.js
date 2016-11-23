@@ -59,7 +59,7 @@
       this.createContext();
       this.$nextTick(()=> {
         bus.$emit('model-canvas-created', this);
-        bus.$on('drawing-canvas-created', (drawing) => {
+        bus.$on('drawing-canvas-created', () => {
           this.createContext();
         });
       });
@@ -200,6 +200,7 @@
       el: obj.modelElement,
       parent: app
     });
+    console.log('model canvas added', modelCanvas);
 
   });
 

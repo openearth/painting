@@ -186,11 +186,11 @@
 
 
         });
-        bus.$on('model-canvas-created', function(model) {
+        bus.$on('model-canvas-created', function(modelCanvas) {
           // once a new canvas is created replace the current one with it
-          modelLayer._image = model.$el;
-          modelLayer.canvas = model.$el;
-          console.log('got a new model canvas', model.$el, this.$root.$refs.modelCanvas);
+          modelLayer._image = modelCanvas.$el;
+          modelLayer.canvas = modelCanvas.$el;
+          console.log('got a new model canvas', modelCanvas.$el, this.$root.$refs.modelCanvas);
         });
 
         bus.$emit('model-layer-added', {
