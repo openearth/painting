@@ -1,0 +1,1 @@
+<template id=uv-source-template><div><div id=uv-container v-if=model><video v-if="model.uv.tag == 'video'" id=uv autoplay loop :width=model.width :height=model.height :src=model.uv.src></video><img v-if="model.uv.tag == 'img'" id=uv autoplay loop :width=model.width :height=model.height :src=model.uv.src></div></div></template>

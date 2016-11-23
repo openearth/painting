@@ -1,6 +1,29 @@
 {
   "models": [
     {
+      "title": "DCSM",
+      "abstract": "Rijkswaterstaat Operational Systems",
+      "id": "3536B75C-DF01-4C13-8E78-924A17B306FD",
+      "engine": "Delft3D Flow",
+      "timeseries": "data/timeseries/dcsm.json",
+      "uv": {
+        "src": "models/movies/dcsm.mp4",
+        "type": "video/mp4",
+        "tag": "video",
+        "width": 1024,
+        "height": 1024
+      },
+      "extent": {
+        "sw": [51.65684127807618, 3.1578679084777828],
+        "ne": [52.8888816833496, 5.3851470947265625]
+      },
+      "flipv": true,
+      "scale": 5.0,
+      "zoom": 13,
+      "width": 1024,
+      "height": 1024
+    },
+    {
       "title": "Wadden",
       "abstract": "wadden model",
       "id": "E719CD9A-339A-11E5-BA2D-4963B6C90E9A",
