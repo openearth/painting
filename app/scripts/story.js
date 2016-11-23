@@ -26,8 +26,8 @@
           this.$nextTick(() => {
             var storyElements = this.$el.getElementsByClassName('story-item');
             console.log('story elements', storyElements, storyElements.length);
-            _.each(storyElements, function(element) {
-              var item = element.__v_frag.raw;
+            _.each(storyElements, function(element, index) {
+              var item = json[index];
               var scene = new ScrollMagic.Scene({
                 triggerElement: element,
                 duration: element.clientHeight

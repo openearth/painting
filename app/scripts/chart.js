@@ -6,12 +6,12 @@
     props: ['model'],
     data: function() {
       return {
-        url: 'data/stories/data/denhelder.json',
+        url: 'data/timeseries/dcsm.json',
         chart: null
       };
     },
     mounted: function(){
-      console.log('create chart in ', this.$el);
+      console.log('create chart in ', this.$el, 'for', this.model);
       // wait for other elements to load as well
       this.$nextTick(function(){
         var margin = {
@@ -40,13 +40,14 @@
           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
         // add tide data
-        d3.json(this.url, function(data){
-          console.log('got data', data.length);
+        d3.json(this.url, function(stations){
+          var station = stations[0];
+          var data = station.data;
           xTime.domain(d3.extent(data, function(d) { return d3.isoParse(d.date); }));
-          yWaterlevel.domain(d3.extent(data, function(d) { return d.h; }));
+          yWaterlevel.domain(d3.extent(data, function(d) { return d.s1; }));
           var lineWaterlevel = d3.line()
                 .x(function(d) { return xTime(d3.isoParse(d.date)); })
-                .y(function(d) { return yWaterlevel(d.h); });
+                .y(function(d) { return yWaterlevel(d.s1); });
           svg
             .datum(data)
             .append('path')
