@@ -4,6 +4,7 @@
   Vue.component('key-bindings', {
     template: '<div></div>',
     data: function() {
+      console.log('this', this);
       var app = this.$root;
       return {
         keyBindings: [
@@ -14,7 +15,9 @@
           },
           {
             key: 'c',
-            method: this.clear,
+            method: () =>  {
+              this.clear();
+            },
             arguments: {}
           }
         ]
@@ -35,8 +38,14 @@
       clear: function() {
         var app = this.$root;
         app.$refs.particleComponent.removeParticles();
-        app.$refs.drawingCanvas.clear();
-        app.$refs.modelCanvas.clear3d();
+        if (_.has(app.$refs, 'drawingCanvas')) {
+          app.$refs.drawingCanvas.clear();
+          console.warn('Expected drawingCanvas on', app.$refs);
+        }
+        if (_.has(app.$refs, 'modelCanvas')) {
+          app.$refs.modelCanvas.clear3d();
+          console.warn('Expected modelCanvas on', app.$refs);
+        }
       }
     }
   });
