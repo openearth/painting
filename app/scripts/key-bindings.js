@@ -15,7 +15,7 @@
           },
           {
             key: 'c',
-            method: () =>  {
+            method: () => {
               this.clear();
             },
             arguments: {}
