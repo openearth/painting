@@ -28,10 +28,12 @@
   Particles.prototype.drawIcon = function(){
     var ctx = this.canvasIcon.getContext('2d');
     ctx.clearRect(0, 0, 10, 10);
-    ctx.strokeStyle = 'white';
-    ctx.strokeWidth = 0.01;
+    ctx.fillStyle = 'rgba(200, 220, 240, 0.8)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.strokeWidth = 'rgba(255, 255, 255)';
     ctx.beginPath();
-    ctx.ellipse(5, 5, 2, 5, 0, 0, 2 * Math.PI);
+    ctx.ellipse(5, 5, 2, 2, 0, 0, 2 * Math.PI);
+    ctx.fill();
     ctx.stroke();
     if (this.iconTexture) {
       this.iconTexture.update();
