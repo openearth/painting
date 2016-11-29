@@ -105,7 +105,7 @@
         // drawings go in the container
 
         // Load the video texture
-        var video = document.getElementById('uv');
+        var video = $('#uv')[0];
         // into a texture
         var videoTexture = PIXI.Texture.fromVideo(video);
         var videoSprite = new PIXI.Sprite(videoTexture);
@@ -141,8 +141,13 @@
         bus.$emit('pipeline-created', container);
         // define animation function.
         function animate () {
+
           // request next animation frame
           requestAnimationFrame(animate);
+
+          if (video.readyState < video.HAVE_ENOUGH_DATA) {
+            return;
+          }
 
           videoSprite.scale.y = -1;
 
