@@ -58,6 +58,11 @@
         "scrollmagic/uncompressed/plugins/debug.addIndicators.js"
       ]
     },
+    "vue": {
+      "main": [
+        "dist/vue.js"
+      ]
+    },
     "fontawesome": {
       "main": [
         "less/font-awesome.less",
