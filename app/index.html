@@ -13,6 +13,7 @@
 
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="/bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
     <link rel="stylesheet" href="/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
     <!-- endbower -->
@@ -87,9 +88,9 @@
         <v-map :zoom=13 :center="[47.413220, -1.219482]" ref="map" class="sidebar-map">
           <!--  -->
           <!-- <side-bar></side-bar> -->
-          <!-- <toggle-controls></toggle-controls> -->
-          <!-- <canvas-layer :model="model" id="drawing"></canvas-layer> -->
-          <!-- <canvas-layer :model="model" id="webgl"></canvas-layer> -->
+          <toggle-controls></toggle-controls>
+          <canvas-layer :model="model" id="drawing"></canvas-layer>
+          <canvas-layer :model="model" id="webgl"></canvas-layer>
 
           <!-- <webgl-layer></webgl-layer> -->
           <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
@@ -122,7 +123,7 @@
     <script src="/bower_components/fetch/fetch.js"></script>
     <script src="/bower_components/es6-promise/es6-promise.js"></script>
     <script src="/bower_components/lodash/lodash.js"></script>
-    <script src="/bower_components/Vue2Leaflet/dist/vue2-leaflet.js"></script>
+    <script src="/bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="/bower_components/sidebar-v2/js/jquery-sidebar.js"></script>
     <script src="/bower_components/sidebar-v2/js/leaflet-sidebar.js"></script>
     <script src="/bower_components/handlebars/handlebars.js"></script>
@@ -136,6 +137,7 @@
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js"></script>
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
     <script src="/bower_components/jssor-slider/js/jssor.slider.mini.js"></script>
+    <script src="/bower_components/Vue2Leaflet/dist/vue2-leaflet.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -159,7 +161,7 @@
     <script src="scripts-external/sketch.js"></script>
 
     <!-- custom overlay -->
-    <script src="scripts/leaflet-canvas-overlay.js"></script>
+    <script src="scripts/CanvasOverlay.js"></script>
     <!-- main files -->
     <script src="scripts/bus.js"></script>
     <script src="scripts/map.js"></script>
