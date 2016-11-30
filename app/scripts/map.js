@@ -175,7 +175,7 @@
       var model = this.model;
       // some random bounds, reset later
       var bounds = this.bounds;
-      this.$drawingLayer = L.imageOverlay.canvas(bounds, {el: this.$el});
+      this.$drawingLayer = L.canvasOverlay(bounds, {el: this.$el, width: 1024, height: 1024});
     },
     computed: {
       bounds: {
@@ -198,8 +198,7 @@
       },
       setBounds: function() {
         console.log('setting extent');
-        this.$drawingLayer._bounds = this.bounds;
-        this.$drawingLayer._reset();
+        this.$drawingLayer.setBounds(this.bounds);
 
       }
 
