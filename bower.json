@@ -6,7 +6,6 @@
     "fetch": "*",
     "es6-promise": "*",
     "lodash": "*",
-    "Vue2Leaflet": "KoRiGaN/Vue2Leaflet#c5d02ca1a272ceadeb1d59a6a505a0890fefea4b",
     "leaflet-editable-handlers": "*",
     "sidebar-v2": "~0.2.1",
     "fontawesome": "~4.4.0",
@@ -20,7 +19,9 @@
     "vue": "^2.0.0",
     "modernizr": "^2",
     "scrollmagic": "^2.0.5",
-    "jssor-slider": "jssor#^21.1.5"
+    "jssor-slider": "jssor#^21.1.5",
+    "Vue2Leaflet": "SiggyF/Vue2Leaflet#b3d79e41115e66f4eab05d9ff6dab572087df1f5",
+    "leaflet": "^1.0.2"
   },
   "overrides": {
     "pixi.js": {
@@ -33,7 +34,10 @@
         "scss/leaflet-sidebar.scss",
         "js/jquery-sidebar.js",
         "js/leaflet-sidebar.js"
-      ]
+      ],
+      "dependencies": {
+        "leaflet": "^1.0.2"
+      }
     },
     "bootstrap-sass": {
       "main": [
@@ -73,7 +77,10 @@
       "main": [
         "dist/vue2-leaflet.js",
         "vue2-leaflet.js.map"
-      ]
+      ],
+      "dependencies": {
+        "leaflet": "^1.0.2"
+      }
     }
   },
   "devDependencies": {
