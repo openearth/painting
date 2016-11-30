@@ -15,28 +15,36 @@ L.ImageOverlay.Canvas = L.ImageOverlay.extend({
   // We need a bounding box where we're drawing on
   initialize: function (bounds, options) { // (LatLngBounds, Object)
     'use strict';
+    L.ImageOverlay.prototype.initialize.call(this, bounds, options);
     this._bounds = L.latLngBounds(bounds);
 
     L.Util.setOptions(this, options);
+
+    // The image is the canvas
+    if (this.options.el) {
+      this._image = this.canvas = this.options.el;
+    } else {
+      this._image = this.canvas = L.DomUtil.create('canvas', 'leaflet-image-layer');
+    }
+
+    if (this.options.id) {
+      this._image.id = this.options.id;
+    }
   },
 
   // Here we overwrite the _initImage so we correctly place the canvas on the screen.
   _initImage: function () {
     'use strict';
-    var topLeft = this._map.latLngToLayerPoint(this._bounds.getNorthWest());
-    var bottomRight = this._map.latLngToLayerPoint(this._bounds.getSouthEast());
+    var _map = this._map || this._mapToAdd;
+    var topLeft = _map.latLngToLayerPoint(this._bounds.getNorthWest());
+    var bottomRight = _map.latLngToLayerPoint(this._bounds.getSouthEast());
     var size = bottomRight._subtract(topLeft);
 
-    // The image is the canvas
-    this._image = this.canvas = L.DomUtil.create('canvas', 'leaflet-image-layer');
-    if (this.options.id) {
-      this._image.id = this.options.id;
-    }
     // Set the width and height properties, custom or depending on view size
     this._image.width = this.options.width || size.x;
     this._image.height = this.options.width || size.y;
 
-    if (this._map.options.zoomAnimation && L.Browser.any3d) {
+    if (_map.options.zoomAnimation && L.Browser.any3d) {
       L.DomUtil.addClass(this._image, 'leaflet-zoom-animated');
     } else {
       L.DomUtil.addClass(this._image, 'leaflet-zoom-hide');
@@ -55,9 +63,13 @@ L.ImageOverlay.Canvas = L.ImageOverlay.extend({
 
   _reset: function () {
     'use strict';
+    this._initImage();
+
     var image = this._image;
-    var topLeft = this._map.latLngToLayerPoint(this._bounds.getNorthWest());
-    var bottomRight = this._map.latLngToLayerPoint(this._bounds.getSouthEast());
+    var _map = this._map || this._mapToAdd;
+
+    var topLeft = _map.latLngToLayerPoint(this._bounds.getNorthWest());
+    var bottomRight = _map.latLngToLayerPoint(this._bounds.getSouthEast());
     // recompute the size
     var size = bottomRight._subtract(topLeft);
 
@@ -72,7 +84,10 @@ L.ImageOverlay.Canvas = L.ImageOverlay.extend({
     image.style.height = size.y + 'px';
 
   },
-
+  _layerAdd: function() {
+    'use strict';
+    console.log('adding layer', this);
+  },
   // Not sure if canvas also has a load event...
   _onImageLoad: function () {
     'use strict';

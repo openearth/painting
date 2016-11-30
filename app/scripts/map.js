@@ -71,7 +71,140 @@
     }
   });
 
+  Vue.component('toggle-controls', {
+    template: '#toggle-controls-template',
+    props: {
+      sketch: {
+        type: Object
+      }
+    },
+    mounted() {
 
+      var ToggleControl = L.Control.extend({
+        options: {
+          position: 'topright'
+        },
+
+        onAdd: (parent) => {
+          // create the control container with a particular class name
+          // var container = L.DomUtil.create('div', 'my-custom-control leaflet-control leaflet-bar');
+          var container = this.$el;
+
+          var toggleDraw = $('<a id="drawtoggle"></a>');
+          toggleDraw.append($('<span class="fa-stack"><i class="fa fa-paint-brush fa-stack-1x"></i><i id="drawingban" class="hide fa fa-ban fa-stack-2x"></i></span>'));
+          toggleDraw.on('click', function(){
+            sketch = this.sketch;
+            if (!(this.sketch)) {
+              console.warn("no sketch available in", this);
+              return;
+            }
+            sketch.painting = !sketch.painting;
+            if (sketch.painting) {
+              $('#drawing').addClass('crosshair');
+              $('#drawingban').addClass('hide');
+            }
+            else {
+              $('#drawing').removeClass('crosshair');
+              $('#drawingban').removeClass('hide');
+            }
+
+          });
+          $(container).append(toggleDraw);
+
+          var toggleMap = $('<a id="maptoggle"></a>');
+          toggleMap.append($('<span class="fa-stack"><i class="fa fa-map-o fa-stack-1x"></i><i id="mapban" class="fa hide fa-ban fa-stack-2x"></i></span>'));
+          toggleMap.on('click', function(){
+            if (_.has(this.$refs, 'locked')) {
+              app.$refs.mapControls.locked = !app.$refs.mapControls.locked;
+            } else {
+              console.warn('no mapControls available');
+            }
+          });
+          $(container).append(toggleMap);
+
+
+
+
+          return container;
+        }
+      });
+      this.$drawToggle = new ToggleControl({});
+    },
+    methods: {
+
+      deferredMountedTo(parent) {
+        this.$drawToggle.addTo(parent);
+        _.forEach(this.$children, (child) => {
+          child.deferredMountedTo(this.$drawToggle);
+        });
+      }
+    }
+
+
+  });
+  Vue.component('side-bar', {
+    template: '<div>aa</div>',
+    mounted: function() {
+      this.$sidebar = L.control.sidebar('sidebar');
+    },
+    methods: {
+      deferredMountedTo: function(parent) {
+        this.$sidebar.addTo(parent);
+        _.forEach(this.$children, (child) => {
+          child.deferredMountedTo(this.$sidebar);
+        });
+      }
+    }
+
+  });
+
+  Vue.component('canvas-layer', {
+    template: '#canvas-layer-template',
+    props: {
+      model: {
+        type: Object
+      }
+    },
+    watch: {
+      bounds: function() {
+        // set bounds on image if they change
+        this.setBounds();
+      }
+    },
+    mounted: function() {
+      var model = this.model;
+      // some random bounds, reset later
+      var bounds = this.bounds;
+      this.$drawingLayer = L.imageOverlay.canvas(bounds, {el: this.$el});
+    },
+    computed: {
+      bounds: {
+        get: function() {
+          var bounds = L.latLngBounds(L.latLng(0,0), L.latLng(1,1));
+          if (_.has(this, 'model.extent')) {
+            var model = this.model;
+            var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
+                ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
+            bounds = L.latLngBounds(sw, ne);
+          }
+          return bounds;
+        },
+        cached: false
+      }
+    },
+    methods: {
+      deferredMountedTo(parent) {
+        this.$drawingLayer.addTo(parent);
+      },
+      setBounds: function() {
+        console.log('setting extent');
+        this.$drawingLayer._bounds = this.bounds;
+        this.$drawingLayer._reset();
+
+      }
+
+    }
+  });
 
   Vue.component('map-container', {
     // overwrite data in object constructor
@@ -94,6 +227,7 @@
     },
     methods: {
       createMap: function() {
+        // OK
         L.mapbox.accessToken = 'pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA';
         var map = L.mapbox.map('map', 'siggyf.c74e2e04');
 
@@ -102,7 +236,7 @@
           L.control.sidebar('sidebar').addTo(map);
 
         }
-
+        // OK
         var ToggleControl = L.Control.extend({
           options: {
             position: 'topright'
@@ -145,8 +279,10 @@
         drawToggle.addTo(map);
         Vue.set(this.$root, 'map', map);
         this.map = map;
+        // OK
       },
       loadModel: function() {
+        // OK
         var layers = this.layers;
         var map = this.map;
         var model = this.model;
@@ -162,7 +298,7 @@
           }
           map.removeLayer(layer);
         }
-
+        // OK
         var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
             ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
         var bounds = L.latLngBounds(sw, ne);

@@ -6,9 +6,8 @@
     "fetch": "*",
     "es6-promise": "*",
     "lodash": "*",
-    "leaflet": "*",
+    "Vue2Leaflet": "KoRiGaN/Vue2Leaflet#c5d02ca1a272ceadeb1d59a6a505a0890fefea4b",
     "leaflet-editable-handlers": "*",
-    "mapbox.js": "*",
     "sidebar-v2": "~0.2.1",
     "fontawesome": "~4.4.0",
     "handlebars": "~3.0.3",
@@ -68,6 +67,12 @@
     "vue": {
       "main": [
         "dist/vue.js"
+      ]
+    },
+    "Vue2Leaflet": {
+      "main": [
+        "dist/vue2-leaflet.js",
+        "vue2-leaflet.js.map"
       ]
     }
   },

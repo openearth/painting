@@ -21,6 +21,8 @@ var app;
 
   }
   $(document).ready(function() {
+    Vue.component('v-map', Vue2Leaflet.Map);
+    Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
     $('#template-container')
       .load(
         'templates/templates.html',
@@ -53,15 +55,27 @@ var app;
             methods: {
             }
           });
-          bus.$on('model-selected', function(model){
+
+          bus.$on('model-selected', function(model) {
             // set the model in the app
             Vue.set(app, 'model', model);
             // this propagates to the components on the next tick
-            Vue.nextTick(function() {
+            Vue.nextTick(() => {
               // we should have a model in the uv-source
               console.log('uv source', app.$refs.uvSource.model);
               // and in the mapcontainer
-              app.$refs.mapContainer.loadModel(model);
+
+              var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
+                  ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
+              var bounds = L.latLngBounds(sw, ne);
+              if (_.has(app.$refs, 'map')) {
+                console.info('fitting bounds', bounds, app.$refs.map);
+                app.$refs.map.setBounds(bounds);
+
+              } else {
+                console.warn('fitBounds missing', app.$refs, app, bounds);
+              }
+
             });
           });
           bus.$on('palette-selected', function(palette){
