@@ -4,7 +4,6 @@
   Vue.component('key-bindings', {
     template: '<div></div>',
     data: function() {
-      console.log('this', this);
       var app = this.$root;
       return {
         keyBindings: [

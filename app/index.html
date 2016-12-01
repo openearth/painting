@@ -85,12 +85,20 @@
             </div>
           </div>
         </div>
-        <v-map :zoom=13 :center="[47.413220, -1.219482]" ref="map" class="sidebar-map">
+        <!-- leaflet map -->
+        <v-map :zoom=9 :center="[52, 4]" ref="map" class="sidebar-map">
           <!--  -->
           <!-- <side-bar></side-bar> -->
-          <toggle-controls></toggle-controls>
-          <canvas-layer :model="model" id="drawing"></canvas-layer>
-          <canvas-layer :model="model" id="webgl"></canvas-layer>
+          <toggle-controls :sketch="sketch"></toggle-controls>
+          <canvas-layer :model="model" id="webgl">
+            <model-canvas :model="model" :sketch="sketch"></model-canvas>
+          </canvas-layer>
+          <canvas-layer id="particles">
+            <div>TODO</div>
+          </canvas-layer>
+          <canvas-layer :model="model" id="drawing">
+            <drawing-canvas></drawing-canvas>
+          </canvas-layer>
 
           <!-- <webgl-layer></webgl-layer> -->
           <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
@@ -106,7 +114,9 @@
          ></particle-component>
       <!-- Hidden layers -->
       <div class="hidden layer">
-        <uv-source :model="model" ref="uvSource"></uv-source>
+        <div>
+          <uv-source :model="model" ref="uvSource"></uv-source>
+        </div>
         <div>
           <canvas id="canvas-icon" width="10" height="10"></canvas>
         </div>

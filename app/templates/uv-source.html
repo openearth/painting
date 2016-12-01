@@ -1,21 +1,8 @@
 <template id="uv-source-template">
   <div>
-    <div id="uv-container" v-if="model">
-      <video v-if="model.uv.tag == 'video'"
-             id="uv" autoplay loop
-             :width="model.width"
-             :height="model.height"
-             :src="model.uv.src"
-             >
-      </video>
-      <!-- 2d canvas to capture pixels from uv map -->
-      <img v-if="model.uv.tag == 'img'"
-           id="uv"
-           autoplay loop
-           :width="model.width"
-           :height="model.height"
-           :src="model.uv.src"
-           />
+    <div id="uv-container">
+      <video id="uv-video" autoplay loop v-if="tag === 'video'"></video>
+      <img id="uv-img" v-if="tag === 'img'" />
     </div>
   </div>
 

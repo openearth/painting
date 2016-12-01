@@ -16,11 +16,12 @@ var sketch;
     }
   });
 
-  var Drawing = Vue.component('drawing-canvas', {
+  Vue.component('drawing-canvas', {
     // overwrite data in object constructor
+    template: '<div>drawing</div>',
     data: function() {
       return {
-        layer: null,
+        canvas: null,
         sketch: null
       };
     },
@@ -35,17 +36,22 @@ var sketch;
       clear: function() {
         this.sketch.clear();
       },
+      deferredMountedTo: function(parent) {
+        console.log('generating painting in layer', parent);
+        this.canvas = parent._canvas;
+        this.addDrawing();
+      },
       addDrawing: function() {
         sketch = Sketch.create({
-          element: this.$el,
+          element: this.canvas,
           // if you don't pass a container, Sketch wil append the element to the body
           container: null,
           autoclear: false,
           fullscreen: false,
           exists: true,
-          palette: ['black', 'white'],
+          palette: ['black', 'green'],
           radius: 3,
-          painting: true,
+          painting: false,
           hasDragged: true,
           setup: function() {
           },
@@ -55,20 +61,21 @@ var sketch;
           keydown: function() {
           },
           mouseup: function() {
-            if (this.hasDragged) {
-              return;
-            }
-            this.painting = !this.painting;
-            if (this.painting) {
-              $('#drawing').addClass('crosshair');
-              $('#drawingban').addClass('hide');
+            // console.log('mouse up', this);
+            // if (this.hasDragged) {
+            //   return;
+            // }
+            // this.painting = !this.painting;
+            // if (this.painting) {
+            //   $('#drawing').addClass('crosshair');
+            //   $('#drawingban').addClass('hide');
 
-            }
-            else {
-              $('#drawing').removeClass('crosshair');
-              $('#drawingban').removeClass('hide');
+            // }
+            // else {
+            //   $('#drawing').removeClass('crosshair');
+            //   $('#drawingban').removeClass('hide');
 
-            }
+            // }
 
 
           },
@@ -87,7 +94,7 @@ var sketch;
           // scalability. If you only need to handle the mouse / desktop browsers,
           // use the 0th touch element and you get wider device support for free.
           touchmove: function() {
-            if (!this.painting ){
+            if (!this.painting && !this.keys.SHIFT){
               return;
             }
             for ( var i = this.touches.length - 1, touch; i >= 0; i-- ) {
@@ -104,28 +111,18 @@ var sketch;
           }
         });
         // set on self
+        console.log('Setting sketch to', sketch);
         Vue.set(this, 'sketch', sketch);
+        // bubbly bubbly
+        this.$nextTick(() => {
+          bus.$emit('sketch-created', sketch);
+        });
         // emit so it can be caught by app and synced in properties
-        bus.$emit('sketch-created', sketch);
+
       }
     }
   });
 
-  // Create events if a new layer is loaded
-  // create global drawing
-  bus.$on('drawing-layer-added', function(obj) {
-    // remove the old drawing element
-    // pass along the global parent here
-    var drawing = new Drawing({
-      _ref: 'drawingCanvas',
-      data: {
-        layer: obj.drawingLayer
-      },
-      el: obj.drawingElement,
-      parent: app
-    });
-    console.log('drawing layer added', drawing);
-  });
 
 
   // hook up to all thumbnails

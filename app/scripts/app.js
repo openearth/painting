@@ -44,7 +44,7 @@ var app;
                   chart: false
                 },
                 palette: [],
-                pipeline: {},
+                pipeline: null,
                 model: null,
                 map: null,
                 sketch: null

@@ -198,6 +198,10 @@
     },
     methods: {
       resetParticles: function(){
+        if (_.isNil(this.model)) {
+          console.warn('no model, no particles', this.model);
+          return;
+        }
         if (_.isNil(this.sketch)){
           console.warn('no canvas, no particles', this.sketch);
           return;
