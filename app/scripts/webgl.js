@@ -1,4 +1,4 @@
-/* global AdvectionFilter, bus, app */
+/* global AdvectionFilter, bus */
 (function () {
   'use strict';
 
@@ -112,7 +112,7 @@
         state: 'STOPPED',
         // do we need these:
         drawingTexture: null,
-        _video: null,
+        videoElement: null,
         videoSprite: null,
         stage: null,
         renderer: null,
@@ -128,6 +128,7 @@
       }.bind(this));
       Vue.nextTick(() => {
         console.info('mounted next', this, this.canvas);
+        bus.$on('model-selected', this.clear3d);
       });
 
     },
@@ -150,11 +151,11 @@
       },
       video: {
         get: function() {
-          return this._video;
+          return this.videoElement;
         },
         set: function(video) {
           console.log('new video', video, 'creating new sprite');
-          this._video = video;
+          this.videoElement = video;
           var videoTexture = PIXI.Texture.fromVideo(video);
           var videoSprite = new PIXI.Sprite(videoTexture);
           videoSprite.width = this.width;
@@ -184,12 +185,17 @@
     },
     methods: {
       clear3d: function () {
-        this.renderTextureTo.clear();
+        if (_.isNil(this.renderTextureFrom)) {
+          return;
+        }
+        console.log('clearing 3d');
         this.renderTextureFrom.clear();
       },
       deferredMountedTo: function(parent) {
         console.log('Generating model canvas in layer', parent);
+        /* eslint-disable no-underscore-dangle */
         this.canvas = parent._canvas;
+        /* eslint-enable no-underscore-dangle */
         this.createRenderer();
       },
       createRenderer: function() {
@@ -250,7 +256,6 @@
         }
 
         var videoSprite = this.videoSprite;
-        var stage = this.stage;
         var model = this.model;
         var renderer = this.renderer;
         var width = this.width;
@@ -333,6 +338,7 @@
           requestAnimationFrame(animate);
 
           if (video.readyState < video.HAVE_ENOUGH_DATA) {
+            console.debug('video does not have enough data');
             return;
           }
 
@@ -365,7 +371,7 @@
             }
           }
 
-        };
+        }
         animate.bind(this)();
 
         // TODO: move these out of here
@@ -375,24 +381,5 @@
       }
     }
   });
-
-  // Create events if a new layer is loaded
-  // create global drawing
-  bus.$on('model-layer-added', function(obj) {
-    // remove the old drawing element
-    // pass along the global parent here
-    var modelCanvas = new ModelCanvas({
-      _ref: 'modelCanvas',
-      data: {
-        layer: obj.modelLayer,
-        model: obj.model
-      },
-      el: obj.modelElement,
-      parent: app
-    });
-    console.log('model canvas added', modelCanvas);
-
-  });
-
 
 }());

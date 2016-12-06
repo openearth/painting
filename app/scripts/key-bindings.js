@@ -1,3 +1,4 @@
+/* global bus */
 (function () {
   'use strict';
 
@@ -27,12 +28,12 @@
               }
               _.each(
                 _.range(0, 100),
-                (i) => {
+                () => {
                   var x = Math.random() * 1024;
                   var y = Math.random() * 1024;
                   drawing.strokeStyle = 'white';
                   drawing.beginPath();
-                  drawing.arc(x, y, 1, 0, 2*Math.PI);
+                  drawing.arc(x, y, 1, 0, 2 * Math.PI);
                   drawing.closePath();
                   drawing.stroke();
                 }
@@ -46,7 +47,7 @@
                 return;
               }
               _.each(
-                _.range(0, 1024, 2**7),
+                _.range(0, 1024, 2 ^ 7),
                 (i) => {
                   drawing.strokeStyle = 'black';
                   drawing.beginPath();

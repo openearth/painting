@@ -1,4 +1,4 @@
-/* global bus, app  */
+/* global bus  */
 
 var sketch;
 (function () {
@@ -29,16 +29,20 @@ var sketch;
       this.addDrawing();
       this.$nextTick(() => {
         bus.$emit('drawing-canvas-created', this);
+        bus.$on('model-selected', this.clear);
       });
 
     },
     methods: {
       clear: function() {
+        console.log('clearing 2d');
         this.sketch.clear();
       },
       deferredMountedTo: function(parent) {
         console.log('generating painting in layer', parent);
+        /* eslint-disable no-underscore-dangle */
         this.canvas = parent._canvas;
+        /* eslint-enable no-underscore-dangle */
         this.addDrawing();
       },
       addDrawing: function() {
@@ -97,9 +101,9 @@ var sketch;
                 y = evt.y;
             console.log(x, y);
             var r = 1;
-            this.arc(x, y, r, 0, 2*Math.PI);
+            this.arc(x, y, r, 0, 2 * Math.PI);
             this.fill();
-            bus.$emit('drawing-click', this)
+            bus.$emit('drawing-click', this);
 
           },
           // Mouse & touch events are merged, so handling touch events by default

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /*
  * @class CanvasOverlay
  * @aka L.canvasOverlay
@@ -39,6 +40,7 @@ L.CanvasOverlay = L.Layer.extend({
   },
 
   initialize: function (bounds, options) { // (String, LatLngBounds, Object)
+    'use strict';
     if (bounds) {
       this._bounds = L.latLngBounds(bounds);
     } else {
@@ -49,6 +51,7 @@ L.CanvasOverlay = L.Layer.extend({
   },
 
   onAdd: function () {
+    'use strict';
     if (!this._canvas) {
       this._initCanvas();
 
@@ -67,6 +70,7 @@ L.CanvasOverlay = L.Layer.extend({
   },
 
   onRemove: function () {
+    'use strict';
     L.DomUtil.remove(this._canvas);
     if (this.options.interactive) {
       this.removeInteractiveTarget(this._canvas);
@@ -76,6 +80,7 @@ L.CanvasOverlay = L.Layer.extend({
   // @method setOpacity(opacity: Number): this
   // Sets the opacity of the overlay.
   setOpacity: function (opacity) {
+    'use strict';
     this.options.opacity = opacity;
 
     if (this._canvas) {
@@ -85,6 +90,7 @@ L.CanvasOverlay = L.Layer.extend({
   },
 
   setStyle: function (styleOpts) {
+    'use strict';
     if (styleOpts.opacity) {
       this.setOpacity(styleOpts.opacity);
     }
@@ -94,6 +100,7 @@ L.CanvasOverlay = L.Layer.extend({
   // @method bringToFront(): this
   // Brings the layer to the top of all overlays.
   bringToFront: function () {
+    'use strict';
     if (this._map) {
       L.DomUtil.toFront(this._canvas);
     }
@@ -103,6 +110,7 @@ L.CanvasOverlay = L.Layer.extend({
   // @method bringToBack(): this
   // Brings the layer to the bottom of all overlays.
   bringToBack: function () {
+    'use strict';
     if (this._map) {
       L.DomUtil.toBack(this._canvas);
     }
@@ -110,6 +118,7 @@ L.CanvasOverlay = L.Layer.extend({
   },
 
   setBounds: function (bounds) {
+    'use strict';
     this._bounds = bounds;
 
     if (this._map) {
@@ -119,6 +128,7 @@ L.CanvasOverlay = L.Layer.extend({
   },
 
   getEvents: function () {
+    'use strict';
     var events = {
       zoom: this._reset,
       viewreset: this._reset
@@ -132,14 +142,17 @@ L.CanvasOverlay = L.Layer.extend({
   },
 
   getBounds: function () {
+    'use strict';
     return this._bounds;
   },
 
   getElement: function () {
+    'use strict';
     return this._canvas;
   },
 
   _initCanvas: function () {
+    'use strict';
     var canvas;
     if (this.options.el) {
       canvas = this._canvas = this.options.el;
@@ -165,6 +178,7 @@ L.CanvasOverlay = L.Layer.extend({
   },
 
   _animateZoom: function (e) {
+    'use strict';
     var scale = this._map.getZoomScale(e.zoom),
         offset = this._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
 
@@ -181,6 +195,7 @@ L.CanvasOverlay = L.Layer.extend({
 
   },
   _latLngBoundsToNewLayerBounds: function (latLngBounds, zoom, center) {
+    'use strict';
     var topLeft = this._map._getNewPixelOrigin(center, zoom);
     return L.bounds([
       this._map.project(latLngBounds.getSouthWest(), zoom)._subtract(topLeft),
@@ -190,6 +205,7 @@ L.CanvasOverlay = L.Layer.extend({
     ]);
   },
   _reset: function () {
+    'use strict';
     var canvas = this._canvas,
         bounds = new L.Bounds(
           this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
@@ -203,11 +219,12 @@ L.CanvasOverlay = L.Layer.extend({
     canvas.width = this.options.width;
     canvas.height = this.options.height;
 
-    canvas.style.width  = size.x + 'px';
+    canvas.style.width = size.x + 'px';
     canvas.style.height = size.y + 'px';
   },
 
   _updateOpacity: function () {
+    'use strict';
     L.DomUtil.setOpacity(this._canvas, this.options.opacity);
   }
 });
@@ -216,5 +233,6 @@ L.CanvasOverlay = L.Layer.extend({
 // Instantiates an canvas overlay object given the
 // geographical bounds it is tied to.
 L.canvasOverlay = function (bounds, options) {
+  'use strict';
   return new L.CanvasOverlay(bounds, options);
 };

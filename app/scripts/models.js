@@ -25,8 +25,14 @@
         })
         .then((json) => {
           this.models = json.models;
-          // select first model
-          this.selectModel(this.models[0]);
+
+          // find the model by url parameter
+          var selectedModel = _.first(_.filter(this.models, ['id', this.$root.settings.model]));
+          if (_.isNil(selectedModel)) {
+            // select first model
+            selectedModel = _.first(this.models);
+          }
+          this.selectModel(selectedModel);
         })
         .catch(function(ex) {
           console.log('parsing failed', ex);

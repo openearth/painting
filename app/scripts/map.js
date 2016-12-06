@@ -1,5 +1,5 @@
 /* eslint no-underscore-dangle: 0  */
-/* global app, bus */
+/* global app */
 (function () {
   'use strict';
 
@@ -85,7 +85,7 @@
           position: 'topright'
         },
 
-        onAdd: (parent) => {
+        onAdd: () => {
           // create the control container with a particular class name
           // var container = L.DomUtil.create('div', 'my-custom-control leaflet-control leaflet-bar');
           var container = this.$el;
@@ -95,7 +95,7 @@
           toggleDraw.on('click', function(){
             sketch = this.sketch;
             if (!(this.sketch)) {
-              console.warn("no sketch available in", this);
+              console.warn('no sketch available in', this);
               return;
             }
             sketch.painting = !sketch.painting;
@@ -112,7 +112,7 @@
           $(container).append(toggleDraw);
 
           var toggleMap = $('<a id="maptoggle"></a>');
-          toggleMap.append($('<span class="fa-stack"><i class="fa fa-map-o fa-stack-1x"></i><i id="mapban" class="fa hide fa-ban fa-stack-2x"></i></span>'));
+          toggleMap.append($('<span class="fa-stack"><i class="fa fa-map-o fa-stack-1x"></i><i id="mapban" class="fa hide fa-ban fa-stack-2x></i></span>'));
           toggleMap.on('click', function(){
             if (_.has(this.$refs, 'locked')) {
               app.$refs.mapControls.locked = !app.$refs.mapControls.locked;
@@ -172,7 +172,6 @@
       }
     },
     mounted: function() {
-      var model = this.model;
       // some random bounds, reset later
       var bounds = this.bounds;
       this.$drawingLayer = L.canvasOverlay(bounds, {el: this.$el, width: 1024, height: 1024});
@@ -180,7 +179,7 @@
     computed: {
       bounds: {
         get: function() {
-          var bounds = L.latLngBounds(L.latLng(0,0), L.latLng(1,1));
+          var bounds = L.latLngBounds(L.latLng(0, 0), L.latLng(1, 1));
           if (_.has(this, 'model.extent')) {
             var model = this.model;
             var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),

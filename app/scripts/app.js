@@ -1,4 +1,4 @@
-/* global bus  */
+/* global bus, Vue2Leaflet  */
 
 // app is global, prefer to use this.$root
 var app;
@@ -15,7 +15,18 @@ var app;
 
     var result = {};
     while ((match = search.exec(query)) !== null) {
-      result[decode(match[1])] = decode(match[2]) === 'true';
+      // paraeter
+      var value = decode(match[2]);
+      var decoded = null;
+      if (value === 'true') {
+        decoded = true;
+      } else if (value === 'false') {
+        decoded = false;
+      } else {
+        decoded = value;
+      }
+
+      result[decode(match[1])] = decoded;
     }
     return result;
 
@@ -41,7 +52,8 @@ var app;
                 settings: {
                   sidebar: true,
                   story: false,
-                  chart: false
+                  chart: false,
+                  model: null
                 },
                 palette: [],
                 pipeline: null,
