@@ -7,7 +7,6 @@
     "es6-promise": "*",
     "lodash": "*",
     "leaflet-editable-handlers": "*",
-    "sidebar-v2": "~0.2.1",
     "fontawesome": "~4.4.0",
     "handlebars": "~3.0.3",
     "seiyria-bootstrap-slider": "~4.13.1",
@@ -21,7 +20,8 @@
     "scrollmagic": "^2.0.5",
     "jssor-slider": "jssor#^21.1.5",
     "Vue2Leaflet": "SiggyF/Vue2Leaflet#b3d79e41115e66f4eab05d9ff6dab572087df1f5",
-    "leaflet": "^1.0.2"
+    "leaflet": "^1.0.2",
+    "sidebar-v2": "~0.2.1"
   },
   "overrides": {
     "pixi.js": {
