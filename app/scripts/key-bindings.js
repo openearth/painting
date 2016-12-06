@@ -20,6 +20,26 @@
             arguments: {}
           },
           {
+            key: 'q',
+            method: (evt, drawing) => {
+              if (_.isNil(drawing)) {
+                return;
+              }
+              _.each(
+                _.range(0, 100),
+                (i) => {
+                  var x = Math.random() * 1024;
+                  var y = Math.random() * 1024;
+                  drawing.strokeStyle = 'white';
+                  drawing.beginPath();
+                  drawing.arc(x, y, 1, 0, 2*Math.PI);
+                  drawing.closePath();
+                  drawing.stroke();
+                }
+              );
+            }
+          },
+          {
             key: 'g',
             method: (evt, drawing) => {
               if (_.isNil(drawing)) {
