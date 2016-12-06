@@ -54,7 +54,8 @@
       "d3": true,
       "sketch": true,
       "Vue": true,
-      "ScrollMagic": true
+      "ScrollMagic": true,
+      "Vue2leaflet": true
     },
     "rules": {
       "quotes": [
