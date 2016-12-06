@@ -13,9 +13,9 @@
 
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="/bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
     <link rel="stylesheet" href="/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
+    <link rel="stylesheet" href="/bower_components/leaflet/dist/leaflet.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -88,13 +88,13 @@
         <!-- leaflet map -->
         <v-map :zoom=9 :center="[52, 4]" ref="map" class="sidebar-map">
           <!--  -->
-          <!-- <side-bar></side-bar> -->
+          <side-bar></side-bar>
           <toggle-controls :sketch="sketch"></toggle-controls>
           <canvas-layer :model="model" id="webgl">
             <model-canvas :model="model" :sketch="sketch"></model-canvas>
           </canvas-layer>
           <canvas-layer id="particles">
-            <div>TODO</div>
+            <div>TODO ADD PARTICLES</div>
           </canvas-layer>
           <canvas-layer :model="model" id="drawing">
             <drawing-canvas></drawing-canvas>
@@ -133,9 +133,6 @@
     <script src="/bower_components/fetch/fetch.js"></script>
     <script src="/bower_components/es6-promise/es6-promise.js"></script>
     <script src="/bower_components/lodash/lodash.js"></script>
-    <script src="/bower_components/leaflet/dist/leaflet-src.js"></script>
-    <script src="/bower_components/sidebar-v2/js/jquery-sidebar.js"></script>
-    <script src="/bower_components/sidebar-v2/js/leaflet-sidebar.js"></script>
     <script src="/bower_components/handlebars/handlebars.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="/bower_components/jquery-bridget/jquery-bridget.js"></script>
@@ -147,7 +144,10 @@
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js"></script>
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
     <script src="/bower_components/jssor-slider/js/jssor.slider.mini.js"></script>
+    <script src="/bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="/bower_components/Vue2Leaflet/dist/vue2-leaflet.js"></script>
+    <script src="/bower_components/sidebar-v2/js/jquery-sidebar.js"></script>
+    <script src="/bower_components/sidebar-v2/js/leaflet-sidebar.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

@@ -143,7 +143,7 @@
 
   });
   Vue.component('side-bar', {
-    template: '<div>aa</div>',
+    template: '<div></div>',
     mounted: function() {
       this.$sidebar = L.control.sidebar('sidebar');
     },

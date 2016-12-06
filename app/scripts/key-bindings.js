@@ -18,14 +18,48 @@
               this.clear();
             },
             arguments: {}
+          },
+          {
+            key: 'g',
+            method: (evt, drawing) => {
+              if (_.isNil(drawing)) {
+                return;
+              }
+              _.each(
+                _.range(0, 1024, 2**7),
+                (i) => {
+                  drawing.strokeStyle = 'black';
+                  drawing.beginPath();
+                  drawing.moveTo(i, 0);
+                  drawing.lineTo(i, 1024);
+                  drawing.closePath();
+                  drawing.stroke();
+
+                  drawing.beginPath();
+                  drawing.moveTo(0, i);
+                  drawing.lineTo(1024, i);
+                  drawing.closePath();
+                  drawing.stroke();
+                }
+              );
+            }
           }
         ]
       };
     },
     mounted: function() {
       window.addEventListener('keyup', this.keyUp);
+      bus.$on('drawing-keydown', this.drawingKey);
     },
     methods: {
+      drawingKey: function(evt, drawing) {
+        var keyBinding = _.first(
+          _.filter(this.keyBindings, ['key', evt.key])
+        );
+        if (!_.isNil(keyBinding)) {
+          keyBinding.method(evt, drawing);
+        }
+      },
       keyUp: function(evt) {
         var keyBinding = _.first(
           _.filter(this.keyBindings, ['key', evt.key])

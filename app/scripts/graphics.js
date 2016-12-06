@@ -58,7 +58,9 @@ var sketch;
           update: function() {
           },
           // Event handlers
-          keydown: function() {
+          keydown: function(evt) {
+            bus.$emit('drawing-keydown', evt, this);
+
           },
           mouseup: function() {
             // console.log('mouse up', this);
@@ -87,7 +89,18 @@ var sketch;
             this.hasDragged = true;
 
           },
-          click: function() {
+          click: function(evt) {
+            console.log('click', this, evt);
+            this.fillStyle = this.palette[Math.floor(Math.random() * this.palette.length)];
+            this.beginPath();
+            var x = evt.x,
+                y = evt.y;
+            console.log(x, y);
+            var r = 1;
+            this.arc(x, y, r, 0, 2*Math.PI);
+            this.fill();
+            bus.$emit('drawing-click', this)
+
           },
           // Mouse & touch events are merged, so handling touch events by default
           // and powering sketches using the touches array is recommended for easy
@@ -108,6 +121,7 @@ var sketch;
               this.lineTo( touch.x, touch.y );
               this.stroke();
             }
+            bus.$emit('drawing-touchmove', this);
           }
         });
         // set on self
