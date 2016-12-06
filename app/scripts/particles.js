@@ -1,13 +1,14 @@
 (function () {
   'use strict';
 
-  function Particles(model, canvas, container) {
+  function Particles(model, canvas, container, uv) {
+    this.model = model;
     this.canvas = canvas;
+    this.uv = uv;
     this.width = canvas.width;
     this.height = canvas.height;
     this.canvasIcon = $('#canvas-icon')[0];
     this.drawIcon();
-    this.model = model;
     this.icon = 'images/bar.png';
     this.particleAlpha = 0.6;
     this.tailLength = 0;
@@ -87,8 +88,7 @@
     if (!this.particles.length) {
       return;
     }
-    var uv = $('#uv')[0];
-    if (uv.paused || uv.ended) {
+    if (this.uv.paused || this.uv.ended) {
       return;
     }
 
@@ -102,7 +102,7 @@
         height = uvhidden.height;
 
     // TODO: this is expensive
-    uvctx.drawImage(uv, 0, 0, width, height);
+    uvctx.drawImage(this.uv, 0, 0, width, height);
     var frame = uvctx.getImageData(0, 0, width, height);
     // TODO: use this instead of frame.data
     // var frameBuffer = new Uint32Array(frame.data.buffer);
@@ -190,11 +190,12 @@
     },
     mounted: function() {
       // find the first video in this container
-
+      bus.$on('model-selected', this.resetParticles)
     },
     watch: {
-      'model': 'resetParticles',
-      'sketch': 'resetParticles'
+      'model.uv': 'resetParticles',
+      'sketch': 'resetParticles',
+      'pipeline': 'resetParticles'
     },
     methods: {
       resetParticles: function(){
@@ -210,8 +211,9 @@
           console.warn('no pipeline, no particles', this.pipeline);
           return;
         }
+        var uv = $('#uv-' + this.model.uv.tag)[0];
 
-        this.model.particles = new Particles(this.model, this.sketch.element, this.pipeline);
+        this.model.particles = new Particles(this.model, this.sketch.element, this.pipeline, uv);
       },
       addParticles: function() {
         console.log('adding particles');

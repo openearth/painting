@@ -29,14 +29,6 @@
 
 
 
-
-
-
-
-
-
-
-
   </head>
   <body>
     <!--[if lt IE 10]>
@@ -64,6 +56,7 @@
           <ul class="sidebar-tabs" role="tablist">
             <li><a href="#model-pane" role="tab"><i class="fa fa-bars"></i></a></li>
             <li><a href="#paint-pane" role="tab"><i class="fa fa-paint-brush"></i></a></li>
+            <li><a href="#key-bindings-pane" role="tab"><i class="fa fa-keyboard-o"></i></a></li>
           </ul>
 
           <!-- Tab panes -->
@@ -82,6 +75,9 @@
               <h4>Controls for drawing and map</h4>
               <drawing-controls :sketch="sketch"></drawing-controls>
               <map-controls ref="mapControls" :map="map" ></map-controls>
+            </div>
+            <div class="sidebar-pane" id="key-bindings-pane">
+              <key-bindings></key-bindings>
             </div>
           </div>
         </div>
@@ -120,7 +116,6 @@
           <canvas id="canvas-icon" width="10" height="10"></canvas>
         </div>
       </div>
-      <key-bindings></key-bindings>
     </div>
 
 

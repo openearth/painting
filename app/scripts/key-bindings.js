@@ -3,14 +3,19 @@
   'use strict';
 
   Vue.component('key-bindings', {
-    template: '<div></div>',
+    template: '#key-bindings-template',
     data: function() {
       var app = this.$root;
       return {
         keyBindings: [
           {
             key: 'p',
-            method: app.$refs.particleComponent.addParticles,
+            description: 'Particles',
+            method: () => {
+              if (_.has(app, '$refs.particleComponent.addParticles')) {
+                app.$refs.particleComponent.addParticles();
+              }
+            },
             arguments: {}
           },
           {
@@ -18,10 +23,12 @@
             method: () => {
               this.clear();
             },
+            description: 'Clear canvas',
             arguments: {}
           },
           {
             key: 'q',
+            description: 'Quiver like plot',
             method: (evt, drawing) => {
               if (_.isNil(drawing)) {
                 return;
@@ -42,6 +49,7 @@
           },
           {
             key: 'g',
+            description: 'Grid plot',
             method: (evt, drawing) => {
               if (_.isNil(drawing)) {
                 return;
