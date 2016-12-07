@@ -55,7 +55,7 @@
                 return;
               }
               _.each(
-                _.range(0, 1024, 2 ^ 7),
+                _.range(0, 1024, Math.pow(2, 7)),
                 (i) => {
                   drawing.strokeStyle = 'black';
                   drawing.beginPath();

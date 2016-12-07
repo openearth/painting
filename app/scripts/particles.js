@@ -1,3 +1,4 @@
+/* global bus */
 (function () {
   'use strict';
 
@@ -190,7 +191,7 @@
     },
     mounted: function() {
       // find the first video in this container
-      bus.$on('model-selected', this.resetParticles)
+      bus.$on('model-selected', this.resetParticles);
     },
     watch: {
       'model.uv': 'resetParticles',

@@ -18,10 +18,13 @@ var fragmentSource = [
   'varying vec2 vMapCoord;',
   'varying vec2 vTextureCoord;',
   'varying vec4 vColor;',
+  'uniform float decay;',
   'uniform vec2 scale;',
   'uniform bool flipv;',
   'uniform bool upwind;',
+  // previous image
   'uniform sampler2D uSampler;',
+  // uv field
   'uniform sampler2D mapSampler;',
   'void main(void)',
   '{',
@@ -40,12 +43,15 @@ var fragmentSource = [
   ' if (flipv) {',
   '  vUpwind.y = - vUpwind.y;',
   ' }',
-  ' vUpwind.xy *= scale *extrascale;',
+  ' vUpwind.xy *= scale * extrascale;',
   ' /* overwrite lookup with upwind */',
   ' lookup = vec2(vTextureCoord.x - 0.5*(map.x + vUpwind.x), vTextureCoord.y - 0.5* (map.y + vUpwind.y));',
   '}',
   '/* stop rendering if masked */',
-  'gl_FragColor = texture2D(uSampler, lookup);',
+  'vec4 color = texture2D(uSampler, lookup);',
+  // I expected that I would have to apply this to the .a only....
+  'color *= decay;',
+  'gl_FragColor = color;',
   'if (map.z > 0.0) {',
   'gl_FragColor *= 0.0;',
   '}',
@@ -86,7 +92,8 @@ function AdvectionFilter(sprite, settings)
       otherMatrix: { type: 'mat3', value: maskMatrix.toArray(true) },
       scale: { type: 'v2', value: { x: 0, y: 0 } },
       flipv: { type: 'bool', value: settings.flipv },
-      upwind: { type: 'bool', value: settings.upwind}
+      upwind: { type: 'bool', value: settings.upwind },
+      decay: { type: '1f', value: settings.decay }
     }
   );
 
@@ -97,6 +104,8 @@ function AdvectionFilter(sprite, settings)
   this.scale = new PIXI.Point(scale, scale);
   var flipv = _.get(settings, 'flipv', false);
   this.flipv = flipv;
+  var decay = _.get(settings, 'decay', 1.0);
+  this.decay = decay;
 
   // var upwind = _.get(settings, 'upwind', false);
   // this.upwind = upwind;
@@ -118,6 +127,7 @@ AdvectionFilter.prototype.applyFilter = function (renderer, input, output)
   // // apply vertical flip
   this.uniforms.flipv.value = this.flipv;
   // this.uniforms.upwind.value = this.upwind;
+  this.uniforms.decay.value = this.decay;
 
   var shader = this.getShader(renderer);
   // draw the filter...

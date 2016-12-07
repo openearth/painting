@@ -19,6 +19,7 @@
       },
       "flipv": true,
       "scale": 2.0,
+      "decay": 0.99,
       "zoom": 14,
       "width": 1024,
       "height": 1024
@@ -41,6 +42,7 @@
       },
       "flipv": true,
       "scale": 5.0,
+      "decay": 0.99,
       "zoom": 10,
       "width": 1024,
       "height": 1024
@@ -84,6 +86,7 @@
       },
       "flipv": true,
       "scale": 5.0,
+      "decay": 0.99,
       "zoom": 10,
       "width": 1024,
       "height": 1024
@@ -104,6 +107,7 @@
       },
       "scale": 3,
       "flipv": false,
+      "decay": 0.99,
       "zoom": 10,
       "width": 2048,
       "height": 2048
@@ -126,6 +130,7 @@
         "sw": [-38, 24],
         "ne": [23.92, 143.92]
       },
+      "decay": 0.99,
       "zoom": 3,
       "width": 1024,
       "height": 1024
@@ -148,6 +153,7 @@
         "ne": [53.758518218850185, 6.538724422447244]
       },
       "flipv": false,
+      "decay": 0.99,
       "scale": 10.0,
       "zoom": 10,
       "width": 1024,
