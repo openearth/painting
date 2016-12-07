@@ -127,7 +127,9 @@
       var u = (frame.data[idx + 0] / 255.0) - 0.5;
       var v = (frame.data[idx + 1] / 255.0) - 0.5;
       v = v * (this.model.flipv ? -1 : 1);
+      // is blue
       var mask = (frame.data[idx + 2] / 255.0) > 0.5;
+      // velocity is zero
       mask = mask || (Math.abs(u) + Math.abs(v) === 0.0);
       // update the position
       particle.position.x = particle.position.x + u * this.model.scale;

@@ -18,7 +18,7 @@ var sketch;
 
   Vue.component('drawing-canvas', {
     // overwrite data in object constructor
-    template: '<div>drawing</div>',
+    template: '<div></div>',
     data: function() {
       return {
         canvas: null,
@@ -41,7 +41,8 @@ var sketch;
       deferredMountedTo: function(parent) {
         console.log('generating painting in layer', parent);
         /* eslint-disable no-underscore-dangle */
-        this.canvas = parent._canvas;
+        // named _image due to inheritance
+        this.canvas = parent._image;
         /* eslint-enable no-underscore-dangle */
         this.addDrawing();
       },

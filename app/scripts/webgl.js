@@ -194,7 +194,8 @@
       deferredMountedTo: function(parent) {
         console.log('Generating model canvas in layer', parent);
         /* eslint-disable no-underscore-dangle */
-        this.canvas = parent._canvas;
+        // named _image due to inheritance
+        this.canvas = parent._image;
         /* eslint-enable no-underscore-dangle */
         this.createRenderer();
       },
