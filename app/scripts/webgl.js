@@ -205,7 +205,10 @@
           this.width, this.height,
           {
             'view': this.canvas,
-            'transparent': true
+            'transparent': true,
+            clearBeforeRender: false,
+            preserveDrawingBuffer: false
+
           }
 
         );
@@ -271,6 +274,7 @@
           {
             scale: model.scale,
             flipv: model.flipv,
+            decay: model.decay,
             upwind: false
           }
         );

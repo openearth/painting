@@ -23,13 +23,13 @@ var fragmentSource = [
   'uniform bool flipv;',
   'uniform bool upwind;',
   // previous image
-  'uniform sampler2D uSampler;',
+  'uniform sampler2D uPreviousImageSampler;',
   // uv field
-  'uniform sampler2D mapSampler;',
+  'uniform sampler2D uUVSampler;',
   'void main(void)',
   '{',
   // lookup in 0-1 space
-  'vec4 map =  texture2D(mapSampler, vMapCoord);',
+  'vec4 map =  texture2D(uUVSampler, vMapCoord);',
   'float extrascale = 1.0;',
   'map -= 0.5;',
   'map.xy *= (scale * extrascale);',
@@ -38,7 +38,7 @@ var fragmentSource = [
   '}',
   'vec2 lookup = vec2(vTextureCoord.x - map.x, vTextureCoord.y - map.y);',
   'if (upwind) {',
-  ' vec4 vUpwind = texture2D(mapSampler, vec2(vMapCoord.x - map.x, vMapCoord.y - map.y ));',
+  ' vec4 vUpwind = texture2D(uUVSampler, vec2(vMapCoord.x - map.x, vMapCoord.y - map.y ));',
   ' vUpwind -= 0.5;',
   ' if (flipv) {',
   '  vUpwind.y = - vUpwind.y;',
@@ -48,9 +48,9 @@ var fragmentSource = [
   ' lookup = vec2(vTextureCoord.x - 0.5*(map.x + vUpwind.x), vTextureCoord.y - 0.5* (map.y + vUpwind.y));',
   '}',
   '/* stop rendering if masked */',
-  'vec4 color = texture2D(uSampler, lookup);',
+  'vec4 color = texture2D(uPreviousImageSampler, lookup);',
   // I expected that I would have to apply this to the .a only....
-  'color *= decay;',
+  'color = vec4(color.rgb * decay, color.a * decay); ',
   'gl_FragColor = color;',
   'if (map.z > 0.0) {',
   'gl_FragColor *= 0.0;',
@@ -88,7 +88,7 @@ function AdvectionFilter(sprite, settings)
 
     // uniforms
     {
-      mapSampler: { type: 'sampler2D', value: sprite.texture },
+      uUVSampler: { type: 'sampler2D', value: sprite.texture },
       otherMatrix: { type: 'mat3', value: maskMatrix.toArray(true) },
       scale: { type: 'v2', value: { x: 0, y: 0 } },
       flipv: { type: 'bool', value: settings.flipv },
@@ -145,11 +145,11 @@ Object.defineProperties(AdvectionFilter.prototype, {
   map: {
     get: function ()
     {
-      return this.uniforms.mapSampler.value;
+      return this.uniforms.uUVSampler.value;
     },
     set: function (value)
     {
-      this.uniforms.mapSampler.value = value;
+      this.uniforms.uUVSampler.value = value;
 
     }
   }

@@ -9,9 +9,9 @@
     this.width = canvas.width;
     this.height = canvas.height;
     this.canvasIcon = $('#canvas-icon')[0];
-    this.drawIcon();
+    this.drawDot();
     this.icon = 'images/bar.png';
-    this.particleAlpha = 0.6;
+    this.particleAlpha = 0.8;
     this.tailLength = 0;
     this.replace = true;
     this.particles = [];
@@ -27,7 +27,8 @@
     this.iconTexture = null;
   }
 
-  Particles.prototype.drawIcon = function(){
+
+  Particles.prototype.drawElipse = function(){
     var ctx = this.canvasIcon.getContext('2d');
     ctx.clearRect(0, 0, 10, 10);
     ctx.fillStyle = 'rgba(200, 220, 240, 0.8)';
@@ -36,7 +37,17 @@
     ctx.beginPath();
     ctx.ellipse(5, 5, 2, 2, 0, 0, 2 * Math.PI);
     ctx.fill();
-    ctx.stroke();
+    if (this.iconTexture) {
+      this.iconTexture.update();
+    }
+  };
+  Particles.prototype.drawDot = function(){
+    var ctx = this.canvasIcon.getContext('2d');
+    ctx.clearRect(0, 0, 10, 10);
+    ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
+    ctx.beginPath();
+    ctx.arc(5, 5, 1, 0, 2 * Math.PI);
+    ctx.fill();
     if (this.iconTexture) {
       this.iconTexture.update();
     }
