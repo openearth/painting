@@ -14,7 +14,7 @@
  * ```
  */
 
-L.CanvasOverlay = L.Layer.extend({
+L.CanvasOverlay = L.ImageOverlay.extend({
 
   // @section
   // @aka CanvasOverlay options
@@ -32,136 +32,34 @@ L.CanvasOverlay = L.Layer.extend({
 
     // @option interactive: Boolean = false
     // If `true`, the canvas overlay will emit [mouse events](#interactive-layer) when clicked or hovered.
-    interactive: false,
+    interactive: true,
 
     // @option crossOrigin: Boolean = false
     // If true, the canvas will have its crossOrigin attribute set to ''. This is needed if you want to access canvas pixel data.
     crossOrigin: false
   },
 
-  initialize: function (bounds, options) { // (String, LatLngBounds, Object)
+  initialize: function (bounds, options) { // (LatLngBounds, Object)
     'use strict';
     if (bounds) {
       this._bounds = L.latLngBounds(bounds);
     } else {
       this._bounds = null;
     }
-    this._zoomAnimated = true;
     L.setOptions(this, options);
   },
 
-  onAdd: function () {
-    'use strict';
-    if (!this._canvas) {
-      this._initCanvas();
-
-      if (this.options.opacity < 1) {
-        this._updateOpacity();
-      }
-    }
-
-    if (this.options.interactive) {
-      L.DomUtil.addClass(this._canvas, 'leaflet-interactive');
-      this.addInteractiveTarget(this._canvas);
-    }
-
-    this.getPane().appendChild(this._canvas);
-    this._reset();
-  },
-
-  onRemove: function () {
-    'use strict';
-    L.DomUtil.remove(this._canvas);
-    if (this.options.interactive) {
-      this.removeInteractiveTarget(this._canvas);
-    }
-  },
-
-  // @method setOpacity(opacity: Number): this
-  // Sets the opacity of the overlay.
-  setOpacity: function (opacity) {
-    'use strict';
-    this.options.opacity = opacity;
-
-    if (this._canvas) {
-      this._updateOpacity();
-    }
-    return this;
-  },
-
-  setStyle: function (styleOpts) {
-    'use strict';
-    if (styleOpts.opacity) {
-      this.setOpacity(styleOpts.opacity);
-    }
-    return this;
-  },
-
-  // @method bringToFront(): this
-  // Brings the layer to the top of all overlays.
-  bringToFront: function () {
-    'use strict';
-    if (this._map) {
-      L.DomUtil.toFront(this._canvas);
-    }
-    return this;
-  },
-
-  // @method bringToBack(): this
-  // Brings the layer to the bottom of all overlays.
-  bringToBack: function () {
-    'use strict';
-    if (this._map) {
-      L.DomUtil.toBack(this._canvas);
-    }
-    return this;
-  },
-
-  setBounds: function (bounds) {
-    'use strict';
-    this._bounds = bounds;
-
-    if (this._map) {
-      this._reset();
-    }
-    return this;
-  },
-
-  getEvents: function () {
-    'use strict';
-    var events = {
-      zoom: this._reset,
-      viewreset: this._reset
-    };
-
-    if (this._zoomAnimated) {
-      events.zoomanim = this._animateZoom;
-    }
-
-    return events;
-  },
-
-  getBounds: function () {
-    'use strict';
-    return this._bounds;
-  },
-
-  getElement: function () {
-    'use strict';
-    return this._canvas;
-  },
-
-  _initCanvas: function () {
+  _initImage: function () {
     'use strict';
     var canvas;
     if (this.options.el) {
-      canvas = this._canvas = this.options.el;
+      canvas = this._image = this.options.el;
     } else if (this.options.id) {
-      canvas = this._canvas = document.getElementById(this.options.id);
+      canvas = this._image = document.getElementById(this.options.id);
     } else {
-      canvas = this._canvas = L.DomUtil.create(
+      canvas = this._image = L.DomUtil.create(
         'canvas',
-        'leaflet-canvas-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '')
+        'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '')
       );
 
     }
@@ -177,55 +75,15 @@ L.CanvasOverlay = L.Layer.extend({
 
   },
 
-  _animateZoom: function (e) {
-    'use strict';
-    var scale = this._map.getZoomScale(e.zoom),
-        offset = this._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
-
-    L.DomUtil.setTransform(this._canvas, offset, scale);
-
-
-    // var bounds = new L.Bounds(
-    //   this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-    //   this._map.latLngToLayerPoint(this._bounds.getSouthEast())
-    // );
-    // var size = bounds.getSize();
-    // this._canvas.style.width  = size.x + 'px';
-    // this._canvas.style.height = size.y + 'px';
-
-  },
-  _latLngBoundsToNewLayerBounds: function (latLngBounds, zoom, center) {
-    'use strict';
-    var topLeft = this._map._getNewPixelOrigin(center, zoom);
-    return L.bounds([
-      this._map.project(latLngBounds.getSouthWest(), zoom)._subtract(topLeft),
-      this._map.project(latLngBounds.getNorthWest(), zoom)._subtract(topLeft),
-      this._map.project(latLngBounds.getSouthEast(), zoom)._subtract(topLeft),
-      this._map.project(latLngBounds.getNorthEast(), zoom)._subtract(topLeft)
-    ]);
-  },
   _reset: function () {
     'use strict';
-    var canvas = this._canvas,
-        bounds = new L.Bounds(
-          this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-          this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
-        size = bounds.getSize();
-
-    L.DomUtil.setPosition(canvas, bounds.min);
-
+    L.ImageOverlay.prototype._reset.call(this);
+    var canvas = this._image;
     // number of pixels in the canvas (independent of display size)
     // TODO: fullscreen by default
     canvas.width = this.options.width;
     canvas.height = this.options.height;
 
-    canvas.style.width = size.x + 'px';
-    canvas.style.height = size.y + 'px';
-  },
-
-  _updateOpacity: function () {
-    'use strict';
-    L.DomUtil.setOpacity(this._canvas, this.options.opacity);
   }
 });
 

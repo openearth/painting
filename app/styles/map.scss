@@ -20,7 +20,23 @@
 }
 
 
-.leaflet-image-layer
+.leaflet-canvas-layer
 {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.leaflet-container canvas.leaflet-canvas-layer {
+  max-width: none !important;
+}
+
+.leaflet-canvas-layer
+{
+  pointer-events: none;
+}
+
+.leaflet-image-layer.leaflet-interactive {
+  pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
   pointer-events: auto;
 }
