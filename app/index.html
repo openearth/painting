@@ -86,10 +86,15 @@
           <!--  -->
           <side-bar></side-bar>
           <toggle-controls :sketch="sketch"></toggle-controls>
+          <canvas-layer :model="model" id="particles">
+            <particle-component
+               ref="particleComponent"
+               :model="model"
+               ></particle-component>
+
+          </canvas-layer>
           <canvas-layer :model="model" id="webgl">
             <model-canvas :model="model" :sketch="sketch"></model-canvas>
-          </canvas-layer>
-          <canvas-layer id="particles">
           </canvas-layer>
           <canvas-layer :model="model" id="drawing">
             <drawing-canvas></drawing-canvas>
@@ -101,12 +106,6 @@
         <chart-container v-if="settings.chart" :model="model"></chart-container>
       </div>
       <story-container v-if="settings.story"></story-container>
-      <particle-component
-         ref="particleComponent"
-         :sketch="sketch"
-         :pipeline="pipeline"
-         :model="model"
-         ></particle-component>
       <!-- Hidden layers -->
       <div class="hidden layer">
         <div>

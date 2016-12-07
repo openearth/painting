@@ -17,6 +17,24 @@
     },
     mounted: function() {
       // find the first video in this container
+
+      function animate() {
+        requestAnimationFrame(animate.bind(this));
+        if (!this.video) {
+          return;
+        }
+        if (!this.uvctx) {
+          return;
+        }
+
+        let width = this.video.width;
+        let height = this.video.height;
+        // TODO: this is expensive
+        this.uvctx.drawImage(this.video, 0, 0, width, height);
+
+      };
+      animate.bind(this)();
+
     },
     watch: {
       uv: function(uv) {
@@ -51,6 +69,17 @@
       video: {
         get: function() {
           return document.getElementById('uv-video');
+        },
+        cache: false
+
+      },
+      uvctx: {
+        get: function() {
+          var uvHidden = document.getElementById('uv-hidden');
+          if (_.isNil(uvHidden)) {
+            return null;
+          }
+          return uvHidden.getContext('2d');
         },
         cache: false
 
@@ -340,7 +369,7 @@
             return;
           }
           // request next animation frame
-          requestAnimationFrame(animate);
+          requestAnimationFrame(animate.bind(this));
 
           if (video.readyState < video.HAVE_ENOUGH_DATA) {
             console.debug('video does not have enough data');
@@ -368,14 +397,6 @@
           renderTextureFrom = renderTextureTo;
           renderTextureTo = temp;
           renderTextureTo.clear();
-
-          if (!_.isNil(model.particles)) {
-            model.particles.step();
-            if (model.particles.particles.length > 500) {
-              renderTextureFrom.clear();
-            }
-          }
-
         }
         animate.bind(this)();
 

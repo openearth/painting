@@ -2,76 +2,63 @@
 (function () {
   'use strict';
 
-  function Particles(model, canvas, container, uv) {
+  function Particles(model, canvas, uv) {
     this.model = model;
     this.canvas = canvas;
     this.uv = uv;
     this.width = canvas.width;
     this.height = canvas.height;
-    this.canvasIcon = $('#canvas-icon')[0];
-    this.drawDot();
-    this.icon = 'images/bar.png';
     this.particleAlpha = 0.8;
-    this.tailLength = 0;
     this.replace = true;
     this.particles = [];
-    this.sprites = new PIXI.ParticleContainer(0, {
-      scale: true,
-      position: true,
-      rotation: true,
-      uvs: true,
-      alpha: true
-    });
-    container.addChild(this.sprites);
     this.counter = 0;
-    this.iconTexture = null;
+    // create offscreen buffer
+    this.offScreen = document.createElement('canvas');
+    this.offScreen.width = this.canvas.width;
+    this.offScreen.height = this.canvas.height;
   }
 
+  Particles.prototype.startAnimate = function() {
 
-  Particles.prototype.drawElipse = function(){
-    var ctx = this.canvasIcon.getContext('2d');
-    ctx.clearRect(0, 0, 10, 10);
-    ctx.fillStyle = 'rgba(200, 220, 240, 0.8)';
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.strokeWidth = 'rgba(255, 255, 255)';
-    ctx.beginPath();
-    ctx.ellipse(5, 5, 2, 2, 0, 0, 2 * Math.PI);
-    ctx.fill();
-    if (this.iconTexture) {
-      this.iconTexture.update();
+    var fps = 15;
+    var now;
+    var then = Date.now();
+    var interval = 1000/fps;
+    var delta;
+
+    function animate() {
+      requestAnimationFrame(animate.bind(this));
+      now = Date.now();
+      delta = now - then;
+      if (delta < interval) {
+        return;
+      }
+      if (!(this.particles.length)) {
+        return;
+      }
+      this.step(60/fps);
+      this.render();
+      then = now - (delta % interval);
     }
-  };
-  Particles.prototype.drawDot = function(){
-    var ctx = this.canvasIcon.getContext('2d');
-    ctx.clearRect(0, 0, 10, 10);
-    ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
-    ctx.beginPath();
-    ctx.arc(5, 5, 1, 0, 2 * Math.PI);
-    ctx.fill();
-    if (this.iconTexture) {
-      this.iconTexture.update();
-    }
+    animate.bind(this)();
+  },
+  Particles.prototype.drawDot = function(ctx, x, y){
   };
 
   Particles.prototype.create = function() {
     // replace it
-    // var newParticle = PIXI.Sprite.fromImage(this.icon);
-    this.iconTexture = PIXI.Texture.fromCanvas(this.canvasIcon);
-    var newParticle = new PIXI.Sprite(this.iconTexture);
+    var newParticle = new PIXI.Sprite();
     // set anchor to center
     newParticle.anchor.set(0.5);
     newParticle.alpha = this.particleAlpha;
     newParticle.x = Math.random() * this.width;
     newParticle.y = Math.random() * this.height;
-    // keep track of a tail
-    newParticle.tail = [];
     return newParticle;
   };
 
   Particles.prototype.clear = function () {
     // clear particles
     this.particles = [];
-    this.sprites.removeChildren();
   };
 
   Particles.prototype.culling = function (n) {
@@ -92,11 +79,10 @@
       var newParticle = this.create();
       // add to array and to particle container
       this.particles.push(newParticle);
-      this.sprites.addChild(newParticle);
     }
   };
 
-  Particles.prototype.step = function () {
+  Particles.prototype.step = function (speedup) {
     if (!this.particles.length) {
       return;
     }
@@ -105,20 +91,14 @@
     }
 
 
-    var drawing = $('#drawing')[0];
-    var drawingctx = drawing.getContext('2d');
-    drawingctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-    var uvhidden = $('#uvhidden')[0];
+    var uvhidden = $('#uv-hidden')[0];
     var uvctx = uvhidden.getContext('2d');
     var width = uvhidden.width,
         height = uvhidden.height;
 
-    // TODO: this is expensive
-    uvctx.drawImage(this.uv, 0, 0, width, height);
     var frame = uvctx.getImageData(0, 0, width, height);
-    // TODO: use this instead of frame.data
-    // var frameBuffer = new Uint32Array(frame.data.buffer);
 
+    // TODO: we need some dt here..
     _.each(this.particles, (particle) => {
       var idx = (
         Math.round(height - particle.position.y) * width +
@@ -132,12 +112,12 @@
       // velocity is zero
       mask = mask || (Math.abs(u) + Math.abs(v) === 0.0);
       // update the position
-      particle.position.x = particle.position.x + u * this.model.scale;
-      particle.position.y = particle.position.y + v * this.model.scale;
+      particle.position.x = particle.position.x + u * this.model.scale * speedup;
+      particle.position.y = particle.position.y + v * this.model.scale * speedup;
       mask = mask || particle.position.x > width;
       mask = mask || particle.position.x < 0;
-      mask = mask || particle.position.y > height;
-      mask = mask || particle.position.y < 0;
+      mask = mask || particle.position.y > height - 1;
+      mask = mask || particle.position.y < 10;
       // how do we get nans here....
       mask = mask || isNaN(particle.position.x);
       mask = mask || isNaN(particle.position.y);
@@ -156,85 +136,115 @@
       // replace dead particles
       if (mask) {
         _.pull(this.particles, particle);
-        this.sprites.removeChild(particle);
-
-        // // replace it
         if (this.replace) {
           var newParticle = this.create();
           // add to array and to particle container
           this.particles.push(newParticle);
-          this.sprites.addChild(newParticle);
         }
 
-      }
-      if (this.particles.length < 300 ) {
-        // if we don't have too many particles, keep track of the tail
-        // but only every 10 timesteps
-
-        if ((this.counter % 10) === 0) {
-          // add the current position to the tail (at the right)
-          particle.tail.push(_.clone(particle.position));
-          while (particle.tail.length > this.tailLength) {
-            // remove from the left
-            particle.tail.shift();
-          }
-
-        }
-        if (particle.tail.length > 0) {
-          drawingctx.beginPath();
-          drawingctx.moveTo(particle.tail[0].x, particle.tail[0].y);
-          for(var j = 1; j < particle.tail.length; j++) {
-            drawingctx.lineTo(particle.tail[j].x, particle.tail[j].y);
-          }
-          drawingctx.stroke();
-        }
       }
     }, this);
     this.counter++;
+  };
+  Particles.prototype.render = function() {
+    var ctx = this.canvas.getContext('2d');
+    // translucent by 0.9
+    // Can't get this to work
+    var width = this.canvas.width;
+    var height = this.canvas.height;
+    var offscreen = this.offScreen.getContext('2d');
+    offscreen.clearRect(0, 0, width,height);
+    offscreen.globalAlpha = 0.95;
+    offscreen.drawImage(this.canvas, 0, 0);
+    ctx.clearRect(0,0,width,height);
+    ctx.drawImage(this.offScreen, 0, 0);
+    ctx.globalCompositingOperation = 'lighten';
+    ctx.beginPath();
+    // greenish
+    ctx.fillStyle = 'rgba(200, 245, 221, 0.3)';
+    _.each(this.particles, (particle) => {
+      ctx.moveTo(particle.x, particle.y);
+      ctx.arc(particle.x, particle.y, 5, 0, 2 * Math.PI);
+
+    });
+    ctx.fill();
+    ctx.closePath();
+
   };
 
 
 
   Vue.component('particle-component', {
     template: '#particle-component-template',
-    props: ['model', 'sketch', 'pipeline'],
+    props: ['model'],
     data: function() {
       return {
+        particles: null,
+        pipeline: null,
+        stage: null,
+        renderer: null,
+        canvas: null
       };
     },
     mounted: function() {
       // find the first video in this container
       bus.$on('model-selected', this.resetParticles);
+
     },
     watch: {
       'model.uv': 'resetParticles',
-      'sketch': 'resetParticles',
       'pipeline': 'resetParticles'
     },
+    computed:{
+      width: {
+        get: function() {
+          return _.get(this, 'canvas.width');
+        }
+      },
+      height: {
+        get: function() {
+          return _.get(this, 'canvas.height');
+        }
+      }
+    },
     methods: {
+      deferredMountedTo: function(parent) {
+        console.log('Generating particle canvas in layer', parent);
+        /* eslint-disable no-underscore-dangle */
+        // named _image due to inheritance
+        this.canvas = parent._image;
+        /* eslint-enable no-underscore-dangle */
+        if (_.isNil(this.model)) {
+          console.warn('No model yet, deferring creation of particles');
+          return;
+        }
+        var uv = $('#uv-' + this.model.uv.tag)[0];
+        this.particles = new Particles(this.model, this.canvas, uv);
+        this.particles.startAnimate();
+
+      },
       resetParticles: function(){
         if (_.isNil(this.model)) {
           console.warn('no model, no particles', this.model);
           return;
         }
-        if (_.isNil(this.sketch)){
-          console.warn('no canvas, no particles', this.sketch);
-          return;
-        }
-        if (_.isNil(this.pipeline)) {
-          console.warn('no pipeline, no particles', this.pipeline);
-          return;
-        }
         var uv = $('#uv-' + this.model.uv.tag)[0];
 
-        this.model.particles = new Particles(this.model, this.sketch.element, this.pipeline, uv);
+
+        this.particles = new Particles(this.model, this.canvas, uv);
+        this.particles.startAnimate();
       },
       addParticles: function() {
         console.log('adding particles');
-        if (!_.isNil(this.model.particles)) {
-          var particles = this.model.particles;
-          particles.culling(particles.particles.length + 50);
+        if (_.isNil(this.model)) {
+          console.warn('Cannot add particles, no model');
+          return;
         }
+        if (_.isNil(this.particles)) {
+          console.warn('Cannot add particles, no particles object');
+          return;
+        }
+        this.particles.culling(this.particles.particles.length + 50);
       },
       removeParticles: function() {
         this.model.particles.culling(0);
