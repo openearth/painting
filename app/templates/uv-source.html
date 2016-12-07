@@ -4,6 +4,17 @@
       <video id="uv-video" autoplay loop v-if="tag === 'video'"></video>
       <img id="uv-img" v-if="tag === 'img'" />
     </div>
+    <div class="hidden layer">
+      <div v-if="model">
+        <!-- canvas to copy video on, to extract data -->
+        <canvas
+           id="uv-hidden"
+           :width="model.uv.width"
+           :height="model.uv.height"></canvas>
+      </div>
+
+    </div>
   </div>
+
 
 </template>
