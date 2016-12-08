@@ -96,6 +96,7 @@
     var width = uvhidden.width,
         height = uvhidden.height;
 
+    // TODO: Move this to uv-source
     var frame = uvctx.getImageData(0, 0, width, height);
 
     // TODO: we need some dt here..
@@ -148,12 +149,13 @@
   };
   Particles.prototype.render = function() {
     var ctx = this.canvas.getContext('2d');
+
     // get the size
     var width = this.canvas.width;
     var height = this.canvas.height;
 
     // bit of aliasing
-    var r = 2.1;
+    var r = 3;
     // render buffer to keep a trail
     var offscreen = this.offScreen.getContext('2d');
 
@@ -164,29 +166,21 @@
     // pingpong
     offscreen.drawImage(this.canvas, 0, 0);
     ctx.clearRect(0, 0, width, height);
-    ctx.drawImage(this.offScreen, 0, 0);
     // somehow this is not working properly,
-    ctx.globalCompositingOperation = 'lighten';
     // triad to map color
-    ctx.fillStyle = 'rgba(255, 91, 126, 0.3)';
+    ctx.fillStyle = 'rgba(255, 91, 126, 0.5)';
     // plot all points at once
     ctx.beginPath();
     _.each(this.particles, (particle) => {
-      ctx.moveTo(particle.x, particle.y);
+      // fixes the stroke
+      ctx.moveTo(particle.x + r, particle.y);
       ctx.arc(particle.x, particle.y, r, 0, 2 * Math.PI);
     });
     ctx.closePath();
     ctx.fill();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.drawImage(this.offScreen, 0, 0);
 
-    // little dot on top as substitute for lighten
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.beginPath();
-    _.each(this.particles, (particle) => {
-      ctx.moveTo(particle.x, particle.y);
-      ctx.arc(particle.x, particle.y, r / 2.0, 0, 2 * Math.PI);
-    });
-    ctx.closePath();
-    ctx.fill();
 
   };
 
@@ -231,6 +225,9 @@
         /* eslint-disable no-underscore-dangle */
         // named _image due to inheritance
         this.canvas = parent._image;
+        var ctx = this.canvas.getContext('2d');
+
+
         /* eslint-enable no-underscore-dangle */
         if (_.isNil(this.model)) {
           console.warn('No model yet, deferring creation of particles');
