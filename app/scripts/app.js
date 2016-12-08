@@ -1,8 +1,9 @@
-/* global bus, Vue2Leaflet  */
+/* global Vue2Leaflet  */
 
 // app is global, prefer to use this.$root
 var app;
 var bus;
+
 (function () {
   'use strict';
 

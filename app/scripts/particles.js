@@ -225,8 +225,6 @@
         /* eslint-disable no-underscore-dangle */
         // named _image due to inheritance
         this.canvas = parent._image;
-        var ctx = this.canvas.getContext('2d');
-
 
         /* eslint-enable no-underscore-dangle */
         if (_.isNil(this.model)) {
