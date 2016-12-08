@@ -18,8 +18,15 @@
     mounted: function() {
       // find the first video in this container
 
+      var fps = 15;
+      var now;
+      var then = Date.now();
+      var interval = 1000/fps;
+      var delta;
       function animate() {
         requestAnimationFrame(animate.bind(this));
+        now = Date.now();
+        delta = now - then;
         if (!this.video) {
           return;
         }
@@ -31,6 +38,7 @@
         let height = this.video.height;
         // TODO: this is expensive
         this.uvctx.drawImage(this.video, 0, 0, width, height);
+        then = now - (delta % interval);
 
       };
       animate.bind(this)();

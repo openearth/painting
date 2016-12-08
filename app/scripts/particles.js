@@ -152,23 +152,32 @@
     // Can't get this to work
     var width = this.canvas.width;
     var height = this.canvas.height;
+    var r = 2.1;
     var offscreen = this.offScreen.getContext('2d');
     offscreen.clearRect(0, 0, width,height);
     offscreen.globalAlpha = 0.95;
     offscreen.drawImage(this.canvas, 0, 0);
     ctx.clearRect(0,0,width,height);
     ctx.drawImage(this.offScreen, 0, 0);
-    ctx.globalCompositingOperation = 'lighten';
-    ctx.beginPath();
+    ctx.globalCompositingOperation = 'lighter';
     // greenish
-    ctx.fillStyle = 'rgba(200, 245, 221, 0.3)';
+    ctx.fillStyle = 'rgba(255, 91, 126, 0.3)';
+    ctx.beginPath();
     _.each(this.particles, (particle) => {
       ctx.moveTo(particle.x, particle.y);
-      ctx.arc(particle.x, particle.y, 5, 0, 2 * Math.PI);
-
+      ctx.arc(particle.x, particle.y, r, 0, 2 * Math.PI);
     });
-    ctx.fill();
     ctx.closePath();
+    ctx.fill();
+
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+    ctx.beginPath();
+    _.each(this.particles, (particle) => {
+      ctx.moveTo(particle.x, particle.y);
+      ctx.arc(particle.x, particle.y, r/2.0, 0, 2 * Math.PI);
+    });
+    ctx.closePath();
+    ctx.fill();
 
   };
 
