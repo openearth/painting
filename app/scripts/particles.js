@@ -20,10 +20,11 @@
 
   Particles.prototype.startAnimate = function() {
 
+    // throttle down because we're running on the CPU
     var fps = 15;
-    var now;
+    var now = Date.now();
     var then = Date.now();
-    var interval = 1000/fps;
+    var interval = 1000 / fps;
     var delta;
 
     function animate() {
@@ -36,13 +37,12 @@
       if (!(this.particles.length)) {
         return;
       }
-      this.step(60/fps);
+      // speed up to keep up with default fps
+      this.step(60 / fps);
       this.render();
       then = now - (delta % interval);
     }
     animate.bind(this)();
-  },
-  Particles.prototype.drawDot = function(ctx, x, y){
   };
 
   Particles.prototype.create = function() {
@@ -148,20 +148,28 @@
   };
   Particles.prototype.render = function() {
     var ctx = this.canvas.getContext('2d');
-    // translucent by 0.9
-    // Can't get this to work
+    // get the size
     var width = this.canvas.width;
     var height = this.canvas.height;
+
+    // bit of aliasing
     var r = 2.1;
+    // render buffer to keep a trail
     var offscreen = this.offScreen.getContext('2d');
-    offscreen.clearRect(0, 0, width,height);
+
+    // clear
+    offscreen.clearRect(0, 0, width, height);
+    // alpha determines length of the trail
     offscreen.globalAlpha = 0.95;
+    // pingpong
     offscreen.drawImage(this.canvas, 0, 0);
-    ctx.clearRect(0,0,width,height);
+    ctx.clearRect(0, 0, width, height);
     ctx.drawImage(this.offScreen, 0, 0);
-    ctx.globalCompositingOperation = 'lighter';
-    // greenish
+    // somehow this is not working properly,
+    ctx.globalCompositingOperation = 'lighten';
+    // triad to map color
     ctx.fillStyle = 'rgba(255, 91, 126, 0.3)';
+    // plot all points at once
     ctx.beginPath();
     _.each(this.particles, (particle) => {
       ctx.moveTo(particle.x, particle.y);
@@ -170,11 +178,12 @@
     ctx.closePath();
     ctx.fill();
 
+    // little dot on top as substitute for lighten
     ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
     ctx.beginPath();
     _.each(this.particles, (particle) => {
       ctx.moveTo(particle.x, particle.y);
-      ctx.arc(particle.x, particle.y, r/2.0, 0, 2 * Math.PI);
+      ctx.arc(particle.x, particle.y, r / 2.0, 0, 2 * Math.PI);
     });
     ctx.closePath();
     ctx.fill();
@@ -204,7 +213,7 @@
       'model.uv': 'resetParticles',
       'pipeline': 'resetParticles'
     },
-    computed:{
+    computed: {
       width: {
         get: function() {
           return _.get(this, 'canvas.width');

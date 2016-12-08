@@ -16,12 +16,11 @@
       };
     },
     mounted: function() {
-      // find the first video in this container
-
-      var fps = 15;
-      var now;
+      // no need to do this too fast (getting image from gpu to cpu takes some time)
+      var fps = 10;
+      var now = Date.now();
       var then = Date.now();
-      var interval = 1000/fps;
+      var interval = 1000 / fps;
       var delta;
       function animate() {
         requestAnimationFrame(animate.bind(this));
@@ -39,8 +38,7 @@
         // TODO: this is expensive
         this.uvctx.drawImage(this.video, 0, 0, width, height);
         then = now - (delta % interval);
-
-      };
+      }
       animate.bind(this)();
 
     },
@@ -382,7 +380,6 @@
         var renderTextureTo = this.renderTextureTo;
         var renderTextureFrom = this.renderTextureFrom;
         var renderSpriteFrom = this.renderSpriteFrom;
-        var model = this.model;
         var stage = this.stage;
         var drawingContext = this.drawingContext;
         var state = this.state;
