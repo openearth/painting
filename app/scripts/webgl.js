@@ -147,7 +147,8 @@
         renderer: null,
         renderTextureFrom: null,
         renderTextureTo: null,
-        pipeline: null
+        pipeline: null,
+        advectionFilter: null
       };
     },
     mounted: function() {
@@ -198,8 +199,9 @@
       'model.uv': function() {
         console.log('new model in', this.model.uv);
         this.$nextTick(() => {
-          this.setFilter();
+          this.createFilter();
           this.startAnimate();
+          this.updateUniforms(this.model);
         });
       },
       drawing: function(drawing) {
@@ -209,7 +211,7 @@
         } else {
           console.log('Drawing changed, generating textures for', drawing);
         }
-        this.setDrawing(drawing);
+        this.createDrawingTexture(drawing);
       }
     },
     methods: {
@@ -219,6 +221,7 @@
         }
         console.log('clearing 3d');
         this.renderTextureFrom.clear();
+        this.renderTextureTo.clear();
       },
       deferredMountedTo: function(parent) {
         console.log('Generating model canvas in layer', parent);
@@ -250,7 +253,7 @@
         Vue.set(this, 'stage', stage);
         Vue.set(this, 'renderer', renderer);
       },
-      setDrawing: function(drawing) {
+      createDrawingTexture: function(drawing) {
         if (!drawing) {
           return;
         } else {
@@ -265,8 +268,22 @@
         this.drawingSprite = drawingSprite;
         this.drawingTexture = drawingTexture;
       },
-      setFilter: function() {
+      updateUniforms: function(model) {
+        if (!this.advectionFilter) {
+          return;
+        }
+        this.advectionFilter.uniforms.scale.value.x = model.scale;
+        this.advectionFilter.uniforms.scale.value.y = model.scale;
+        this.advectionFilter.uniforms.flipv.value = model.flipv;
+        this.advectionFilter.uniforms.decay.value = model.decay;
 
+      },
+      createFilter: function() {
+
+        if (!_.isNil(this.renderTextureFrom)) {
+          console.warn('filter already set');
+          return;
+        }
         if (!this.pipeline) {
           console.warn('no pipeline yet');
           return;
@@ -299,7 +316,7 @@
         // setup the pipeline
         this.pipeline.addChild(this.drawingSprite);
         // Create a render texture
-        var displacementFilter = new AdvectionFilter(
+        this.advectionFilter = new AdvectionFilter(
           videoSprite,
           {
             scale: model.scale,
@@ -310,7 +327,7 @@
         );
         // Add the video sprite to the stage (not to the pipeline (it should not be rendered))
         this.stage.addChild(videoSprite);
-        this.pipeline.filters = [displacementFilter];
+        this.pipeline.filters = [this.advectionFilter];
 
         // // create framebuffer with texture source
         var renderTextureFrom = new PIXI.RenderTexture(renderer, width, height);

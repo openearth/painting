@@ -82,9 +82,9 @@
           </div>
         </div>
         <!-- leaflet map -->
-        <v-map :zoom=9 :center="[52, 4]" ref="map" class="sidebar-map">
+        <v-map :zoom=9 :center="[52, 4]" ref="map" :class="{'sidebar-map': settings.sidebar}">
           <!--  -->
-          <side-bar></side-bar>
+          <side-bar v-if="settings.sidebar"></side-bar>
           <toggle-controls :sketch="sketch"></toggle-controls>
           <canvas-layer :model="model" id="particles">
             <particle-component
