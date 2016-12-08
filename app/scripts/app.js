@@ -2,6 +2,7 @@
 
 // app is global, prefer to use this.$root
 var app;
+var bus;
 (function () {
   'use strict';
 
@@ -32,6 +33,8 @@ var app;
 
   }
   $(document).ready(function() {
+    // make a global event bus
+    bus = new Vue();
     Vue.component('v-map', Vue2Leaflet.Map);
     Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
     $('#template-container')

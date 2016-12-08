@@ -27,16 +27,18 @@
             var storyElements = this.$el.getElementsByClassName('story-item');
             console.log('story elements', storyElements, storyElements.length);
             _.each(storyElements, function(element, index) {
-              var item = json[index];
+              var item = json.items[index];
+              console.log('combining', element, 'with', item, json);
               var scene = new ScrollMagic.Scene({
                 triggerElement: element,
                 duration: element.clientHeight
               })
                     .addTo(controller)
-                    .on('enter', function () {
+                    .on('enter', () => {
+                      console.log('item', item);
                       if (_.has(item, 'latlng')) {
                         // replace by flyTo after upgrade
-                        app.map.setView(item.latlng, item.zoom);
+                        app.$refs.map.mapObject.flyTo(L.latLng(item.latlng), item.zoom);
 
                       }
                     })
