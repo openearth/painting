@@ -86,7 +86,7 @@ var bus;
               var bounds = L.latLngBounds(sw, ne);
               if (_.has(app.$refs, 'map')) {
                 console.info('fitting bounds', bounds, app.$refs.map);
-                app.$refs.map.setBounds(bounds);
+                app.$refs.map.mapObject.flyToBounds(bounds);
 
               } else {
                 console.warn('fitBounds missing', app.$refs, app, bounds);

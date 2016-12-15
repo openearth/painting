@@ -52,6 +52,7 @@
         // send this event once
         console.log('firing video-loaded');
         bus.$emit('video-loaded', video);
+        this.modelUpdate();
       }
     },
     computed: {
@@ -113,12 +114,12 @@
 
         this.video.load();
         this.video.currentTime = this.video.currentTime;
-        this.video.bind('loadeddata', () => {
+        $(this.video).bind('loadeddata', () => {
           console.log('video loaded');
           this.loaded = true;
           Vue.set(this.model, 'duration', this.video.duration);
         });
-        this.video.bind('timeupdate', () => {
+        $(this.video).bind('timeupdate', () => {
           Vue.set(this.model, 'currentTime', this.video.currentTime);
         });
 
