@@ -78,14 +78,12 @@ var bus;
             // this propagates to the components on the next tick
             Vue.nextTick(() => {
               // we should have a model in the uv-source
-              console.log('uv source', app.$refs.uvSource.model);
-              // and in the mapcontainer
+
 
               var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
                   ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
               var bounds = L.latLngBounds(sw, ne);
               if (_.has(app.$refs, 'map')) {
-                console.info('fitting bounds', bounds, app.$refs.map);
                 app.$refs.map.mapObject.flyToBounds(bounds);
 
               } else {

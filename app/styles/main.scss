@@ -22,15 +22,23 @@ $brand-info: #64FF64;
 
 @import "map.scss";
 
-.story-container {
-  background-color: $sea-color;
-  color: $foreground;
-  flex: none;
-  width: 30vw;
-  max-height: 100vh;
-  overflow-y: scroll;
-  padding: 10px;
+.map-row {
+  padding-top: 1rem;
 }
+.map-card {
+  flex: 3 0;
+  max-height: calc(100vh - 2rem);
+}
+.story-card {
+  flex: 1 0;
+  max-height: calc(100vh - 2rem);
+}
+.story-container {
+  overflow-y: scroll;
+  flex: none;
+  height: calc(100vh - 28px - 2rem);
+}
+
 .story-item {
   video,img {
     max-width: 100%;

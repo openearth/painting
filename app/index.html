@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="/bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="/bower_components/vuetify/dist/vuetify.min.css" />
     <link rel="stylesheet" href="/bower_components/material-design-icons/iconfont/material-icons.css" />
+    <link rel="stylesheet" href="/bower_components/roboto-fontface/css/roboto/roboto-fontface.css" />
+    <link rel="stylesheet" href="/bower_components/roboto-fontface/css/roboto-condensed/roboto-condensed-fontface.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -42,74 +44,82 @@
        >
       <!-- Sidebar if settings.sidebar is active -->
       <v-app>
-        <header>
-          <v-navbar>
-            <div class="navbar__side-icon">
-              <a href="#!" v-side-bar:left-sidebar>
-                <v-icon>reorder</v-icon>
-              </a>
-            </div>
+        <!-- <header> -->
+        <!--   <v-navbar> -->
+        <!--     <div class="navbar__side-icon"> -->
+        <!--       <a href="#!" v-side-bar:left-sidebar> -->
+        <!--         <v-icon>reorder</v-icon> -->
+        <!--       </a> -->
+        <!--     </div> -->
 
-          </v-navbar>
-        </header>
+        <!--   </v-navbar> -->
+        <!-- </header> -->
         <main>
           <v-sidebar drawer id="left-sidebar">
-            <models-overview></models-overview>
-            <painting-palettes></painting-palettes>
-            <ul class="sidebar-tabs" role="tablist">
-              <li><a href="#model-pane" role="tab"><i class="fa fa-bars"></i></a></li>
-              <li><a href="#paint-pane" role="tab"><i class="fa fa-paint-brush"></i></a></li>
-              <li><a href="#key-bindings-pane" role="tab"><i class="fa fa-keyboard-o"></i></a></li>
-            </ul>
-            <div class="sidebar-content active">
-              <div class="sidebar-pane" id="model-pane">
-                <h1>Current model</h1>
+            <v-collapsible>
+              <v-collapsible-header>Models</v-collapsible-header><v-collapsible-body>
                 <model-details :model="model"></model-details>
-                <h1>Models</h1>
                 <models-overview></models-overview>
-              </div>
-              <div class="sidebar-pane" id="paint-pane">
-                <h4>Paintings</h4>
+              </v-collapsible-body>
+              <v-collapsible-header>Palettes</v-collapsible-header><v-collapsible-body>
                 <painting-palettes></painting-palettes>
-                <!-- bind palette to app palette -->
                 <palette-chart :palette="palette"></palette-chart>
-                <h4>Controls for drawing and map</h4>
+              </v-collapsible-body>
+              <v-collapsible-header>Controls</v-collapsible-header><v-collapsible-body>
                 <drawing-controls :sketch="sketch"></drawing-controls>
                 <map-controls ref="mapControls" :map="map" ></map-controls>
-              </div>
-              <div class="sidebar-pane" id="key-bindings-pane">
+              </v-collapsible-body>
+              <v-collapsible-header>Key bindings</v-collapsible-header><v-collapsible-body>
                 <key-bindings></key-bindings>
-              </div>
-            </div>
+              </v-collapsible-body>
+            </v-collapsible>
           </v-sidebar>
           <v-content>
-            <v-map :zoom=9 :center="[52, 4]" ref="map" :class="{'sidebar-map': settings.sidebar}">
+            <v-container >
+              <v-row class="map-row">
+                <v-card class="map-card" height="96vh">
+                  <v-card-text class="map-text">
+                    <v-map :zoom=9 :center="[52, 4]" ref="map" :class="{'sidebar-map': settings.sidebar}">
 
-              <toggle-controls :sketch="sketch"></toggle-controls>
-              <canvas-layer :model="model" id="particles">
-                <particle-component
-                   ref="particleComponent"
-                   :model="model"
-                   ></particle-component>
+                      <toggle-controls :sketch="sketch"></toggle-controls>
+                      <canvas-layer :model="model" id="particles">
+                        <particle-component
+                           ref="particleComponent"
+                           :model="model"
+                           ></particle-component>
 
-              </canvas-layer>
-              <canvas-layer :model="model" id="webgl">
-                <model-canvas :model="model" :sketch="sketch"></model-canvas>
-              </canvas-layer>
-              <canvas-layer :model="model" id="drawing">
-                <drawing-canvas></drawing-canvas>
-              </canvas-layer>
+                      </canvas-layer>
+                      <canvas-layer :model="model" id="webgl">
+                        <model-canvas :model="model" :sketch="sketch"></model-canvas>
+                      </canvas-layer>
+                      <canvas-layer :model="model" id="drawing">
+                        <drawing-canvas></drawing-canvas>
+                      </canvas-layer>
 
-              <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
-            </v-map>
+                      <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
+                    </v-map>
+                  </v-card-text>
+
+                </v-card>
+                <v-card v-if="model && model.story" class="story-card" height="96vh">
+                  <v-card-text>
+                    <story-container ></story-container>
+                  </v-card-text>
+
+                </v-card>
+
+              </v-row>
+            </v-container>
 
 
-            <chart-container v-if="settings.chart" :model="model"></chart-container>
+
+
           </v-content>
-          <v-sidebar right id="right-sidebar">
-            <story-container v-if="settings.story"></story-container>
-
-          </v-sidebar>
+          <v-card class="chart-card" v-if="settings.chart">
+            <v-card-text>
+              <chart-container  :model="model"></chart-container>
+            </v-card-text>
+          </v-card>
         </main>
 
 

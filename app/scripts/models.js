@@ -35,7 +35,7 @@
           this.selectModel(selectedModel);
         })
         .catch(function(ex) {
-          console.log('parsing failed', ex);
+          console.warn('parsing failed', ex);
         });
 
     },

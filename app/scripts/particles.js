@@ -221,14 +221,12 @@
     },
     methods: {
       deferredMountedTo: function(parent) {
-        console.log('Generating particle canvas in layer', parent);
         /* eslint-disable no-underscore-dangle */
         // named _image due to inheritance
         this.canvas = parent._image;
 
         /* eslint-enable no-underscore-dangle */
         if (_.isNil(this.model)) {
-          console.warn('No model yet, deferring creation of particles');
           return;
         }
         var uv = $('#uv-' + this.model.uv.tag)[0];
@@ -238,7 +236,6 @@
       },
       resetParticles: function(){
         if (_.isNil(this.model)) {
-          console.warn('no model, no particles', this.model);
           return;
         }
         var uv = $('#uv-' + this.model.uv.tag)[0];
@@ -248,13 +245,10 @@
         this.particles.startAnimate();
       },
       addParticles: function() {
-        console.log('adding particles');
         if (_.isNil(this.model)) {
-          console.warn('Cannot add particles, no model');
           return;
         }
         if (_.isNil(this.particles)) {
-          console.warn('Cannot add particles, no particles object');
           return;
         }
         this.particles.culling(this.particles.particles.length + 50);

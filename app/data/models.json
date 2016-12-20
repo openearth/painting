@@ -29,6 +29,7 @@
       "abstract": "wadden model",
       "id": "E719CD9A-339A-11E5-BA2D-4963B6C90E9A",
       "engine": "delft3d flow",
+      "story": "data/stories/ecomare.json",
       "uv": {
         "src": "models/movies/wadden.webm",
         "type": "video/webm",

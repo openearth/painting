@@ -11,7 +11,6 @@
       };
     },
     mounted: function(){
-      console.log('create chart in ', this.$el, 'for', this.model);
       // wait for other elements to load as well
       this.$nextTick(function(){
         var margin = {

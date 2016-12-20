@@ -50,7 +50,6 @@
         video.width = uv.width;
         video.load();
         // send this event once
-        console.log('firing video-loaded');
         bus.$emit('video-loaded', video);
         this.modelUpdate();
       }
@@ -104,18 +103,14 @@
         this.loaded = false;
         // model was updated
         // wait for the dom to be updated
-        console.log('tick tock', this.model);
         if (!(this.model.uv.tag === 'video')) {
           // no video available
-          console.log('no video model', this.model.uv);
           return;
         }
-        console.log('new video', this.video);
 
         this.video.load();
         this.video.currentTime = this.video.currentTime;
         $(this.video).bind('loadeddata', () => {
-          console.log('video loaded');
           this.loaded = true;
           Vue.set(this.model, 'duration', this.video.duration);
         });
@@ -160,11 +155,9 @@
     },
     mounted: function() {
       bus.$on('video-loaded', function(video) {
-        console.log('got new video event', video);
         this.video = video;
       }.bind(this));
       Vue.nextTick(() => {
-        console.info('mounted next', this, this.canvas);
         bus.$on('model-selected', this.clear3d);
       });
 
@@ -191,7 +184,6 @@
           return this.videoElement;
         },
         set: function(video) {
-          console.log('new video', video, 'creating new sprite');
           this.videoElement = video;
           var videoTexture = PIXI.Texture.fromVideo(video);
           var videoSprite = new PIXI.Sprite(videoTexture);
@@ -204,7 +196,6 @@
     },
     watch: {
       'model.uv': function() {
-        console.log('new model in', this.model.uv);
         this.$nextTick(() => {
           this.createFilter();
           this.startAnimate();
@@ -212,11 +203,9 @@
         });
       },
       drawing: function(drawing) {
-        console.info('Drawing changed to', drawing);
         if (!drawing) {
           return;
         } else {
-          console.log('Drawing changed, generating textures for', drawing);
         }
         this.createDrawingTexture(drawing);
       }
@@ -226,12 +215,10 @@
         if (_.isNil(this.renderTextureFrom)) {
           return;
         }
-        console.log('clearing 3d');
         this.renderTextureFrom.clear();
         this.renderTextureTo.clear();
       },
       deferredMountedTo: function(parent) {
-        console.log('Generating model canvas in layer', parent);
         /* eslint-disable no-underscore-dangle */
         // named _image due to inheritance
         this.canvas = parent._image;
@@ -239,7 +226,6 @@
         this.createRenderer();
       },
       createRenderer: function() {
-        console.log('creating new canvas context', this);
         // Define the renderer, explicit webgl (no canvas)
         var renderer = new PIXI.WebGLRenderer(
           this.width, this.height,
@@ -264,7 +250,6 @@
         if (!drawing) {
           return;
         } else {
-          console.info('setting drawing to', drawing);
         }
         // load the drawing texture
         var drawingContext = drawing;
@@ -288,28 +273,21 @@
       createFilter: function() {
 
         if (!_.isNil(this.renderTextureFrom)) {
-          console.warn('filter already set');
           return;
         }
         if (!this.pipeline) {
-          console.warn('no pipeline yet');
           return;
         } else {
-          console.log('setting filter to', this.pipeline);
         }
 
         if (!this.model) {
-          console.warn('no model yet');
           return;
         } else {
-          console.log('setting filter for model', this.model);
         }
 
         if (!this.videoSprite) {
-          console.warn('no videosprite yet');
           return;
         } else {
-          console.log('setting filter for videoSprite', this.videoSprite);
         }
 
         var videoSprite = this.videoSprite;
@@ -358,18 +336,15 @@
       startAnimate: function() {
         if (!this.drawingTexture) {
           this.state = 'STOPPED';
-          console.warn('Starting animation but drawingTexture is', this.drawingTexture);
           return;
         }
         if (!this.video) {
           this.state = 'STOPPED';
-          console.warn('Starting animation but video is', this.video);
           return;
 
         }
         if (!this.videoSprite) {
           this.state = 'STOPPED';
-          console.warn('Starting animation but videoSprite is', this.videoSprite);
           return;
 
         }
@@ -395,8 +370,10 @@
           requestAnimationFrame(animate.bind(this));
 
           if (video.readyState < video.HAVE_ENOUGH_DATA) {
-            console.debug('video does not have enough data');
             return;
+          }
+          if (!videoSprite.texture.valid) {
+            console.debug('video texture not valid');
           }
 
           videoSprite.scale.y = -1;
