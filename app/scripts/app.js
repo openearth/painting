@@ -1,4 +1,4 @@
-/* global Vue2Leaflet  */
+/* global Vue2Leaflet, Vuetify  */
 
 // app is global, prefer to use this.$root
 var app;
@@ -36,6 +36,7 @@ var bus;
   $(document).ready(function() {
     // make a global event bus
     bus = new Vue();
+    Vue.use(Vuetify);
     Vue.component('v-map', Vue2Leaflet.Map);
     Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
     $('#template-container')
@@ -47,7 +48,6 @@ var bus;
             el: '#app',
             mounted: function() {
               this.$nextTick(function() {
-                $('input[type="checkbox"]').bootstrapSwitch();
               });
             },
             data: function() {

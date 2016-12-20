@@ -14,8 +14,8 @@
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="/bower_components/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="/bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
-    <link rel="stylesheet" href="/bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
+    <link rel="stylesheet" href="/bower_components/vuetify/dist/vuetify.min.css" />
+    <link rel="stylesheet" href="/bower_components/material-design-icons/iconfont/material-icons.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -37,75 +37,85 @@
 
     <!-- Map -->
 
-
     <div
        id="app"
-       class="vertical-columns"
        >
       <!-- Sidebar if settings.sidebar is active -->
-
-      <!-- hidden components if no sidebar -->
-      <!-- This is the main map object, if it changes sync up -->
-      <div v-if="!settings.sidebar" v-show="false">
-        <models-overview></models-overview>
-        <painting-palettes></painting-palettes>
-      </div>
-      <div class="vertical-box">
-        <div id="sidebar" class="sidebar collapsed" v-if="settings.sidebar">
-          <!-- Nav tabs -->
-          <ul class="sidebar-tabs" role="tablist">
-            <li><a href="#model-pane" role="tab"><i class="fa fa-bars"></i></a></li>
-            <li><a href="#paint-pane" role="tab"><i class="fa fa-paint-brush"></i></a></li>
-            <li><a href="#key-bindings-pane" role="tab"><i class="fa fa-keyboard-o"></i></a></li>
-          </ul>
-
-          <!-- Tab panes -->
-          <div class="sidebar-content active">
-            <div class="sidebar-pane" id="model-pane">
-              <h1>Current model</h1>
-              <model-details :model="model"></model-details>
-              <h1>Models</h1>
-              <models-overview></models-overview>
+      <v-app>
+        <header>
+          <v-navbar>
+            <div class="navbar__side-icon">
+              <a href="#!" v-side-bar:left-sidebar>
+                <v-icon>reorder</v-icon>
+              </a>
             </div>
-            <div class="sidebar-pane" id="paint-pane">
-              <h4>Paintings</h4>
-              <painting-palettes></painting-palettes>
-              <!-- bind palette to app palette -->
-              <palette-chart :palette="palette"></palette-chart>
-              <h4>Controls for drawing and map</h4>
-              <drawing-controls :sketch="sketch"></drawing-controls>
-              <map-controls ref="mapControls" :map="map" ></map-controls>
-            </div>
-            <div class="sidebar-pane" id="key-bindings-pane">
-              <key-bindings></key-bindings>
-            </div>
-          </div>
-        </div>
-        <!-- leaflet map -->
-        <v-map :zoom=9 :center="[52, 4]" ref="map" :class="{'sidebar-map': settings.sidebar}">
-          <!--  -->
-          <side-bar v-if="settings.sidebar"></side-bar>
-          <toggle-controls :sketch="sketch"></toggle-controls>
-          <canvas-layer :model="model" id="particles">
-            <particle-component
-               ref="particleComponent"
-               :model="model"
-               ></particle-component>
 
-          </canvas-layer>
-          <canvas-layer :model="model" id="webgl">
-            <model-canvas :model="model" :sketch="sketch"></model-canvas>
-          </canvas-layer>
-          <canvas-layer :model="model" id="drawing">
-            <drawing-canvas></drawing-canvas>
-          </canvas-layer>
+          </v-navbar>
+        </header>
+        <main>
+          <v-sidebar drawer id="left-sidebar">
+            <models-overview></models-overview>
+            <painting-palettes></painting-palettes>
+            <ul class="sidebar-tabs" role="tablist">
+              <li><a href="#model-pane" role="tab"><i class="fa fa-bars"></i></a></li>
+              <li><a href="#paint-pane" role="tab"><i class="fa fa-paint-brush"></i></a></li>
+              <li><a href="#key-bindings-pane" role="tab"><i class="fa fa-keyboard-o"></i></a></li>
+            </ul>
+            <div class="sidebar-content active">
+              <div class="sidebar-pane" id="model-pane">
+                <h1>Current model</h1>
+                <model-details :model="model"></model-details>
+                <h1>Models</h1>
+                <models-overview></models-overview>
+              </div>
+              <div class="sidebar-pane" id="paint-pane">
+                <h4>Paintings</h4>
+                <painting-palettes></painting-palettes>
+                <!-- bind palette to app palette -->
+                <palette-chart :palette="palette"></palette-chart>
+                <h4>Controls for drawing and map</h4>
+                <drawing-controls :sketch="sketch"></drawing-controls>
+                <map-controls ref="mapControls" :map="map" ></map-controls>
+              </div>
+              <div class="sidebar-pane" id="key-bindings-pane">
+                <key-bindings></key-bindings>
+              </div>
+            </div>
+          </v-sidebar>
+          <v-content>
+            <v-map :zoom=9 :center="[52, 4]" ref="map" :class="{'sidebar-map': settings.sidebar}">
 
-          <!-- <webgl-layer></webgl-layer> -->
-          <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
-        </v-map>
-        <chart-container v-if="settings.chart" :model="model"></chart-container>
-      </div>
-      <story-container v-if="settings.story"></story-container>
+              <toggle-controls :sketch="sketch"></toggle-controls>
+              <canvas-layer :model="model" id="particles">
+                <particle-component
+                   ref="particleComponent"
+                   :model="model"
+                   ></particle-component>
+
+              </canvas-layer>
+              <canvas-layer :model="model" id="webgl">
+                <model-canvas :model="model" :sketch="sketch"></model-canvas>
+              </canvas-layer>
+              <canvas-layer :model="model" id="drawing">
+                <drawing-canvas></drawing-canvas>
+              </canvas-layer>
+
+              <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
+            </v-map>
+
+
+            <chart-container v-if="settings.chart" :model="model"></chart-container>
+          </v-content>
+          <v-sidebar right id="right-sidebar">
+            <story-container v-if="settings.story"></story-container>
+
+          </v-sidebar>
+        </main>
+
+
+      </v-app>
+
+
       <!-- Hidden layers -->
       <div class="hidden layer">
         <div>
@@ -127,35 +137,15 @@
     <script src="/bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="/bower_components/es6-promise/es6-promise.js"></script>
     <script src="/bower_components/lodash/lodash.js"></script>
-    <script src="/bower_components/sidebar-v2/js/jquery-sidebar.js"></script>
-    <script src="/bower_components/sidebar-v2/js/leaflet-sidebar.js"></script>
     <script src="/bower_components/fetch/fetch.js"></script>
-    <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="/bower_components/jquery-bridget/jquery-bridget.js"></script>
-    <script src="/bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>
     <script src="/bower_components/pixi.js/bin/pixi.js"></script>
     <script src="/bower_components/d3/d3.js"></script>
-    <script src="/bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/ScrollMagic.js"></script>
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
     <script src="/bower_components/jssor-slider/js/jssor.slider.mini.js"></script>
     <script src="/bower_components/Vue2Leaflet/dist/vue2-leaflet.js"></script>
+    <script src="/bower_components/vuetify/dist/vuetify.js"></script>
     <!-- endbower -->
-    <!-- endbuild -->
-
-    <!-- build:js scripts/plugins.js -->
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/alert.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/modal.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/transition.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/button.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/popover.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/carousel.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/collapse.js"></script>
-    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/main.js -->

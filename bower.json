@@ -3,23 +3,21 @@
   "private": true,
   "dependencies": {
     "modernizr": "^2",
-    "bootstrap-sass": "^3.3.7",
     "vue": "^2.0.0",
     "vue-router": "^2.0.0",
     "leaflet": "^1.0.2",
     "es6-promise": "^3.0.2",
     "lodash": "*",
-    "sidebar-v2": "~0.2.1",
     "fetch": "*",
     "fontawesome": "~4.4.0",
-    "seiyria-bootstrap-slider": "~4.13.1",
     "pixi.js": "~3.0.7",
     "d3": "~4.2.2",
     "open-sans-fontface": "~1.4.2",
-    "bootstrap-switch": "~3.3.2",
     "scrollmagic": "^2.0.5",
     "jssor-slider": "jssor#^21.1.5",
-    "Vue2Leaflet": "SiggyF/Vue2Leaflet#f9ed9fd"
+    "Vue2Leaflet": "SiggyF/Vue2Leaflet#91e01d679ff522773e786676e91fac6966d5acb9",
+    "vuetify": "vuetifyjs/vuetify#51945ce6bfb8c20c478cdd8c705af1a5da18d85b",
+    "material-design-icons": "^3.0.1"
   },
   "overrides": {
     "pixi.js": {
@@ -79,6 +77,20 @@
       "dependencies": {
         "leaflet": "^1.0.2"
       }
+    },
+    "vuetify": {
+      "main": [
+        "dist/vuetify.js",
+        "dist/vuetify.min.css"
+      ]
+    },
+    "material-design-icons": {
+      "main": [
+        "iconfont/material-icons.css",
+        "iconfont/MaterialIcons-Regular.woff2",
+        "iconfont/MaterialIcons-Regular.woff",
+        "iconfont/MaterialIcons-Regular.ttf"
+      ]
     }
   },
   "devDependencies": {
