@@ -107,14 +107,14 @@
       ) * 4;
       var u = (frame.data[idx + 0] / 255.0) - 0.5;
       var v = (frame.data[idx + 1] / 255.0) - 0.5;
-      v = v * (this.model.flipv ? -1 : 1);
+      v = v * (this.model.flipv ? 1 : -1);
       // is blue
       var mask = (frame.data[idx + 2] / 255.0) > 0.5;
       // velocity is zero
       mask = mask || (Math.abs(u) + Math.abs(v) === 0.0);
       // update the position
-      particle.position.x = particle.position.x + u * this.model.scale * speedup;
-      particle.position.y = particle.position.y + v * this.model.scale * speedup;
+      particle.position.x = particle.position.x + u * this.model.uniforms.scale * speedup;
+      particle.position.y = particle.position.y + v * this.model.uniforms.scale * speedup;
       mask = mask || particle.position.x > width;
       mask = mask || particle.position.x < 0;
       mask = mask || particle.position.y > height - 1;

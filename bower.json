@@ -10,7 +10,7 @@
     "lodash": "*",
     "fetch": "*",
     "fontawesome": "~4.4.0",
-    "pixi.js": "~3.0.7",
+    "pixi.js": "^4.3.0",
     "d3": "~4.2.2",
     "open-sans-fontface": "~1.4.2",
     "scrollmagic": "^2.0.5",
@@ -22,8 +22,9 @@
   },
   "overrides": {
     "pixi.js": {
+      "old": "3.0.11",
       "main": [
-        "bin/pixi.js"
+        "dist/pixi.js"
       ]
     },
     "sidebar-v2": {
@@ -100,7 +101,6 @@
         "fonts/**/*.woff2",
         "fonts/**/*.woff",
         "fonts/**/*.ttf"
-
       ]
     }
   },
