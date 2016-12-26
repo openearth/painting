@@ -35,11 +35,9 @@ var sketch;
     },
     methods: {
       clear: function() {
-        console.log('clearing 2d');
         this.sketch.clear();
       },
       deferredMountedTo: function(parent) {
-        console.log('generating painting in layer', parent);
         /* eslint-disable no-underscore-dangle */
         // named _image due to inheritance
         this.canvas = parent._image;
@@ -95,12 +93,10 @@ var sketch;
 
           },
           click: function(evt) {
-            console.log('click', this, evt);
             this.fillStyle = this.palette[Math.floor(Math.random() * this.palette.length)];
             this.beginPath();
             var x = evt.x,
                 y = evt.y;
-            console.log(x, y);
             var r = 1;
             this.arc(x, y, r, 0, 2 * Math.PI);
             this.fill();
@@ -130,7 +126,6 @@ var sketch;
           }
         });
         // set on self
-        console.log('Setting sketch to', sketch);
         Vue.set(this, 'sketch', sketch);
         // bubbly bubbly
         this.$nextTick(() => {

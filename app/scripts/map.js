@@ -21,13 +21,6 @@
     },
     mounted: function() {
 
-      $('#lockmap').on('switchChange.bootstrapSwitch', () => {
-        if ($('#lockmap').is(':checked')) {
-          this.locked = true;
-        } else {
-          this.locked = false;
-        }
-      });
     },
     methods: {
       lockedChanged: function(oldVal, newVal) {
@@ -49,7 +42,6 @@
         if (map.tap) {
           map.tap.disable();
         }
-        $('#lockmap').bootstrapSwitch('state', true, true);
         $('#mapban').removeClass('hide');
 
       },
@@ -64,7 +56,6 @@
         if (map.tap) {
           map.tap.enable();
         }
-        $('#lockmap').bootstrapSwitch('state', false, true);
 
         $('#mapban').addClass('hide');
       }
@@ -140,21 +131,6 @@
       }
     }
 
-
-  });
-  Vue.component('side-bar', {
-    template: '<div></div>',
-    mounted: function() {
-      this.$sidebar = L.control.sidebar('sidebar');
-    },
-    methods: {
-      deferredMountedTo: function(parent) {
-        this.$sidebar.addTo(parent);
-        _.forEach(this.$children, (child) => {
-          child.deferredMountedTo(this.$sidebar);
-        });
-      }
-    }
 
   });
 

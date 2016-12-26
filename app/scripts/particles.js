@@ -107,14 +107,14 @@
       ) * 4;
       var u = (frame.data[idx + 0] / 255.0) - 0.5;
       var v = (frame.data[idx + 1] / 255.0) - 0.5;
-      v = v * (this.model.flipv ? -1 : 1);
+      v = v * (this.model.flipv ? 1 : -1);
       // is blue
       var mask = (frame.data[idx + 2] / 255.0) > 0.5;
       // velocity is zero
       mask = mask || (Math.abs(u) + Math.abs(v) === 0.0);
       // update the position
-      particle.position.x = particle.position.x + u * this.model.scale * speedup;
-      particle.position.y = particle.position.y + v * this.model.scale * speedup;
+      particle.position.x = particle.position.x + u * this.model.uniforms.scale * speedup;
+      particle.position.y = particle.position.y + v * this.model.uniforms.scale * speedup;
       mask = mask || particle.position.x > width;
       mask = mask || particle.position.x < 0;
       mask = mask || particle.position.y > height - 1;
@@ -221,14 +221,12 @@
     },
     methods: {
       deferredMountedTo: function(parent) {
-        console.log('Generating particle canvas in layer', parent);
         /* eslint-disable no-underscore-dangle */
         // named _image due to inheritance
         this.canvas = parent._image;
 
         /* eslint-enable no-underscore-dangle */
         if (_.isNil(this.model)) {
-          console.warn('No model yet, deferring creation of particles');
           return;
         }
         var uv = $('#uv-' + this.model.uv.tag)[0];
@@ -238,7 +236,6 @@
       },
       resetParticles: function(){
         if (_.isNil(this.model)) {
-          console.warn('no model, no particles', this.model);
           return;
         }
         var uv = $('#uv-' + this.model.uv.tag)[0];
@@ -248,13 +245,10 @@
         this.particles.startAnimate();
       },
       addParticles: function() {
-        console.log('adding particles');
         if (_.isNil(this.model)) {
-          console.warn('Cannot add particles, no model');
           return;
         }
         if (_.isNil(this.particles)) {
-          console.warn('Cannot add particles, no particles object');
           return;
         }
         this.particles.culling(this.particles.particles.length + 50);

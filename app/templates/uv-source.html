@@ -5,13 +5,9 @@
       <img id="uv-img" v-if="tag === 'img'" />
     </div>
     <div class="hidden layer">
-      <div v-if="model">
-        <!-- canvas to copy video on, to extract data -->
-        <canvas
-           id="uv-hidden"
-           :width="model.uv.width"
-           :height="model.uv.height"></canvas>
-      </div>
+      <!-- canvas to copy image or video on, to extract data -->
+      <!-- fixed size, fixed type, makes things easy -->
+      <canvas id="uv-hidden" width="1024" height="1024"></canvas>
 
     </div>
   </div>

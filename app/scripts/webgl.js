@@ -22,6 +22,12 @@
       var then = Date.now();
       var interval = 1000 / fps;
       var delta;
+
+      this.$nextTick(() => {
+        // return the canvas that corresponds to the video
+
+      });
+      // create an animation function that draws the video into a 2d canvas
       function animate() {
         requestAnimationFrame(animate.bind(this));
         now = Date.now();
@@ -44,15 +50,27 @@
     },
     watch: {
       uv: function(uv) {
+        // new uv, create a new video
         var video = this.video;
         video.src = uv.src;
         video.height = uv.height;
         video.width = uv.width;
-        video.load();
         // send this event once
-        console.log('firing video-loaded');
+        if (this.model.uv.tag === 'video') {
+          // if it's really a video, bind to data update
+          this.video.currentTime = this.video.currentTime;
+          $(this.video).bind('loadeddata', () => {
+            this.loaded = true;
+            Vue.set(this.model, 'duration', this.video.duration);
+          });
+          $(this.video).bind('timeupdate', () => {
+            Vue.set(this.model, 'currentTime', this.video.currentTime);
+          });
+        }
+        // load the url
+        video.load();
         bus.$emit('video-loaded', video);
-        this.modelUpdate();
+
       }
     },
     computed: {
@@ -83,9 +101,6 @@
       uvctx: {
         get: function() {
           var uvHidden = document.getElementById('uv-hidden');
-          if (_.isNil(uvHidden)) {
-            return null;
-          }
           return uvHidden.getContext('2d');
         },
         cache: false
@@ -96,33 +111,6 @@
           return document.getElementById('uv-img');
         },
         cache: false
-
-      }
-    },
-    methods: {
-      modelUpdate: function(){
-        this.loaded = false;
-        // model was updated
-        // wait for the dom to be updated
-        console.log('tick tock', this.model);
-        if (!(this.model.uv.tag === 'video')) {
-          // no video available
-          console.log('no video model', this.model.uv);
-          return;
-        }
-        console.log('new video', this.video);
-
-        this.video.load();
-        this.video.currentTime = this.video.currentTime;
-        $(this.video).bind('loadeddata', () => {
-          console.log('video loaded');
-          this.loaded = true;
-          Vue.set(this.model, 'duration', this.video.duration);
-        });
-        $(this.video).bind('timeupdate', () => {
-          Vue.set(this.model, 'currentTime', this.video.currentTime);
-        });
-
 
       }
     }
@@ -160,11 +148,11 @@
     },
     mounted: function() {
       bus.$on('video-loaded', function(video) {
-        console.log('got new video event', video);
-        this.video = video;
+        // video is loaded, we should be able to create the renderer.
+        this.createVideoTexture(video);
+        this.checkAndRun();
       }.bind(this));
       Vue.nextTick(() => {
-        console.info('mounted next', this, this.canvas);
         bus.$on('model-selected', this.clear3d);
       });
 
@@ -185,53 +173,39 @@
           return _.get(this, 'sketch');
         },
         cache: false
-      },
-      video: {
-        get: function() {
-          return this.videoElement;
-        },
-        set: function(video) {
-          console.log('new video', video, 'creating new sprite');
-          this.videoElement = video;
-          var videoTexture = PIXI.Texture.fromVideo(video);
-          var videoSprite = new PIXI.Sprite(videoTexture);
-          videoSprite.width = this.width;
-          videoSprite.height = this.height;
-          this.videoSprite = videoSprite;
-        },
-        cache: false
       }
     },
     watch: {
-      'model.uv': function() {
-        console.log('new model in', this.model.uv);
-        this.$nextTick(() => {
-          this.createFilter();
-          this.startAnimate();
-          this.updateUniforms(this.model);
-        });
+      'model.uniforms': function(uniforms) {
+        this.updateUniforms();
       },
       drawing: function(drawing) {
-        console.info('Drawing changed to', drawing);
         if (!drawing) {
           return;
-        } else {
-          console.log('Drawing changed, generating textures for', drawing);
         }
         this.createDrawingTexture(drawing);
+        this.checkAndRun();
       }
     },
     methods: {
+      checkAndRun: function() {
+        if (!this.videoSprite || !this.drawingSprite) {
+          return;
+        }
+        if (this.advectionFilter) {
+          return;
+        }
+        this.createFilter();
+        this.startAnimate();
+        this.updateUniforms();
+      },
       clear3d: function () {
         if (_.isNil(this.renderTextureFrom)) {
           return;
         }
-        console.log('clearing 3d');
-        this.renderTextureFrom.clear();
-        this.renderTextureTo.clear();
+        this.renderer.clear();
       },
       deferredMountedTo: function(parent) {
-        console.log('Generating model canvas in layer', parent);
         /* eslint-disable no-underscore-dangle */
         // named _image due to inheritance
         this.canvas = parent._image;
@@ -239,7 +213,6 @@
         this.createRenderer();
       },
       createRenderer: function() {
-        console.log('creating new canvas context', this);
         // Define the renderer, explicit webgl (no canvas)
         var renderer = new PIXI.WebGLRenderer(
           this.width, this.height,
@@ -260,11 +233,34 @@
         Vue.set(this, 'stage', stage);
         Vue.set(this, 'renderer', renderer);
       },
+      createVideoTexture: function(video) {
+        // We're using the canvas that is rendered to a canvas so we don't have any issues with half loaded videos
+        var videoTexture = PIXI.Texture.fromVideo(video);
+        var videoSprite = new PIXI.Sprite(videoTexture);
+        videoSprite.width = this.width;
+        videoSprite.height = this.height;
+        if (this.videoSprite) {
+          // replace it
+          var index = this.stage.getChildIndex(this.videoSprite);
+          this.stage.removeChildAt(index);
+          this.stage.addChildAt(videoSprite, index);
+        } else {
+          // add it
+          this.stage.addChild(videoSprite);
+        }
+        this.videoSprite = videoSprite;
+        if (this.advectionFilter) {
+          this.advectionFilter.map = videoSprite.texture;
+        }
+        videoSprite.renderable = false;
+        this.stage.addChild(this.videoSprite);
+
+      },
       createDrawingTexture: function(drawing) {
         if (!drawing) {
+          console.warn('Expected a drawing canvas');
           return;
         } else {
-          console.info('setting drawing to', drawing);
         }
         // load the drawing texture
         var drawingContext = drawing;
@@ -275,42 +271,18 @@
         this.drawingSprite = drawingSprite;
         this.drawingTexture = drawingTexture;
       },
-      updateUniforms: function(model) {
-        if (!this.advectionFilter) {
+      updateUniforms: function() {
+        if (!this.advectionFilter || !this.model) {
           return;
         }
-        this.advectionFilter.uniforms.scale.value.x = model.scale;
-        this.advectionFilter.uniforms.scale.value.y = model.scale;
-        this.advectionFilter.uniforms.flipv.value = model.flipv;
-        this.advectionFilter.uniforms.decay.value = model.decay;
+        var model = this.model;
+        this.advectionFilter.scale.x = model.uniforms.scale;
+        this.advectionFilter.scale.y = model.uniforms.scale;
+        this.advectionFilter.flipv = model.uniforms.flipv;
+        this.advectionFilter.decay = model.uniforms.decay;
 
       },
       createFilter: function() {
-
-        if (!_.isNil(this.renderTextureFrom)) {
-          console.warn('filter already set');
-          return;
-        }
-        if (!this.pipeline) {
-          console.warn('no pipeline yet');
-          return;
-        } else {
-          console.log('setting filter to', this.pipeline);
-        }
-
-        if (!this.model) {
-          console.warn('no model yet');
-          return;
-        } else {
-          console.log('setting filter for model', this.model);
-        }
-
-        if (!this.videoSprite) {
-          console.warn('no videosprite yet');
-          return;
-        } else {
-          console.log('setting filter for videoSprite', this.videoSprite);
-        }
 
         var videoSprite = this.videoSprite;
         var model = this.model;
@@ -323,31 +295,32 @@
         // setup the pipeline
         this.pipeline.addChild(this.drawingSprite);
         // Create a render texture
-        this.advectionFilter = new AdvectionFilter(
+        var advectionFilter = new AdvectionFilter(
           videoSprite,
           {
-            scale: model.scale,
-            flipv: model.flipv,
-            decay: model.decay,
+            scale: 1.0,
+            flipv: false,
+            decay: 0.99,
             upwind: false
           }
         );
         // Add the video sprite to the stage (not to the pipeline (it should not be rendered))
         this.stage.addChild(videoSprite);
-        this.pipeline.filters = [this.advectionFilter];
+        this.pipeline.filters = [advectionFilter];
 
         // // create framebuffer with texture source
-        var renderTextureFrom = new PIXI.RenderTexture(renderer, width, height);
+        var renderTextureFrom = new PIXI.RenderTexture.create(width, height);
         var renderSpriteFrom = new PIXI.Sprite(renderTextureFrom);
         // We add what we advect to both rendering and mixing
 
         // // Create framebuffer with texture target
-        var renderTextureTo = new PIXI.RenderTexture(renderer, width, height);
+        var renderTextureTo = new PIXI.RenderTexture.create(width, height);
         this.renderTextureFrom = renderTextureFrom;
         this.renderTextureTo = renderTextureTo;
         this.renderSpriteFrom = renderSpriteFrom;
         this.pipeline.addChild(renderSpriteFrom);
         this.pipeline.addChild(this.drawingSprite);
+        this.advectionFilter = advectionFilter;
         this.$nextTick(() => {
           bus.$emit('pipeline-created', this.pipeline);
         });
@@ -356,25 +329,7 @@
         this.state = 'STOPPED';
       },
       startAnimate: function() {
-        if (!this.drawingTexture) {
-          this.state = 'STOPPED';
-          console.warn('Starting animation but drawingTexture is', this.drawingTexture);
-          return;
-        }
-        if (!this.video) {
-          this.state = 'STOPPED';
-          console.warn('Starting animation but video is', this.video);
-          return;
-
-        }
-        if (!this.videoSprite) {
-          this.state = 'STOPPED';
-          console.warn('Starting animation but videoSprite is', this.videoSprite);
-          return;
-
-        }
         this.state = 'STARTED';
-        var video = this.video;
         var videoSprite = this.videoSprite;
         var drawingTexture = this.drawingTexture;
         var renderer = this.renderer;
@@ -386,6 +341,8 @@
         var state = this.state;
         var drawing = this.drawing;
 
+        var blank = new PIXI.Container();
+
         // define animation function.
         function animate () {
           if (state === 'STOPPED') {
@@ -394,12 +351,28 @@
           // request next animation frame
           requestAnimationFrame(animate.bind(this));
 
-          if (video.readyState < video.HAVE_ENOUGH_DATA) {
-            console.debug('video does not have enough data');
+          // get latest videoSprite
+          videoSprite = this.videoSprite;
+
+          // video not valid, don't bother rendering
+          if (!videoSprite.texture.valid) {
             return;
           }
 
-          videoSprite.scale.y = -1;
+          if (!videoSprite.texture.baseTexture.hasLoaded) {
+            return;
+          }
+          var video = videoSprite.texture.baseTexture.source;
+          if (video.readyState < video.HAVE_ENOUGH_DATA) {
+            return;
+          }
+          if (stage.children.indexOf(videoSprite) === -1) {
+            return;
+          }
+
+
+
+
 
           // upload the drawing to webgl
           drawingTexture.update();
@@ -407,19 +380,18 @@
           // render to the framebuffer
           // and to the screen
           renderer.render(stage);
-          renderTextureTo.render(stage, null, true);
+          renderer.render(stage, renderTextureTo, true);
 
           // canvas is rendered, we can clear, if needed
-          if ($('#cleardrawing').is(':checked')) {
-            drawingContext.clearRect(0, 0, drawing.width, drawing.height);
-          }
+          drawingContext.clearRect(0, 0, drawing.element.width, drawing.element.height);
           // set the generated texture as input for the next timestep
           renderSpriteFrom.texture = renderTextureTo;
           // swap the names
           var temp = renderTextureFrom;
           renderTextureFrom = renderTextureTo;
           renderTextureTo = temp;
-          renderTextureTo.clear();
+          renderer.render(blank, renderTextureTo, true);
+          // clear
         }
         animate.bind(this)();
 

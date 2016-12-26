@@ -1,4 +1,4 @@
-/* global Vue2Leaflet  */
+/* global Vue2Leaflet, Vuetify  */
 
 // app is global, prefer to use this.$root
 var app;
@@ -36,6 +36,10 @@ var bus;
   $(document).ready(function() {
     // make a global event bus
     bus = new Vue();
+    Vue.use(Vuetify);
+    Vue.component('v-marker', Vue2Leaflet.Marker);
+    Vue.component('v-poly', Vue2Leaflet.Polyline);
+    Vue.component('v-group', Vue2Leaflet.LayerGroup);
     Vue.component('v-map', Vue2Leaflet.Map);
     Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
     $('#template-container')
@@ -47,7 +51,6 @@ var bus;
             el: '#app',
             mounted: function() {
               this.$nextTick(function() {
-                $('input[type="checkbox"]').bootstrapSwitch();
               });
             },
             data: function() {
@@ -78,14 +81,12 @@ var bus;
             // this propagates to the components on the next tick
             Vue.nextTick(() => {
               // we should have a model in the uv-source
-              console.log('uv source', app.$refs.uvSource.model);
-              // and in the mapcontainer
+
 
               var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
                   ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
               var bounds = L.latLngBounds(sw, ne);
               if (_.has(app.$refs, 'map')) {
-                console.info('fitting bounds', bounds, app.$refs.map);
                 app.$refs.map.mapObject.flyToBounds(bounds);
 
               } else {

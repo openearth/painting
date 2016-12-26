@@ -13,13 +13,18 @@
         "width": 1024,
         "height": 1024
       },
+      "markers": [
+        {"position": { "lng":1, "lat": 53}}
+      ],
+      "uniforms": {
+        "flipv": true,
+        "scale": 2.0,
+        "decay": 0.999
+      },
       "extent": {
         "sw": [49.264198303222656, -3.877345323562622],
         "ne": [57.1629943847656, 9.84266757965088]
       },
-      "flipv": true,
-      "scale": 2.0,
-      "decay": 0.99,
       "zoom": 14,
       "width": 1024,
       "height": 1024
@@ -29,6 +34,7 @@
       "abstract": "wadden model",
       "id": "E719CD9A-339A-11E5-BA2D-4963B6C90E9A",
       "engine": "delft3d flow",
+      "story": "data/stories/ecomare.json",
       "uv": {
         "src": "models/movies/wadden.webm",
         "type": "video/webm",
@@ -36,13 +42,15 @@
         "width": 1024,
         "height": 1024
       },
+      "uniforms": {
+        "flipv": true,
+        "scale": 5.0,
+        "decay": 0.99
+      },
       "extent": {
         "sw": [52.498012542723586, 4.026927471160947],
         "ne": [53.758518218850185, 6.538724422447244]
       },
-      "flipv": true,
-      "scale": 5.0,
-      "decay": 0.99,
       "zoom": 10,
       "width": 1024,
       "height": 1024
@@ -59,14 +67,17 @@
         "width": 1024,
         "height": 1024
       },
+      "uniforms": {
+        "flipv": true,
+        "scale": 5.0,
+        "decay": 0.99
+      },
       "extent": {
 
         "sw": [53.284533894465625, 5.265900772973027],
         "ne": [53.60179437766051, 5.925245096681446]
       },
-      "flipv": true,
       "zoom": 11,
-      "scale": 5.0,
       "width": 1024,
       "height": 1024
     },
@@ -80,13 +91,15 @@
         "type": "video/webm",
         "tag": "video"
       },
+      "uniforms": {
+        "flipv": true,
+        "scale": 5.0,
+        "decay": 0.99
+      },
       "extent": {
         "sw": [37.4487848675731, -123.09234894317646],
         "ne": [38.780310596186474, -121.2218887213739]
       },
-      "flipv": true,
-      "scale": 5.0,
-      "decay": 0.99,
       "zoom": 10,
       "width": 1024,
       "height": 1024
@@ -101,13 +114,15 @@
         "type": "video/webm",
         "tag": "video"
       },
+      "uniforms": {
+        "scale": 3,
+        "flipv": false,
+        "decay": 0.99
+      },
       "extent": {
         "sw": [ 26.064999, -30.868795],
         "ne": [80, 64.929413]
       },
-      "scale": 3,
-      "flipv": false,
-      "decay": 0.99,
       "zoom": 10,
       "width": 2048,
       "height": 2048
@@ -124,13 +139,15 @@
         "width": 1024,
         "height": 1024
       },
-      "flipv": true,
-      "scale": 2,
+      "uniforms": {
+        "flipv": true,
+        "scale": 2,
+        "decay": 1.0
+      },
       "extent": {
         "sw": [-38, 24],
         "ne": [23.92, 143.92]
       },
-      "decay": 1.0,
       "zoom": 3,
       "width": 1024,
       "height": 1024
@@ -148,13 +165,15 @@
         "width": 1024,
         "height": 1024
       },
+      "uniforms": {
+        "flipv": false,
+        "decay": 0.99,
+        "scale": 10.0
+      },
       "extent": {
         "sw": [52.498012542723586, 4.026927471160947],
         "ne": [53.758518218850185, 6.538724422447244]
       },
-      "flipv": false,
-      "decay": 0.99,
-      "scale": 10.0,
       "zoom": 10,
       "width": 1024,
       "height": 1024
