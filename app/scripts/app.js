@@ -37,6 +37,9 @@ var bus;
     // make a global event bus
     bus = new Vue();
     Vue.use(Vuetify);
+    Vue.component('v-marker', Vue2Leaflet.Marker);
+    Vue.component('v-poly', Vue2Leaflet.Polyline);
+    Vue.component('v-group', Vue2Leaflet.LayerGroup);
     Vue.component('v-map', Vue2Leaflet.Map);
     Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
     $('#template-container')

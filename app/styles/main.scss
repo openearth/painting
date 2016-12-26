@@ -22,15 +22,32 @@ $brand-info: #64FF64;
 
 @import "map.scss";
 
-.map-row {
-  padding-top: 1rem;
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+}
+.map-row,
+.chart-row {
+  padding-top: 2vh;
 }
 .map-card {
-  flex: 3 0;
+  flex: 3 1 auto;
   max-height: calc(100vh - 2rem);
 }
+
+.map-card,
+.chart-card {
+  .card__text {
+    padding: 0;
+    height: 100%;
+  }
+}
+
+.chart-card {
+  flex: 1 1 auto;
+}
 .story-card {
-  flex: 1 0;
+  flex: 1 1 auto;
   max-height: calc(100vh - 2rem);
 }
 .story-container {

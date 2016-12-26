@@ -383,9 +383,7 @@
           renderer.render(stage, renderTextureTo, true);
 
           // canvas is rendered, we can clear, if needed
-          if ($('#cleardrawing').is(':checked')) {
-            drawingContext.clearRect(0, 0, drawing.width, drawing.height);
-          }
+          drawingContext.clearRect(0, 0, drawing.element.width, drawing.element.height);
           // set the generated texture as input for the next timestep
           renderSpriteFrom.texture = renderTextureTo;
           // swap the names

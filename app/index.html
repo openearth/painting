@@ -75,51 +75,63 @@
             </v-collapsible>
           </v-sidebar>
           <v-content>
-            <v-container >
-              <v-row class="map-row">
-                <v-card class="map-card" height="96vh">
-                  <v-card-text class="map-text">
-                    <v-map :zoom=9 :center="[52, 4]" ref="map" :class="{'sidebar-map': settings.sidebar}">
+            <v-container>
+              <v-col xs8>
+                <v-row class="map-row">
+                  <v-card class="map-card" :height="settings.chart ? '64vh' : '96vh'  ">
+                    <v-card-text class="map-text">
+                      <v-map :zoom=9 :center="[52, 4]" ref="map" :class="{'sidebar-map': settings.sidebar}">
 
-                      <toggle-controls :sketch="sketch"></toggle-controls>
-                      <canvas-layer :model="model" id="particles">
-                        <particle-component
-                           ref="particleComponent"
-                           :model="model"
-                           ></particle-component>
+                        <toggle-controls :sketch="sketch"></toggle-controls>
+                        <canvas-layer :model="model" id="particles">
+                          <particle-component
+                             ref="particleComponent"
+                             :model="model"
+                             ></particle-component>
 
-                      </canvas-layer>
-                      <canvas-layer :model="model" id="webgl">
-                        <model-canvas :model="model" :sketch="sketch"></model-canvas>
-                      </canvas-layer>
-                      <canvas-layer :model="model" id="drawing">
-                        <drawing-canvas></drawing-canvas>
-                      </canvas-layer>
+                        </canvas-layer>
+                        <canvas-layer :model="model" id="webgl">
+                          <model-canvas :model="model" :sketch="sketch"></model-canvas>
+                        </canvas-layer>
+                        <canvas-layer :model="model" id="drawing">
+                          <drawing-canvas></drawing-canvas>
+                        </canvas-layer>
 
-                      <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
-                    </v-map>
-                  </v-card-text>
+                        <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
+                      </v-map>
+                      <v-btn floating raised class="map-button white " v-side-bar:left-sidebar v-if="settings.sidebar">
+                        <v-icon>edit</v-icon>
+                      </v-btn>
+                    </v-card-text>
 
-                </v-card>
+                  </v-card>
+
+
+                </v-row>
+                <v-row class="chart-row">
+                  <v-card class="chart-card" v-if="settings.chart">
+                    <v-card-text>
+                      <chart-container  :model="model"></chart-container>
+                    </v-card-text>
+                  </v-card>
+                </v-row>
+              </v-col>
+              <v-col xs4 v-if="settings.story">
                 <v-card v-if="model && model.story" class="story-card" height="96vh">
                   <v-card-text>
                     <story-container ></story-container>
                   </v-card-text>
 
                 </v-card>
+              </v-col>
 
-              </v-row>
             </v-container>
 
 
 
 
           </v-content>
-          <v-card class="chart-card" v-if="settings.chart">
-            <v-card-text>
-              <chart-container  :model="model"></chart-container>
-            </v-card-text>
-          </v-card>
+
         </main>
 
 

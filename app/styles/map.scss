@@ -1,9 +1,13 @@
 #map {
 
 }
-.map-text {
-  height: 100%;
+.map-button {
+  z-index: 10000;
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
 }
+
 
 #webgl {
 }

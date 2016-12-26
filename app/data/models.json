@@ -13,10 +13,13 @@
         "width": 1024,
         "height": 1024
       },
+      "markers": [
+        {"position": { "lng":1, "lat": 53}}
+      ],
       "uniforms": {
         "flipv": true,
         "scale": 2.0,
-        "decay": 0.99
+        "decay": 0.999
       },
       "extent": {
         "sw": [49.264198303222656, -3.877345323562622],
