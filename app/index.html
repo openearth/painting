@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="/bower_components/material-design-icons/iconfont/material-icons.css" />
     <link rel="stylesheet" href="/bower_components/roboto-fontface/css/roboto/roboto-fontface.css" />
     <link rel="stylesheet" href="/bower_components/roboto-fontface/css/roboto-condensed/roboto-condensed-fontface.css" />
+    <link rel="stylesheet" href="/bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -83,6 +84,7 @@
                       <v-map :zoom=9 :center="[52, 4]" ref="map" :class="{'sidebar-map': settings.sidebar}">
 
                         <toggle-controls :sketch="sketch"></toggle-controls>
+                        <realtime-layer :model="model"></realtime-layer>
                         <canvas-layer :model="model" id="particles">
                           <particle-component
                              ref="particleComponent"
@@ -167,6 +169,7 @@
     <script src="/bower_components/jssor-slider/js/jssor.slider.mini.js"></script>
     <script src="/bower_components/Vue2Leaflet/dist/vue2-leaflet.js"></script>
     <script src="/bower_components/vuetify/dist/vuetify.js"></script>
+    <script src="/bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -179,6 +182,7 @@
     <!-- main files -->
     <script src="scripts/bus.js"></script>
     <script src="scripts/map.js"></script>
+    <script src="scripts/realtime.js"></script>
     <script src="scripts/advection.js"></script>
     <script src="scripts/graphics.js"></script>
     <script src="scripts/models.js"></script>

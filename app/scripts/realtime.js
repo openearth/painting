@@ -7,45 +7,68 @@
         type: Object
       }
     },
+    data: function() {
+      return {
+        points: [],
+        layerGroup: null
+      };
+    },
     watch: {
-      bounds: function() {
-        // set bounds on image if they change
-        this.setBounds();
+      points: function(points) {
+        this.clearMarkers();
+        this.createMarkers();
       }
     },
     mounted: function() {
-      // some random bounds, reset later
-      var bounds = this.bounds;
-      this.$drawingLayer = L.canvasOverlay(bounds, {el: this.$el, width: 1024, height: 1024});
+      var url = 'http://127.0.0.1:5000/api/points';
+      fetch(url)
+        .then((resp) => {
+          return resp.json();
+        })
+        .then((json) => {
+          Vue.set(this, 'points', json);
+        });
+
     },
     computed: {
-      bounds: {
-        get: function() {
-          var bounds = L.latLngBounds(L.latLng(0, 0), L.latLng(1, 1));
-          if (_.has(this, 'model.extent')) {
-            var model = this.model;
-            var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
-                ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
-            bounds = L.latLngBounds(sw, ne);
-          }
-          return bounds;
-        },
-        cache: false
-      }
     },
     methods: {
       deferredMountedTo(parent) {
-        this.$drawingLayer.addTo(parent);
-        _.forEach(this.$children, (child) => {
-          child.deferredMountedTo(this.$drawingLayer);
+        this.layerGroup = L.layerGroup([]);
+        this.layerGroup.addTo(parent);
+      },
+      createMarkers() {
+        _.each(this.points['features'], (feature) => {
+          var latlng = new L.latLng(feature.properties.lat, feature.properties.lon);
+
+          var circle = L.circle(latlng, {
+            radius: 1000,
+            color: 'white',
+            stroke: true,
+            weight: 2,
+            opacity: 0.3,
+            fillOpacity: 0.5,
+            fill: true,
+            fillColor: feature.properties.locationColor,
+            feature: feature
+          });
+          circle.on('click', (evt) => {
+            var feature = evt.target.options.feature;
+            this.setChart(feature);
+          });
+          this.layerGroup.addLayer(circle);
+
         });
       },
-      setBounds: function() {
-        this.$drawingLayer.setBounds(this.bounds);
-
+      clearMarkers() {
+        if (this.layerGroup) {
+          this.layerGroup.clearLayers();
+        }
+      },
+      setChart(feature) {
+        bus.$emit('feature-selected', feature);
       }
-
     }
-  })
+  });
 
 }());
