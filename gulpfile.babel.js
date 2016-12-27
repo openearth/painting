@@ -118,11 +118,14 @@ gulp.task('fonts', () => {
 });
 
 gulp.task('morefonts', () => {
+  // some fonts are expected in certain locations
   return gulp.src([
-    'bower_components/open-sans-fontface/fonts/**/*.{eot,svg,ttf,woff,woff2}'
+    'bower_components/open-sans-fontface/fonts/**/*.{eot,svg,ttf,woff,woff2}',
+    'bower_components/roboto-fontface/fonts/**/*.{eot,svg,ttf,woff,woff2}'
   ])
     .pipe(gulp.dest('.tmp/fonts'))
     .pipe(gulp.dest('dist/fonts'));
+
 });
 
 gulp.task('extras', () => {
