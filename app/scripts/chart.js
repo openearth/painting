@@ -15,7 +15,7 @@
       this.createChart();
       // wait for other elements to load as well
       bus.$on('feature-selected', (feature) => {
-        var url = 'http://127.0.0.1:5000/api/details/' + feature.properties.locationCode;
+        var url = 'data/details/' + feature.properties.locationCode;
         fetch(url)
           .then((resp)=>{
             return resp.json();
@@ -117,6 +117,9 @@
                   y1 = d.to/100.0;
                 }
                 var height = this.chart.yWaterlevel(y0) - this.chart.yWaterlevel(y1);
+                if (height < 0) {
+                  return 0;
+                }
                 return height;
               })
               .style('fill', (d) => {

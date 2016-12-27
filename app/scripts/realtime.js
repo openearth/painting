@@ -20,7 +20,7 @@
       }
     },
     mounted: function() {
-      var url = 'http://127.0.0.1:5000/api/points';
+      var url = 'data/points';
       fetch(url)
         .then((resp) => {
           return resp.json();
@@ -40,9 +40,9 @@
       createMarkers() {
         _.each(this.points['features'], (feature) => {
           var latlng = new L.latLng(feature.properties.lat, feature.properties.lon);
-
+          var radius = feature.properties.featured ? 3000 : 1000;
           var circle = L.circle(latlng, {
-            radius: 1000,
+            radius: radius,
             color: 'white',
             stroke: true,
             weight: 2,
