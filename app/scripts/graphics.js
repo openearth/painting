@@ -108,7 +108,8 @@ var sketch;
           // scalability. If you only need to handle the mouse / desktop browsers,
           // use the 0th touch element and you get wider device support for free.
           touchmove: function() {
-            var isDrawing = window.DocumentTouch || this.keys.SHIFT;
+            var isDrawing = Modernizr.touch || this.keys.SHIFT;
+            console.log('isDrawing', isDrawing);
              if (!isDrawing) {
               return;
             }
