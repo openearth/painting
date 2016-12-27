@@ -55,7 +55,8 @@
       "sketch": true,
       "Vue": true,
       "ScrollMagic": true,
-      "Vue2leaflet": true
+      "Vue2leaflet": true,
+      "Modernizr": true
     },
     "rules": {
       "quotes": [
