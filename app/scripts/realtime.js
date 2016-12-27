@@ -60,7 +60,14 @@
           this.layerGroup.addLayer(circle);
 
         });
-        var selectedFeature = _.first(_.filter(this.points.features, (feature) => {return feature.properties.featured;} ));
+        var selectedFeature = _.first(
+          _.filter(
+            this.points.features,
+            (feature) => {
+              return feature.properties.featured;
+            }
+          )
+        );
         this.setChart(selectedFeature);
       },
       clearMarkers() {
