@@ -65,13 +65,20 @@ var bus;
                 palette: [],
                 pipeline: null,
                 model: null,
-                map: null,
                 sketch: null
               };
               _.assign(defaults.settings, params);
               return defaults;
             },
             methods: {
+            },
+            computed: {
+              map: {
+                get: function() {
+                  return _.get(this.$refs, 'map.mapObject');
+                },
+                cache: false
+              }
             }
           });
 

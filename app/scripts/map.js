@@ -104,8 +104,8 @@
 
           var toggleMap = $('<a id="maptoggle"></a>');
           toggleMap.append($('<span class="fa-stack"><i class="fa fa-map-o fa-stack-1x"></i><i id="mapban" class="fa hide fa-ban fa-stack-2x></i></span>'));
-          toggleMap.on('click', function(){
-            if (_.has(this.$refs, 'locked')) {
+          toggleMap.on('click', () => {
+            if (_.has(this.$root.$refs, 'mapControls.locked')) {
               app.$refs.mapControls.locked = !app.$refs.mapControls.locked;
             } else {
               console.warn('no mapControls available');
