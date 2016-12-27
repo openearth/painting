@@ -7,6 +7,7 @@
     data: function() {
       return {
         series: [],
+        limits: [],
         chart: null
       };
     },
@@ -21,6 +22,8 @@
           })
           .then((json) => {
             Vue.set(this, 'series', json.series);
+            // limits
+            Vue.set(this, 'limits', _.get(json, 'limits', []));
           });
       });
       this.$nextTick(function(){
@@ -34,9 +37,9 @@
           {x: newVal, y: 0},
           {x: newVal, y: 1.0}
         ];
-        // this.chart.pathProgress
-        //   .datum(data)
-        //   .attr('d', this.chart.lineProgress);
+        this.chart.pathProgress
+          .datum(data)
+          .attr('d', this.chart.lineProgress);
       },
       series: function() {
         this.updateChart();
@@ -74,6 +77,52 @@
         if (!this.series.length) {
           return;
         }
+        // remove old series
+        this.chart.g
+          .selectAll('.series')
+          .remove();
+        this.chart.g
+          .selectAll('.limits')
+          .remove();
+        var limits = this.chart.g
+              .selectAll('.limits')
+              .data(this.limits)
+              .enter()
+              .append('rect')
+              .attr('class', 'limits')
+              .attr('x', (d) => {
+                var t0 = d3.isoParse(this.model.extent.time[0]);
+                return this.chart.xTime(t0);
+              })
+              .attr('y', (d) => {
+                var y = this.model.extent.waterlevel[1];
+                if (!_.isNil(d.to)) {
+                  y = d.to/100.0;
+                }
+                return this.chart.yWaterlevel(y);
+              })
+              .attr('width', (d) => {
+                var t1 = d3.isoParse(this.model.extent.time[1]);
+                var t0 = d3.isoParse(this.model.extent.time[0]);
+                var width = this.chart.xTime(t1) - this.chart.xTime(t0);
+                return width;
+              })
+              .attr('height', (d) => {
+                var y0 = this.model.extent.waterlevel[0];
+                if (!_.isNil(d.from)) {
+                  y0 = d.from/100.0;
+                }
+                var y1 = this.model.extent.waterlevel[1];
+                if (!_.isNil(d.to)) {
+                  y1 = d.to/100.0;
+                }
+                var height = this.chart.yWaterlevel(y0) - this.chart.yWaterlevel(y1);
+                return height;
+              })
+              .style('fill', (d) => {
+                return d.color;
+              })
+              .style('opacity', 0.2);
 
         // create the series
         var series = this.chart.g
@@ -104,44 +153,7 @@
           })
           .style('stroke', (d) => {return d.color; });
 
-      },
-      updateChart2() {
 
-        var station = stations[0];
-        var data = station.data;
-        xTime.domain(d3.extent(data, function(d) { return d3.isoParse(d.date); }));
-        yWaterlevel.domain(d3.extent(data, function(d) { return d.s1; }));
-        var lineWaterlevel = d3.line()
-              .x(function(d) { return xTime(d3.isoParse(d.date)); })
-              .y(function(d) { return yWaterlevel(d.s1); });
-        g
-          .datum(data)
-          .append('path')
-          .attr('class', 'line waterlevel')
-          .attr('d', lineWaterlevel);
-
-
-
-        var dataProgress = [
-          {x: this.progress, y: 0},
-          {x: this.progress, y: 1.0}
-        ];
-        var lineProgress = d3.line()
-              .x(function(d) { return xLinear(d.x); })
-              .y(function(d) { return y(d.y); });
-        var pathProgress = g
-              .datum(dataProgress)
-              .append('path')
-              .attr('class', 'line')
-              .attr('d', lineProgress);
-        this.chart = {
-          pathProgress: pathProgress,
-          lineProgress: lineProgress,
-          xLinear: xLinear,
-          xTime: xTime,
-          y: y,
-          svg: svg
-        };
 
       },
       createChart() {
@@ -185,7 +197,18 @@
           .text('waterlevel [cm]');
 
 
-
+        var dataProgress = [
+          {x: this.progress, y: 0},
+          {x: this.progress, y: 1.0}
+        ];
+        var lineProgress = d3.line()
+              .x(function(d) { return xLinear(d.x); })
+              .y(function(d) { return yLinear(d.y); });
+        var pathProgress = g
+              .datum(dataProgress)
+              .append('path')
+              .attr('class', 'line')
+              .attr('d', lineProgress);
         var chart = {
           svg: svg,
           g: g,
@@ -196,7 +219,9 @@
           width: width,
           height: height,
           xAxis: xAxis,
-          yAxis: yAxis
+          yAxis: yAxis,
+          lineProgress: lineProgress,
+          pathProgress: pathProgress
         };
         Vue.set(this, 'chart', chart);
       }
