@@ -108,7 +108,8 @@ var sketch;
           // scalability. If you only need to handle the mouse / desktop browsers,
           // use the 0th touch element and you get wider device support for free.
           touchmove: function() {
-            if (!this.painting && !this.keys.SHIFT){
+            var isDrawing = window.DocumentTouch || this.keys.SHIFT;
+             if (!isDrawing) {
               return;
             }
             for ( var i = this.touches.length - 1, touch; i >= 0; i-- ) {
