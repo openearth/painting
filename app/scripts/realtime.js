@@ -39,6 +39,7 @@
         this.layerGroup.addTo(parent);
       },
       createMarkers() {
+
         _.each(this.points.features, (feature) => {
           var latlng = L.latLng(feature.properties.lat, feature.properties.lon);
           var radius = feature.properties.featured ? 3000 : 1000;
@@ -46,7 +47,7 @@
             radius: radius,
             color: 'white',
             stroke: true,
-            weight: 2,
+            weight: 1,
             opacity: 0.3,
             fillOpacity: 0.5,
             fill: true,
@@ -59,6 +60,8 @@
           this.layerGroup.addLayer(circle);
 
         });
+        var selectedFeature = _.first(_.filter(this.points.features, (feature) => {return feature.properties.featured;} ));
+        this.setChart(selectedFeature);
       },
       clearMarkers() {
         if (this.layerGroup) {

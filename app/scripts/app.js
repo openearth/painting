@@ -57,9 +57,9 @@ var bus;
               var params = urlParams();
               var defaults = {
                 settings: {
-                  sidebar: true,
+                  sidebar: false,
                   story: false,
-                  chart: false,
+                  chart: true,
                   model: null
                 },
                 palette: [],

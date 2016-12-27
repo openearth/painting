@@ -81,7 +81,7 @@
                 <v-row class="map-row">
                   <v-card class="map-card" :height="settings.chart ? '64vh' : '96vh'  ">
                     <v-card-text class="map-text">
-                      <v-map :zoom=9 :center="[52, 4]" ref="map" :class="{'sidebar-map': settings.sidebar}">
+                      <v-map :zoom=8 :center="[52, 3]" ref="map" :class="{'sidebar-map': settings.sidebar}">
 
                         <toggle-controls :sketch="sketch"></toggle-controls>
                         <realtime-layer :model="model"></realtime-layer>

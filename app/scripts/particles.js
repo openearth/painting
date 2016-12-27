@@ -243,6 +243,7 @@
 
         this.particles = new Particles(this.model, this.canvas, uv);
         this.particles.startAnimate();
+        this.addParticles();
       },
       addParticles: function() {
         if (_.isNil(this.model)) {
