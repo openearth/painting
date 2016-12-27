@@ -176,7 +176,7 @@
       }
     },
     watch: {
-      'model.uniforms': function(uniforms) {
+      'model.uniforms': function() {
         this.updateUniforms();
       },
       drawing: function(drawing) {
@@ -260,7 +260,6 @@
         if (!drawing) {
           console.warn('Expected a drawing canvas');
           return;
-        } else {
         }
         // load the drawing texture
         var drawingContext = drawing;
@@ -285,8 +284,6 @@
       createFilter: function() {
 
         var videoSprite = this.videoSprite;
-        var model = this.model;
-        var renderer = this.renderer;
         var width = this.width;
         var height = this.height;
 
@@ -309,12 +306,12 @@
         this.pipeline.filters = [advectionFilter];
 
         // // create framebuffer with texture source
-        var renderTextureFrom = new PIXI.RenderTexture.create(width, height);
+        var renderTextureFrom = PIXI.RenderTexture.create(width, height);
         var renderSpriteFrom = new PIXI.Sprite(renderTextureFrom);
         // We add what we advect to both rendering and mixing
 
         // // Create framebuffer with texture target
-        var renderTextureTo = new PIXI.RenderTexture.create(width, height);
+        var renderTextureTo = PIXI.RenderTexture.create(width, height);
         this.renderTextureFrom = renderTextureFrom;
         this.renderTextureTo = renderTextureTo;
         this.renderSpriteFrom = renderSpriteFrom;

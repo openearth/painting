@@ -1,3 +1,4 @@
+/* global bus */
 (function () {
   'use strict';
 
@@ -84,48 +85,48 @@
         this.chart.g
           .selectAll('.limits')
           .remove();
-        var limits = this.chart.g
-              .selectAll('.limits')
-              .data(this.limits)
-              .enter()
-              .append('rect')
-              .attr('class', 'limits')
-              .attr('x', (d) => {
-                var t0 = d3.isoParse(this.model.extent.time[0]);
-                return this.chart.xTime(t0);
-              })
-              .attr('y', (d) => {
-                var y = this.model.extent.waterlevel[1];
-                if (!_.isNil(d.to)) {
-                  y = d.to/100.0;
-                }
-                return this.chart.yWaterlevel(y);
-              })
-              .attr('width', (d) => {
-                var t1 = d3.isoParse(this.model.extent.time[1]);
-                var t0 = d3.isoParse(this.model.extent.time[0]);
-                var width = this.chart.xTime(t1) - this.chart.xTime(t0);
-                return width;
-              })
-              .attr('height', (d) => {
-                var y0 = this.model.extent.waterlevel[0];
-                if (!_.isNil(d.from)) {
-                  y0 = d.from/100.0;
-                }
-                var y1 = this.model.extent.waterlevel[1];
-                if (!_.isNil(d.to)) {
-                  y1 = d.to/100.0;
-                }
-                var height = this.chart.yWaterlevel(y0) - this.chart.yWaterlevel(y1);
-                if (height < 0) {
-                  return 0;
-                }
-                return height;
-              })
-              .style('fill', (d) => {
-                return d.color;
-              })
-              .style('opacity', 0.2);
+        this.chart.g
+          .selectAll('.limits')
+          .data(this.limits)
+          .enter()
+          .append('rect')
+          .attr('class', 'limits')
+          .attr('x', () => {
+            var t0 = d3.isoParse(this.model.extent.time[0]);
+            return this.chart.xTime(t0);
+          })
+          .attr('y', (d) => {
+            var y = this.model.extent.waterlevel[1];
+            if (!_.isNil(d.to)) {
+              y = d.to / 100.0;
+            }
+            return this.chart.yWaterlevel(y);
+          })
+          .attr('width', () => {
+            var t1 = d3.isoParse(this.model.extent.time[1]);
+            var t0 = d3.isoParse(this.model.extent.time[0]);
+            var width = this.chart.xTime(t1) - this.chart.xTime(t0);
+            return width;
+          })
+          .attr('height', (d) => {
+            var y0 = this.model.extent.waterlevel[0];
+            if (!_.isNil(d.from)) {
+              y0 = d.from / 100.0;
+            }
+            var y1 = this.model.extent.waterlevel[1];
+            if (!_.isNil(d.to)) {
+              y1 = d.to / 100.0;
+            }
+            var height = this.chart.yWaterlevel(y0) - this.chart.yWaterlevel(y1);
+            if (height < 0) {
+              return 0;
+            }
+            return height;
+          })
+          .style('fill', (d) => {
+            return d.color;
+          })
+          .style('opacity', 0.2);
 
         // create the series
         var series = this.chart.g
@@ -143,7 +144,7 @@
                 return x;
               })
               .y((d) => {
-                var y = this.chart.yWaterlevel(d.value/100.0);
+                var y = this.chart.yWaterlevel(d.value / 100.0);
                 // cm/m
                 return y;
               });

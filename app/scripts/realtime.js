@@ -1,5 +1,6 @@
+/* global bus */
 (function () {
-
+  'use strict';
   Vue.component('realtime-layer', {
     template: '#realtime-layer-template',
     props: {
@@ -14,7 +15,7 @@
       };
     },
     watch: {
-      points: function(points) {
+      points: function() {
         this.clearMarkers();
         this.createMarkers();
       }
@@ -38,8 +39,8 @@
         this.layerGroup.addTo(parent);
       },
       createMarkers() {
-        _.each(this.points['features'], (feature) => {
-          var latlng = new L.latLng(feature.properties.lat, feature.properties.lon);
+        _.each(this.points.features, (feature) => {
+          var latlng = L.latLng(feature.properties.lat, feature.properties.lon);
           var radius = feature.properties.featured ? 3000 : 1000;
           var circle = L.circle(latlng, {
             radius: radius,
@@ -53,8 +54,7 @@
             feature: feature
           });
           circle.on('click', (evt) => {
-            var feature = evt.target.options.feature;
-            this.setChart(feature);
+            this.setChart(evt.target.options.feature);
           });
           this.layerGroup.addLayer(circle);
 
