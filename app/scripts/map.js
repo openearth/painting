@@ -81,9 +81,10 @@
           // var container = L.DomUtil.create('div', 'my-custom-control leaflet-control leaflet-bar');
           var container = this.$el;
 
-          var toggleMap = $('<a id="maptoggle"></a>');
+          var toggleMap = $('<a id="maptoggle" href=""></a>');
+          // add a button with a default hidden ban
           toggleMap.append($('<span class="fa-stack"><i class="fa fa-map-o fa-stack-1x"></i><i id="mapban" class="hidden fa fa-ban fa-stack-2x"></i></span>'));
-          toggleMap.on('click', () => {
+          toggleMap.on('click', (evt) => {
             if (_.has(this.$root.$refs, 'mapControls.locked')) {
               app.$refs.mapControls.locked = !(app.$refs.mapControls.locked);
               if (app.$refs.mapControls.locked) {
@@ -95,6 +96,10 @@
             } else {
               console.warn('no mapControls available');
             }
+            // don't bubble to the map (no painting)
+            evt.stopPropagation();
+            // don't go to the href
+            return false;
           });
           $(container).append(toggleMap);
 
