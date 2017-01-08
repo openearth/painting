@@ -42,7 +42,7 @@
         if (map.tap) {
           map.tap.disable();
         }
-        $('#mapban').removeClass('hide');
+        $('#mapban').removeClass('hidden');
 
       },
       unlockMap: function() {
@@ -57,7 +57,7 @@
           map.tap.enable();
         }
 
-        $('#mapban').addClass('hide');
+        $('#mapban').addClass('hidden');
       }
     }
   });
@@ -81,35 +81,25 @@
           // var container = L.DomUtil.create('div', 'my-custom-control leaflet-control leaflet-bar');
           var container = this.$el;
 
-          var toggleDraw = $('<a id="drawtoggle"></a>');
-          toggleDraw.append($('<span class="fa-stack"><i class="fa fa-paint-brush fa-stack-1x"></i><i id="drawingban" class="hide fa fa-ban fa-stack-2x"></i></span>'));
-          toggleDraw.on('click', function(){
-            sketch = this.sketch;
-            if (!(this.sketch)) {
-              console.warn('no sketch available in', this);
-              return;
-            }
-            sketch.painting = !sketch.painting;
-            if (sketch.painting) {
-              $('#drawing').addClass('crosshair');
-              $('#drawingban').addClass('hide');
-            }
-            else {
-              $('#drawing').removeClass('crosshair');
-              $('#drawingban').removeClass('hide');
-            }
-
-          });
-          $(container).append(toggleDraw);
-
-          var toggleMap = $('<a id="maptoggle"></a>');
-          toggleMap.append($('<span class="fa-stack"><i class="fa fa-map-o fa-stack-1x"></i><i id="mapban" class="fa hide fa-ban fa-stack-2x></i></span>'));
-          toggleMap.on('click', () => {
+          var toggleMap = $('<a id="maptoggle" href=""></a>');
+          // add a button with a default hidden ban
+          toggleMap.append($('<span class="fa-stack"><i class="fa fa-map-o fa-stack-1x"></i><i id="mapban" class="hidden fa fa-ban fa-stack-2x"></i></span>'));
+          toggleMap.on('click', (evt) => {
             if (_.has(this.$root.$refs, 'mapControls.locked')) {
-              app.$refs.mapControls.locked = !app.$refs.mapControls.locked;
+              app.$refs.mapControls.locked = !(app.$refs.mapControls.locked);
+              if (app.$refs.mapControls.locked) {
+                $('#mapban').addClass('hidden');
+              } else {
+                $('#mapban').removeClass('hidden');
+              }
+
             } else {
               console.warn('no mapControls available');
             }
+            // don't bubble to the map (no painting)
+            evt.stopPropagation();
+            // don't go to the href
+            return false;
           });
           $(container).append(toggleMap);
 
