@@ -81,8 +81,12 @@ L.CanvasOverlay = L.ImageOverlay.extend({
     var canvas = this._image;
     // number of pixels in the canvas (independent of display size)
     // TODO: fullscreen by default
-    canvas.width = this.options.width;
-    canvas.height = this.options.height;
+    if (canvas.width != this.options.width) {
+      canvas.width = this.options.width;
+    }
+    if (canvas.height != this.options.height) {
+      canvas.height = this.options.height;
+    }
 
   }
 });
