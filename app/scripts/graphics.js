@@ -109,7 +109,6 @@ var sketch;
           // use the 0th touch element and you get wider device support for free.
           touchmove: function() {
             var isDrawing = Modernizr.touch || this.keys.SHIFT;
-            console.log('isDrawing', isDrawing);
              if (!isDrawing) {
               return;
             }

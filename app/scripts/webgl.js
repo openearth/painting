@@ -143,7 +143,8 @@
         renderTextureFrom: null,
         renderTextureTo: null,
         pipeline: null,
-        advectionFilter: null
+        advectionFilter: null,
+        clearAfterRender: true
       };
     },
     mounted: function() {
@@ -153,7 +154,7 @@
         this.checkAndRun();
       }.bind(this));
       Vue.nextTick(() => {
-        bus.$on('model-selected', this.clear3d);
+        bus.$on('model-selected', this.clear);
       });
 
     },
@@ -199,11 +200,11 @@
         this.startAnimate();
         this.updateUniforms();
       },
-      clear3d: function () {
-        if (_.isNil(this.renderTextureFrom)) {
-          return;
-        }
-        this.renderer.clear();
+      clear: function () {
+        var blank = new PIXI.Container();
+
+        // clear
+        this.renderer.render(blank, this.renderTextureTo, true);
       },
       deferredMountedTo: function(parent) {
         /* eslint-disable no-underscore-dangle */
@@ -379,22 +380,20 @@
           renderer.render(stage);
           renderer.render(stage, renderTextureTo, true);
 
-          // canvas is rendered, we can clear, if needed
-          drawingContext.clearRect(0, 0, drawing.element.width, drawing.element.height);
           // set the generated texture as input for the next timestep
           renderSpriteFrom.texture = renderTextureTo;
           // swap the names
           var temp = renderTextureFrom;
           renderTextureFrom = renderTextureTo;
           renderTextureTo = temp;
-          renderer.render(blank, renderTextureTo, true);
-          // clear
+          if (this.clearAfterRender) {
+            // clear
+            renderer.render(blank, renderTextureTo, true);
+            // canvas is rendered, we can clear, if needed
+            drawingContext.clearRect(0, 0, drawing.element.width, drawing.element.height);
+          }
         }
         animate.bind(this)();
-
-        // TODO: move these out of here
-        // user interface interactions
-        $('#clear3d').click(this.clear3d);
 
       }
     }

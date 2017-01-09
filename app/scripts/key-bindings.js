@@ -99,13 +99,14 @@
       },
       clear: function() {
         var app = this.$root;
-        app.$refs.particleComponent.removeParticles();
+        // TODO: first make a button to add particles
+        // app.$refs.particleComponent.removeParticles();
         if (_.has(app.$refs, 'drawingCanvas')) {
           app.$refs.drawingCanvas.clear();
           console.warn('Expected drawingCanvas on', app.$refs);
         }
         if (_.has(app.$refs, 'modelCanvas')) {
-          app.$refs.modelCanvas.clear3d();
+          app.$refs.modelCanvas.clear();
           console.warn('Expected modelCanvas on', app.$refs);
         }
       }

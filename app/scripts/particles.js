@@ -12,11 +12,13 @@
     this.replace = true;
     this.particles = [];
     this.counter = 0;
+    this.state = 'STOPPED';
     // create offscreen buffer
     this.offScreen = document.createElement('canvas');
     this.offScreen.width = this.canvas.width;
     this.offScreen.height = this.canvas.height;
   }
+
 
   Particles.prototype.startAnimate = function() {
 
@@ -26,8 +28,12 @@
     var then = Date.now();
     var interval = 1000 / fps;
     var delta;
+    this.state = 'STARTED';
 
     function animate() {
+      if (this.state === 'STOPPED') {
+        return;
+      }
       requestAnimationFrame(animate.bind(this));
       now = Date.now();
       delta = now - then;
@@ -45,6 +51,10 @@
     animate.bind(this)();
   };
 
+  Particles.prototype.stopAnimate = function() {
+    this.state = 'STOPPED';
+  };
+
   Particles.prototype.create = function() {
     // replace it
     var newParticle = new PIXI.Sprite();
@@ -57,8 +67,17 @@
   };
 
   Particles.prototype.clear = function () {
-    // clear particles
-    this.particles = [];
+    // clear particles (delete from 0 to length)
+    this.particles.splice(0);
+    var ctx = this.canvas.getContext('2d');
+    // get the size
+    var width = this.canvas.width;
+    var height = this.canvas.height;
+    // render buffer to keep a trail
+    var offscreen = this.offScreen.getContext('2d');
+    offscreen.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, width, height);
+
   };
 
   Particles.prototype.culling = function (n) {
@@ -230,7 +249,10 @@
           return;
         }
         var uv = $('#uv-' + this.model.uv.tag)[0];
-        this.particles = new Particles(this.model, this.canvas, uv);
+        if (this.particles) {
+          this.particles.stopAnimate();
+        }
+        Vue.set(this, 'particles', new Particles(this.model, this.canvas, uv));
         this.particles.startAnimate();
 
       },
@@ -239,9 +261,9 @@
           return;
         }
         var uv = $('#uv-' + this.model.uv.tag)[0];
-
-
-        this.particles = new Particles(this.model, this.canvas, uv);
+        // remove old particles
+        this.clear();
+        Vue.set(this, 'particles', new Particles(this.model, this.canvas, uv));
         this.particles.startAnimate();
         this.addParticles();
       },
@@ -255,8 +277,14 @@
         this.particles.culling(this.particles.particles.length + 50);
       },
       removeParticles: function() {
-        this.model.particles.culling(0);
+        if (this.particles) {
+          this.particles.clear();
+        }
+      },
+      clear: function() {
+        this.removeParticles();
       }
+
     }
   });
 
