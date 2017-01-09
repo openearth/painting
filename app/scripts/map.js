@@ -104,6 +104,44 @@
           $(container).append(toggleMap);
 
 
+          var toggleClear = $('<a id="cleartoggle" href=""></a>');
+          // add a button with a default hidden ban
+          toggleClear.append($('<span class="fa-stack"><i class="fa fa-eraser fa-stack-1x" aria-hidden="true"></i><i id="clearban" class="hidden fa fa-ban fa-stack-2x"></i></span>'));
+          toggleClear.on('click', (evt) => {
+            if (_.has(this.$root.$refs, 'modelCanvas.clearAfterRender')) {
+              app.$refs.modelCanvas.clearAfterRender = !(app.$refs.modelCanvas.clearAfterRender);
+              if (app.$refs.modelCanvas.clearAfterRender) {
+                $('#clearban').addClass('hidden');
+              } else {
+                $('#clearban').removeClass('hidden');
+              }
+
+            } else {
+              console.warn('no modelCanvas available');
+            }
+            // don't bubble to the map (no painting)
+            evt.stopPropagation();
+            // don't go to the href
+            return false;
+          });
+          $(container).append(toggleClear);
+
+          var clearButton = $('<a id="clearbutton" href=""></a>');
+          // add a button with a default hidden ban
+          clearButton.append($('<i class="fa fa-trash-o fa-stack-1x" aria-hidden="true"></i>'));
+          clearButton.on('click', (evt) => {
+            if (_.has(this.$root.$refs, 'modelCanvas.clear')) {
+              app.$refs.modelCanvas.clear();
+
+            } else {
+              console.warn('no modelCanvas available');
+            }
+            // don't bubble to the map (no painting)
+            evt.stopPropagation();
+            // don't go to the href
+            return false;
+          });
+          $(container).append(clearButton);
 
 
           return container;
