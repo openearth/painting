@@ -106,11 +106,11 @@
 
           var toggleClear = $('<a id="cleartoggle" href=""></a>');
           // add a button with a default hidden ban
-          toggleClear.append($('<span class="fa-stack"><i class="fa fa-eraser fa-stack-1x" aria-hidden="true"></i><i id="clearban" class="hidden fa fa-ban fa-stack-2x"></i></span>'));
+          toggleClear.append($('<span class="fa-stack"><i class="fa fa-tint fa-stack-1x" aria-hidden="true"></i><i id="clearban" class="fa fa-ban fa-stack-2x"></i></span>'));
           toggleClear.on('click', (evt) => {
             if (_.has(this.$root.$refs, 'modelCanvas.clearAfterRender')) {
               app.$refs.modelCanvas.clearAfterRender = !(app.$refs.modelCanvas.clearAfterRender);
-              if (app.$refs.modelCanvas.clearAfterRender) {
+              if (!app.$refs.modelCanvas.clearAfterRender) {
                 $('#clearban').addClass('hidden');
               } else {
                 $('#clearban').removeClass('hidden');
@@ -128,13 +128,19 @@
 
           var clearButton = $('<a id="clearbutton" href=""></a>');
           // add a button with a default hidden ban
-          clearButton.append($('<i class="fa fa-trash-o fa-stack-1x" aria-hidden="true"></i>'));
+          clearButton.append($('<i class="fa fa-eraser fa-stack-1x" aria-hidden="true"></i>'));
           clearButton.on('click', (evt) => {
             if (_.has(this.$root.$refs, 'modelCanvas.clear')) {
               app.$refs.modelCanvas.clear();
 
             } else {
               console.warn('no modelCanvas available');
+            }
+            if (_.has(this.$root.$refs, 'particleComponent.clear')) {
+              app.$refs.particleComponent.clear();
+
+            } else {
+              console.warn('no particleComponent available');
             }
             // don't bubble to the map (no painting)
             evt.stopPropagation();
@@ -143,6 +149,22 @@
           });
           $(container).append(clearButton);
 
+          var addParticleButton = $('<a id="addbutton" href=""></a>');
+          // add a button with a default hidden ban
+          addParticleButton.append($('<i class="fa fa-tencent-weibo fa-stack-1x" aria-hidden="true"></i>'));
+          addParticleButton.on('click', (evt) => {
+            if (_.has(this.$root.$refs, 'particleComponent.add')) {
+              app.$refs.particleComponent.add();
+
+            } else {
+              console.warn('no particleComponent available');
+            }
+            // don't bubble to the map (no painting)
+            evt.stopPropagation();
+            // don't go to the href
+            return false;
+          });
+          $(container).append(addParticleButton);
 
           return container;
         }

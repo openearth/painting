@@ -265,9 +265,9 @@
         this.clear();
         Vue.set(this, 'particles', new Particles(this.model, this.canvas, uv));
         this.particles.startAnimate();
-        this.addParticles();
+        this.add();
       },
-      addParticles: function() {
+      add: function() {
         if (_.isNil(this.model)) {
           return;
         }
