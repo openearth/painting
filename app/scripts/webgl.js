@@ -205,6 +205,7 @@
 
         // clear
         this.renderer.render(blank, this.renderTextureTo, true);
+        this.renderer.render(blank, this.renderTextureFrom, true);
       },
       deferredMountedTo: function(parent) {
         /* eslint-disable no-underscore-dangle */
