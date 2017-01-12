@@ -174,6 +174,15 @@
           return _.get(this, 'sketch');
         },
         cache: false
+      },
+      keepPaint: {
+        get: function() {
+          return !this.clearAfterRender;
+        },
+        set: function(val) {
+          this.clearAfterRender = !val;
+        },
+        cache: false
       }
     },
     watch: {

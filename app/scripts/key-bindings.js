@@ -33,44 +33,18 @@
               if (_.isNil(drawing)) {
                 return;
               }
-              _.each(
-                _.range(0, 100),
-                () => {
-                  var x = Math.random() * 1024;
-                  var y = Math.random() * 1024;
-                  drawing.strokeStyle = 'white';
-                  drawing.beginPath();
-                  drawing.arc(x, y, 1, 0, 2 * Math.PI);
-                  drawing.closePath();
-                  drawing.stroke();
-                }
-              );
+              drawing.quiver();
+
             }
           },
           {
             key: 'g',
             description: 'Grid plot',
             method: (evt, drawing) => {
-              if (_.isNil(drawing)) {
+              if (!drawing) {
                 return;
               }
-              _.each(
-                _.range(0, 1024, Math.pow(2, 7)),
-                (i) => {
-                  drawing.strokeStyle = 'black';
-                  drawing.beginPath();
-                  drawing.moveTo(i, 0);
-                  drawing.lineTo(i, 1024);
-                  drawing.closePath();
-                  drawing.stroke();
-
-                  drawing.beginPath();
-                  drawing.moveTo(0, i);
-                  drawing.lineTo(1024, i);
-                  drawing.closePath();
-                  drawing.stroke();
-                }
-              );
+              drawing.grid();
             }
           }
         ]

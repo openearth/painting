@@ -80,91 +80,121 @@
           // create the control container with a particular class name
           // var container = L.DomUtil.create('div', 'my-custom-control leaflet-control leaflet-bar');
           var container = this.$el;
+          var app = this.$root;
 
-          var toggleMap = $('<a id="maptoggle" href=""></a>');
-          // add a button with a default hidden ban
-          toggleMap.append($('<span class="fa-stack"><i class="fa fa-map-o fa-stack-1x"></i><i id="mapban" class="hidden fa fa-ban fa-stack-2x"></i></span>'));
-          toggleMap.on('click', (evt) => {
-            if (_.has(this.$root.$refs, 'mapControls.locked')) {
-              app.$refs.mapControls.locked = !(app.$refs.mapControls.locked);
-              if (app.$refs.mapControls.locked) {
-                $('#mapban').addClass('hidden');
-              } else {
-                $('#mapban').removeClass('hidden');
+          var buttons = [
+            {
+              idbase: 'map',
+              icon: 'fa-map-o',
+              type: 'toggle',
+              banned: 'mapControls.locked'
+            },
+            {
+              idbase: 'clear',
+              icon: 'fa-tint',
+              type: 'toggle',
+              banned: 'modelCanvas.keepPaint'
+            },
+            {
+              idbase: 'clear',
+              icon: 'fa-eraser',
+              type: 'button',
+              actions: [
+                'modelCanvas.clear',
+                'particleComponent.clear'
+              ]
+            },
+            {
+              idbase: 'addparticle',
+              icon: 'fa-tencent-weibo',
+              type: 'button',
+              actions: [
+                'particleComponent.add'
+              ]
+            },
+            {
+              idbase: 'addgrid',
+              icon: 'fa-th',
+              type: 'button',
+              actions: [
+                'drawingCanvas.grid'
+              ]
+            },
+            {
+              idbase: 'addquiver',
+              icon: 'fa-long-arrow-right',
+              type: 'button',
+              actions: [
+                'drawingCanvas.quiver'
+              ]
+            }
+          ];
+          _.each(buttons, function(button) {
+            var a = $('<a href=""></a>');
+            a.attr('id', button.idbase + button.type);
+            var icon = $('<i class="fa fa-stack-1x"></i>');
+            icon.addClass(button.icon);
+            if (button.type === 'toggle') {
+              var span = $('<span class="fa-stack"></span>');
+              span.append(icon);
+              var ban = $('<i class="fa fa-ban fa-stack-2x"></i>');
+              ban.attr('id', button.idbase + 'ban');
+              if (!_.get(app.$refs, button.banned)) {
+                // hide until banned
+                ban.addClass('hidden');
               }
-
-            } else {
-              console.warn('no mapControls available');
+              span.append(ban);
+              a.append(span);
+            } else if (button.type === 'button') {
+              a.append(icon);
             }
-            // don't bubble to the map (no painting)
-            evt.stopPropagation();
-            // don't go to the href
-            return false;
-          });
-          $(container).append(toggleMap);
+            a.on('dblclick', function(evt) {
+              evt.stopImmediatePropagation();
+              console.log('caught dbl', evt);
+              return false;
+            });
 
+            a.on('click', function(evt) {
+              if (button.type === 'toggle') {
+                // toggle
+                _.set(
+                  app.$refs,
+                  button.banned,
+                  !(_.get(app.$refs, button.banned))
+                );
+                if (!_.has(app.$refs, button.banned)) {
+                  console.warn('Could not find', button.banned);
+                  return;
+                }
+                // get current valeu
+                var banned = _.get(app.$refs, button.banned);
+                // lookup element
+                var banElement = $('#' + button.idbase + 'ban');
+                if (banned) {
+                  banElement.addClass('hidden');
+                } else {
+                  banElement.removeClass('hidden');
+                }
 
-          var toggleClear = $('<a id="cleartoggle" href=""></a>');
-          // add a button with a default hidden ban
-          toggleClear.append($('<span class="fa-stack"><i class="fa fa-tint fa-stack-1x" aria-hidden="true"></i><i id="clearban" class="fa fa-ban fa-stack-2x"></i></span>'));
-          toggleClear.on('click', (evt) => {
-            if (_.has(this.$root.$refs, 'modelCanvas.clearAfterRender')) {
-              app.$refs.modelCanvas.clearAfterRender = !(app.$refs.modelCanvas.clearAfterRender);
-              if (!app.$refs.modelCanvas.clearAfterRender) {
-                $('#clearban').addClass('hidden');
-              } else {
-                $('#clearban').removeClass('hidden');
               }
+              if (button.type === 'button') {
+                _.each(button.actions, function(action) {
+                  if (!_.has(app.$refs, action)) {
+                    console.warn('Could not find', action);
+                    return;
+                  }
+                  _.get(app.$refs, action)();
 
-            } else {
-              console.warn('no modelCanvas available');
-            }
-            // don't bubble to the map (no painting)
-            evt.stopPropagation();
-            // don't go to the href
-            return false;
+                });
+              }
+              // don't bubble to the map (no painting)
+              evt.stopPropagation();
+              return false;
+            });
+            $(container).append(a);
+
           });
-          $(container).append(toggleClear);
 
-          var clearButton = $('<a id="clearbutton" href=""></a>');
-          // add a button with a default hidden ban
-          clearButton.append($('<i class="fa fa-eraser fa-stack-1x" aria-hidden="true"></i>'));
-          clearButton.on('click', (evt) => {
-            if (_.has(this.$root.$refs, 'modelCanvas.clear')) {
-              app.$refs.modelCanvas.clear();
-
-            } else {
-              console.warn('no modelCanvas available');
-            }
-            if (_.has(this.$root.$refs, 'particleComponent.clear')) {
-              app.$refs.particleComponent.clear();
-
-            } else {
-              console.warn('no particleComponent available');
-            }
-            // don't bubble to the map (no painting)
-            evt.stopPropagation();
-            // don't go to the href
-            return false;
-          });
-          $(container).append(clearButton);
-
-          var addParticleButton = $('<a id="addbutton" href=""></a>');
-          // add a button with a default hidden ban
-          addParticleButton.append($('<i class="fa fa-tencent-weibo fa-stack-1x" aria-hidden="true"></i>'));
-          addParticleButton.on('click', (evt) => {
-            if (_.has(this.$root.$refs, 'particleComponent.add')) {
-              app.$refs.particleComponent.add();
-
-            } else {
-              console.warn('no particleComponent available');
-            }
-            // don't bubble to the map (no painting)
-            evt.stopPropagation();
-            // don't go to the href
-            return false;
-          });
-          $(container).append(addParticleButton);
 
           return container;
         }
@@ -209,7 +239,7 @@
           if (_.has(this, 'model.extent')) {
             var model = this.model;
             var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
-                ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
+            ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
             bounds = L.latLngBounds(sw, ne);
           }
           return bounds;
