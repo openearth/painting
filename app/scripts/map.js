@@ -20,7 +20,6 @@
       locked: 'lockedChanged'
     },
     mounted: function() {
-
     },
     methods: {
       lockedChanged: function(oldVal, newVal) {
@@ -42,7 +41,6 @@
         if (map.tap) {
           map.tap.disable();
         }
-        $('#mapban').removeClass('hidden');
 
       },
       unlockMap: function() {
@@ -57,7 +55,6 @@
           map.tap.enable();
         }
 
-        $('#mapban').addClass('hidden');
       }
     }
   });
@@ -69,8 +66,61 @@
         type: CanvasRenderingContext2D
       }
     },
-    mounted() {
 
+    data() {
+      return {
+        toggleButtons: [
+          {
+            id: 'maptoggle',
+            icon: 'fa-map-o',
+            type: 'toggle',
+            banned: 'mapControls.locked'
+          },
+          {
+            id: 'cleartoggle',
+            icon: 'fa-tint',
+            type: 'toggle',
+            banned: 'modelCanvas.clearAfterRender'
+          }
+        ],
+        actionButtons: [
+          {
+            id: 'clearcanvas',
+            icon: 'fa-eraser',
+            type: 'button',
+            actions: [
+              'modelCanvas.clear',
+              'particleComponent.clear'
+            ]
+          },
+          {
+            id: 'addparticle',
+            icon: 'fa-tencent-weibo',
+            type: 'button',
+            actions: [
+              'particleComponent.add'
+            ]
+          },
+          {
+            id: 'addgrid',
+            icon: 'fa-th',
+            type: 'button',
+            actions: [
+              'drawingCanvas.grid'
+            ]
+          },
+          {
+            id: 'addquiver',
+            icon: 'fa-long-arrow-right',
+            type: 'button',
+            actions: [
+              'drawingCanvas.quiver'
+            ]
+          }
+        ]
+      };
+    },
+    mounted() {
       var ToggleControl = L.Control.extend({
         options: {
           position: 'topright'
@@ -81,130 +131,36 @@
           // var container = L.DomUtil.create('div', 'my-custom-control leaflet-control leaflet-bar');
           var container = this.$el;
           var app = this.$root;
-
-          var buttons = [
-            {
-              idbase: 'map',
-              icon: 'fa-map-o',
-              type: 'toggle',
-              banned: 'mapControls.locked'
-            },
-            {
-              idbase: 'clear',
-              icon: 'fa-tint',
-              type: 'toggle',
-              banned: 'modelCanvas.keepPaint'
-            },
-            {
-              idbase: 'clear',
-              icon: 'fa-eraser',
-              type: 'button',
-              actions: [
-                'modelCanvas.clear',
-                'particleComponent.clear'
-              ]
-            },
-            {
-              idbase: 'addparticle',
-              icon: 'fa-tencent-weibo',
-              type: 'button',
-              actions: [
-                'particleComponent.add'
-              ]
-            },
-            {
-              idbase: 'addgrid',
-              icon: 'fa-th',
-              type: 'button',
-              actions: [
-                'drawingCanvas.grid'
-              ]
-            },
-            {
-              idbase: 'addquiver',
-              icon: 'fa-long-arrow-right',
-              type: 'button',
-              actions: [
-                'drawingCanvas.quiver'
-              ]
-            }
-          ];
-          _.each(buttons, function(button) {
-            var a = $('<a href=""></a>');
-            a.attr('id', button.idbase + button.type);
-            var icon = $('<i class="fa fa-stack-1x"></i>');
-            icon.addClass(button.icon);
-            if (button.type === 'toggle') {
-              var span = $('<span class="fa-stack"></span>');
-              span.append(icon);
-              var ban = $('<i class="fa fa-ban fa-stack-2x"></i>');
-              ban.attr('id', button.idbase + 'ban');
-              if (!_.get(app.$refs, button.banned)) {
-                // hide until banned
-                ban.addClass('hidden');
-              }
-              span.append(ban);
-              a.append(span);
-            } else if (button.type === 'button') {
-              a.append(icon);
-            }
-            a.on('dblclick', function(evt) {
-              evt.stopImmediatePropagation();
-              console.log('caught dbl', evt);
-              return false;
-            });
-
-            a.on('click', function(evt) {
-              if (button.type === 'toggle') {
-                // toggle
-                _.set(
-                  app.$refs,
-                  button.banned,
-                  !(_.get(app.$refs, button.banned))
-                );
-                if (!_.has(app.$refs, button.banned)) {
-                  console.warn('Could not find', button.banned);
-                  return;
-                }
-                // get current valeu
-                var banned = _.get(app.$refs, button.banned);
-                // lookup element
-                var banElement = $('#' + button.idbase + 'ban');
-                if (banned) {
-                  banElement.addClass('hidden');
-                } else {
-                  banElement.removeClass('hidden');
-                }
-
-              }
-              if (button.type === 'button') {
-                _.each(button.actions, function(action) {
-                  if (!_.has(app.$refs, action)) {
-                    console.warn('Could not find', action);
-                    return;
-                  }
-                  _.get(app.$refs, action)();
-
-                });
-              }
-              // don't bubble to the map (no painting)
-              evt.stopPropagation();
-              return false;
-            });
-            $(container).append(a);
-
-          });
-
-
           return container;
         }
       });
-      this.$drawToggle = new ToggleControl({});
+
+      this.controls = [
+        new ToggleControl({})
+      ];
     },
     methods: {
-
+      toggle(button, evt) {
+        _.set(
+          app.$refs,
+          button.banned,
+          !(_.get(app.$refs, button.banned))
+        );
+      },
+      action(button, evt) {
+        _.each(button.actions, (action) => {
+          _.get(app.$refs, action)();
+        });
+      },
+      isBanned(button) {
+        var app = this.$root;
+        return _.get(app.$refs, button.banned);
+      },
       deferredMountedTo(parent) {
-        this.$drawToggle.addTo(parent);
+        _.forEach(
+          this.controls,
+          (control) => { control.addTo(parent); }
+        );
         _.forEach(this.$children, (child) => {
           child.deferredMountedTo(this.$drawToggle);
         });
@@ -239,7 +195,7 @@
           if (_.has(this, 'model.extent')) {
             var model = this.model;
             var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
-            ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
+                ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
             bounds = L.latLngBounds(sw, ne);
           }
           return bounds;
