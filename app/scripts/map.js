@@ -11,24 +11,32 @@
         type: Object
       }
     },
-    data: function() {
-      return {
-        locked: true
-      };
-    },
-    watch: {
-      locked: 'lockedChanged'
-    },
     mounted: function() {
     },
+    computed: {
+      locked: {
+        get: function() {
+          var locked = true;
+          var map = this.map;
+          if (_.has(map, 'dragging')) {
+            locked = !(map.dragging.enabled());
+          }
+          console.log('returning locked', locked);
+          return locked;
+
+        },
+        set: function(value) {
+          console.log('locking map', value);
+          if (value) {
+            this.lockMap();
+          } else {
+            this.unlockMap();
+          }
+        },
+        cache: false
+      }
+    },
     methods: {
-      lockedChanged: function(oldVal, newVal) {
-        if (newVal) {
-          this.lockMap();
-        } else {
-          this.unlockMap();
-        }
-      },
       lockMap: function() {
         var map = this.map;
         // Disable drag and zoom handlers.
@@ -141,6 +149,7 @@
     },
     methods: {
       toggle(button, evt) {
+        var app = this.$root;
         _.set(
           app.$refs,
           button.banned,
@@ -148,6 +157,7 @@
         );
       },
       action(button, evt) {
+        var app = this.$root;
         _.each(button.actions, (action) => {
           _.get(app.$refs, action)();
         });
