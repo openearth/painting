@@ -257,7 +257,7 @@
 
       },
       resetParticles: function(){
-        if (_.isNil(this.model)) {
+        if (_.isNil(this.model) || _.isNil(this.canvas)) {
           return;
         }
         var uv = $('#uv-' + this.model.uv.tag)[0];
