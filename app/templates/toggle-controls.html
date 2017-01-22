@@ -1,5 +1,20 @@
 <template id="toggle-controls-template">
-  <div class="my-custom-control leaflet-control leaflet-bar">
+  <div>
+    <div class="toggle-controls leaflet-control leaflet-bar">
+      <a href="" v-for="button in toggleButtons" :id="button.id" @click.stop.prevent="toggle(button, $event)">
+        <span class="fa-stack">
+          <i class="fa fa-ban fa-stack-2x" v-show="isBanned(button)"></i>
+          <i class="fa fa-stack-1x" :class="button.icon"></i>
+        </span>
+      </a>
+    </div>
+    <div class="action-controls leaflet-control leaflet-bar">
+      <a href="" v-for="button in actionButtons" :id="button.id" @click.stop.prevent="action(button, $event)">
+
+
+        <i class="fa fa-stack-1x" :class="button.icon"></i>
+      </a>
+    </div>
   </div>
 
 </template>
