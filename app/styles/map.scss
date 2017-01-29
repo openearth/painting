@@ -8,6 +8,38 @@
   left: 14px;
 }
 
+.leaflet-div-icon {
+  background: inherit;
+  border: inherit;
+}
+.station-icon {
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  border: 1px solid white;
+  border-radius: 5px;
+  text-align: center;
+}
+.cluster-icon {
+  opacity: 0.8;
+  overflow: visible;
+  svg {
+    overflow: visible;
+  }
+  path {
+    stroke: white;
+    stroke-width: 1px;
+  }
+}
+
+.featured {
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+.selected {
+  border: 3px solid white;
+}
 
 #webgl {
 }

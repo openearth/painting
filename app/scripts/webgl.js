@@ -17,33 +17,38 @@
     },
     mounted: function() {
       // no need to do this too fast (getting image from gpu to cpu takes some time)
-      var fps = 10;
+      var fps = 3;
       var now = Date.now();
       var then = Date.now();
+      var first = then;
       var interval = 1000 / fps;
       var delta;
+      var counter = 0;
 
-      this.$nextTick(() => {
-        // return the canvas that corresponds to the video
-
-      });
       // create an animation function that draws the video into a 2d canvas
       function animate() {
+
         requestAnimationFrame(animate.bind(this));
+
         now = Date.now();
         delta = now - then;
-        if (!this.video) {
-          return;
-        }
-        if (!this.uvctx) {
-          return;
-        }
+        if (delta > interval) {
+          then = now - (delta % interval);
+          if (!this.video) {
+            return;
+          }
+          if (!this.uvctx) {
+            return;
+          }
 
-        let width = this.video.width;
-        let height = this.video.height;
-        // TODO: this is expensive
-        this.uvctx.drawImage(this.video, 0, 0, width, height);
-        then = now - (delta % interval);
+          let width = this.video.width;
+          let height = this.video.height;
+          // TODO: this is expensive
+          // TODO: if not then, return....
+          this.uvctx.drawImage(this.video, 0, 0, width, height);
+          counter++;
+          console.log('fps',  parseInt(counter/((then - first)/1000)) );
+        }
       }
       animate.bind(this)();
 

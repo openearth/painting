@@ -46,6 +46,22 @@ $brand-info: #64FF64;
 .chart-card {
   flex: 1 1 auto;
 }
+
+.chart-legend {
+  position: absolute;
+  top: 20px;
+  left: 50px;
+  & > h1 {
+    font-size: 1.5rem;
+  }
+}
+.clipped {
+  clip-path: url('#clip');
+}
+.axis-title {
+  fill: black;
+}
+
 .story-card {
   flex: 1 1 auto;
   max-height: calc(100vh - 2rem);
