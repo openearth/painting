@@ -158,7 +158,7 @@ var sketch;
         );
       },
       quiver: function() {
-        var drawing  = this.sketch;
+        var drawing = this.sketch;
         _.each(
           _.range(0, 100),
           () => {

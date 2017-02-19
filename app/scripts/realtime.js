@@ -10,7 +10,101 @@
     },
     data: function() {
       return {
+        limits: null,
+        series: null
       };
+    },
+    methods: {
+      createChart: function() {
+        var model = this.$root.model;
+        var margin = {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
+        };
+        var width = this.$el.clientWidth - margin.left - margin.right;
+        var height = this.$el.clientHeight - margin.top - margin.bottom;
+
+        var xTime = d3.scaleTime()
+          .range([0, width]);
+        var yWaterlevel = d3.scaleLinear()
+            .range([height, 0]);
+        var el = $(this.$el).find('svg')[0];
+
+        var svg = d3.select(el);
+        svg.selectAll('*').remove();
+
+        svg
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.top + margin.bottom);
+        var g = svg
+            .append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        g
+          .append('clipPath')
+          .attr('id', 'clip')
+          .append('rect')
+          .attr('width', width)
+          .attr('height', height);
+
+        var xDomain = _.map(model.extent.time, d3.isoParse);
+        xTime.domain(xDomain);
+        yWaterlevel.domain(model.extent.waterlevel);
+
+
+        if (!this.series.length) {
+          return;
+        }
+        // remove old series
+        g
+          .selectAll('.series')
+          .remove();
+
+        // create the series
+        var series = g
+            .selectAll('.series')
+            .data(this.series)
+            .enter()
+            .append('g')
+            .attr('class', 'series');
+
+
+        var lineWaterlevel = d3.line()
+            .x((d) => {
+              var date = d3.isoParse(d.dateTime);
+              var x = xTime(date);
+              return x;
+            })
+          .y((d) => {
+            var y = yWaterlevel(d.value / 100.0);
+            // cm/m
+            return y;
+          });
+
+        series
+          .append('path')
+          .attr('class', 'line waterlevel clipped')
+          .attr('d', (d) => {
+            return lineWaterlevel(d.data);
+          });
+
+      }
+    },
+    mounted: function() {
+      var feature = this.feature;
+      var url = 'data/details/' + feature.properties.locationCode;
+      fetch(url)
+        .then((resp)=>{
+          return resp.json();
+        })
+        .then((json) => {
+          Vue.set(this, 'series', json.series);
+          // limits
+          Vue.set(this, 'limits', _.get(json, 'limits', []));
+          this.createChart();
+        });
+
     }
   });
 
@@ -59,12 +153,14 @@
       },
       createMarkers() {
 
-        var markers = L.markerClusterGroup({
+        var markerGroup = L.markerClusterGroup({
           iconCreateFunction: function(cluster) {
+            /* eslint-disable no-underscore-dangle */
             var id = 'cluster-' + cluster._leaflet_id;
+            /* eslint-enable no-underscore-dangle */
 
             var marker = L.divIcon({ html: '<div class="cluster-icon" id="' + id + '"></div>' });
-            cluster.on('add', function(evt) {
+            cluster.on('add', function() {
               var markers = cluster.getAllChildMarkers();
               var colors = _.map(markers, 'options.feature.properties.locationColor');
               var data = _.toPairs(_.groupBy(colors));
@@ -117,7 +213,7 @@
             this.setChart(feature, evt);
 
           });
-          marker.on('add', (evt) => {
+          marker.on('add', () => {
             // dynamicly mount the icon
             var element = $(marker.getElement()).find('station-icon');
             (new StationIcon({
@@ -129,13 +225,13 @@
 
           });
 
-          markers.addLayer(marker);
+          markerGroup.addLayer(marker);
 
 
         });
 
         // select first feature
-        this.layerGroup.addLayer(markers);
+        this.layerGroup.addLayer(markerGroup);
         var selectedFeature = _.first(
           _.filter(
             this.points.features,
@@ -151,11 +247,11 @@
           this.layerGroup.clearLayers();
         }
       },
-      setChart(feature, evt) {
+      setChart(feature) {
         _.each(
           this.points.features,
-          (feature) => {
-            feature.properties.selected = false;
+          (obj) => {
+            obj.properties.selected = false;
           }
         );
         feature.properties.selected = true;

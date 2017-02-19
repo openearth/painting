@@ -32,7 +32,7 @@
       this.$nextTick(function(){
 
 
-        window.addEventListener('resize', (evt) => {
+        window.addEventListener('resize', () => {
           this.createChart();
           this.updateChart();
         });
@@ -224,7 +224,7 @@
           .attr('transform', 'rotate(-90)')
           .attr('y', -margin.left)
           .attr('dy', '1em')
-          .attr('x', -height/2.0)
+          .attr('x', -height / 2.0)
           .style('text-anchor', 'middle')
           .text('water hoogte [m]');
 

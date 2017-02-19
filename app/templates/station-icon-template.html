@@ -1,11 +1,9 @@
 <template id="station-icon-template">
   <div class="station-icon"
-       :style="{ 'background-color': feature.properties.locationColor }"
        :class="{ 'featured': feature.properties.featured, 'selected': feature.properties.selected }"
        :title="feature.properties.name"
        >
-    <div v-for="measurement in feature.properties.measurements">
-
-    </div>
+    <svg>
+    </svg>
   </div>
 </template>

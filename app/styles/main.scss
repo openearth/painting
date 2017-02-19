@@ -11,25 +11,27 @@ $tab-active-bg: #23527c;
 
 $OpenSansPath: '../fonts';
 
-$brand-info: #64FF64;
+$brand-info: #64ff64;
 
 
 // bower:scss
-@import "bower_components/fontawesome/scss/font-awesome.scss";
-@import "bower_components/open-sans-fontface/open-sans.scss";
+@import 'bower_components/fontawesome/scss/font-awesome.scss';
+@import 'bower_components/open-sans-fontface/open-sans.scss';
 // endbower
 
 
-@import "map.scss";
+@import 'map';
 
 .flex-vertical {
   display: flex;
   flex-direction: column;
 }
+
 .map-row,
 .chart-row {
   padding-top: 2vh;
 }
+
 .map-card {
   flex: 3 1 auto;
   max-height: calc(100vh - 2rem);
@@ -38,8 +40,8 @@ $brand-info: #64FF64;
 .map-card,
 .chart-card {
   .card__text {
-    padding: 0;
     height: 100%;
+    padding: 0;
   }
 }
 
@@ -48,16 +50,19 @@ $brand-info: #64FF64;
 }
 
 .chart-legend {
+  left: 50px;
   position: absolute;
   top: 20px;
-  left: 50px;
-  & > h1 {
+
+  h1 {
     font-size: 1.5rem;
   }
 }
+
 .clipped {
   clip-path: url('#clip');
 }
+
 .axis-title {
   fill: black;
 }
@@ -66,56 +71,60 @@ $brand-info: #64FF64;
   flex: 1 1 auto;
   max-height: calc(100vh - 2rem);
 }
+
 .story-container {
-  overflow-y: scroll;
   flex: none;
   height: calc(100vh - 28px - 2rem);
+  overflow-y: scroll;
 }
 
 .story-item {
-  video,img {
+  video,
+  img {
     max-width: 100%;
   }
+
   .jssor-slider-container {
+    height: 300px;
+    left: 0;
     position: relative;
     top: 0;
-    left: 0;
     width: 100%;
-    height: 300px;
   }
+
   .jssor-slider {
     cursor: move;
-    position: static;
-    overflow: hidden;
+    height: 300px;
     left: 0;
+    overflow: hidden;
+    position: static;
     top: 0;
     width: 100%;
-    height: 300px;
   }
 }
 
 .chart {
-  height: 30vh ;
+  height: 30vh;
+
   svg {
-    width: 100%;
     height: 100%;
+    width: 100%;
 
     .line {
       fill: none;
       stroke: $brand-info;
     }
   }
+
   text {
-    font-family: $font-family-base
+    font-family: $font-family-base;
   }
 }
-
 
 circle.active {
   stroke: #000;
   stroke-width: 2;
 }
-
 
 .nopadding {
   margin: 0;
@@ -124,4 +133,10 @@ circle.active {
 
 .hidden {
   display: none;
+}
+
+.sidebar {
+  h2 {
+    font-size: 1.5rem;
+  }
 }
