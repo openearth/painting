@@ -42,6 +42,9 @@
     },
     watch: {
       progress: function(newVal) {
+        if (_.isNaN(newVal)) {
+          return;
+        }
         var data = [
           {x: newVal, y: 0},
           {x: newVal, y: 1.0}

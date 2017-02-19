@@ -36,9 +36,18 @@ var bus;
   $(document).ready(function() {
     // make a global event bus
     bus = new Vue();
-    // Vuetify is exposed as a module, in newer versions
+    // HACK: Vuetify is exposed as a module, in newer versions
     var VuetifyPlugin = _.get(Vuetify, 'default', Vuetify);
     Vue.use(VuetifyPlugin);
+    // HACK: vue components end up under wrong name
+    var vueitfyComponents = {
+      'v-sidebar': 'VSidebar'
+    };
+    _.each(_.toPairs(vueitfyComponents), (pair) =>  {
+      var [key, val] = pair;
+      Vue.component(key, Vue.options.components[val]);
+    });
+
     Vue.component('v-marker', Vue2Leaflet.Marker);
     Vue.component('v-poly', Vue2Leaflet.Polyline);
     Vue.component('v-group', Vue2Leaflet.LayerGroup);
@@ -59,7 +68,7 @@ var bus;
               var params = urlParams();
               var defaults = {
                 settings: {
-                  sidebar: false,
+                  sidebar: true,
                   story: false,
                   chart: true,
                   model: null
@@ -67,7 +76,8 @@ var bus;
                 palette: [],
                 pipeline: null,
                 model: null,
-                sketch: null
+                sketch: null,
+                sidebar: false
               };
               _.assign(defaults.settings, params);
               return defaults;
