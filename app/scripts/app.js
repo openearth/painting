@@ -121,6 +121,7 @@ var bus;
 
           bus.$on('model-selected', function(model) {
             // set the model in the app
+            console.log('model selected', model);
             Vue.set(app, 'model', model);
             // this propagates to the components on the next tick
           });

@@ -82,6 +82,16 @@
                 <div slot="header">Key bindings</div>
                 <key-bindings></key-bindings>
               </v-expansion-panel-content>
+              <v-expansion-panel-content>
+                <div slot="header">Source video</div>
+                <div>
+                  <uv-source :model="model" ref="uvSource"></uv-source>
+                </div>
+                <div>
+                  <canvas id="canvas-icon" width="10" height="10"></canvas>
+                </div>
+
+              </v-expansion-panel-content>
 
             </v-expansion-panel>
           </v-sidebar>
@@ -111,8 +121,8 @@
 
                         <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
                       </v-map>
-                      <v-btn floating raised class="map-button white " @click.native.stop="sidebar = !sidebar" v-if="settings.sidebar">
-                        <v-icon>edit</v-icon>
+                      <v-btn floating default class="map-button" light small @click.native.stop="sidebar = !sidebar" v-if="settings.sidebar" >
+                        <v-icon>menu</v-icon>
                       </v-btn>
                     </v-card-text>
 
@@ -151,14 +161,6 @@
 
 
       <!-- Hidden layers -->
-      <div class="hidden layer">
-        <div>
-          <uv-source :model="model" ref="uvSource"></uv-source>
-        </div>
-        <div>
-          <canvas id="canvas-icon" width="10" height="10"></canvas>
-        </div>
-      </div>
     </div>
 
 
