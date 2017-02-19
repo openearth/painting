@@ -47,7 +47,7 @@
           // TODO: if not then, return....
           this.uvctx.drawImage(this.video, 0, 0, width, height);
           counter++;
-          console.log('fps',  parseInt(counter/((then - first)/1000)) );
+          console.log('fps', parseInt(counter / ((then - first) / 1000)) );
         }
       }
       animate.bind(this)();

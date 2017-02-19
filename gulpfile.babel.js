@@ -7,6 +7,7 @@ import debug from 'gulp-debug';
 import browserSync from 'browser-sync';
 import del from 'del';
 import {stream as wiredep} from 'wiredep';
+import jsonServer from 'json-server';
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -22,6 +23,7 @@ const es6LintOptions = {
     es6: true
   }
 };
+const bs = browserSync.create();
 
 gulp.task('styles', () => {
   return gulp.src('app/styles/*.scss')
@@ -56,7 +58,7 @@ function lint(files, options) {
       .pipe(reload({stream: true, once: true}))
       .pipe($.eslint(options))
       .pipe($.eslint.format())
-      .pipe($.if(!browserSync.active, $.eslint.failAfterError()));
+      .pipe($.if(!bs.active, $.eslint.failAfterError()));
   };
 }
 const testLintOptions = {
@@ -153,7 +155,7 @@ gulp.task('models', () => {
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('serve', ['styles', 'scripts', 'fonts', 'templates'], () => {
-  browserSync({
+  bs.init({
     notify: false,
     port: 9000,
     server: {
@@ -162,8 +164,16 @@ gulp.task('serve', ['styles', 'scripts', 'fonts', 'templates'], () => {
         '/bower_components': 'bower_components'
       }
     }
-  });
+  }, function (err, bs) {
 
+    var jsonApi = jsonServer.create({
+      static: 'models'
+    });
+    jsonApi.use(jsonServer.defaults());
+    jsonApi.use(jsonServer.router('app/data/db.json'));
+    bs.app.use('/api', jsonApi);
+
+  });
   gulp.watch([
     'app/*.html',
     'app/templates/*.html',
@@ -180,7 +190,7 @@ gulp.task('serve', ['styles', 'scripts', 'fonts', 'templates'], () => {
 });
 
 gulp.task('serve:dist', () => {
-  browserSync({
+  bs.init({
     notify: false,
     port: 9000,
     server: {
@@ -190,7 +200,7 @@ gulp.task('serve:dist', () => {
 });
 
 gulp.task('serve:test', () => {
-  browserSync({
+  bs.init({
     notify: false,
     port: 9000,
     ui: false,

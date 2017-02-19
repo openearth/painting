@@ -1,5 +1,4 @@
 /* eslint no-underscore-dangle: 0  */
-/* global app */
 (function () {
   'use strict';
 
@@ -138,7 +137,6 @@
           // create the control container with a particular class name
           // var container = L.DomUtil.create('div', 'my-custom-control leaflet-control leaflet-bar');
           var container = this.$el;
-          var app = this.$root;
           return container;
         }
       });
@@ -148,7 +146,7 @@
       ];
     },
     methods: {
-      toggle(button, evt) {
+      toggle(button) {
         var app = this.$root;
         _.set(
           app.$refs,
@@ -156,7 +154,7 @@
           !(_.get(app.$refs, button.banned))
         );
       },
-      action(button, evt) {
+      action(button) {
         var app = this.$root;
         _.each(button.actions, (action) => {
           _.get(app.$refs, action)();

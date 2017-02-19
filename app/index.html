@@ -43,8 +43,8 @@
     <!-- Map -->
 
     <div
-       id="app"
-       >
+      id="app"
+      >
       <!-- Sidebar if settings.sidebar is active -->
       <v-app>
         <!-- <header> -->
@@ -89,16 +89,16 @@
                         <realtime-layer :model="model"></realtime-layer>
                         <canvas-layer :model="model" id="particles">
                           <particle-component
-                             ref="particleComponent"
-                             :model="model"
-                             ></particle-component>
+                            ref="particleComponent"
+                            :model="model"
+                            ></particle-component>
 
                         </canvas-layer>
                         <canvas-layer :model="model" id="webgl">
                           <model-canvas :model="model" :sketch="sketch" ref="modelCanvas"></model-canvas>
                         </canvas-layer>
                         <canvas-layer :model="model" id="drawing">
-                          <drawing-canvas ref="drawingCanvas"></ddrawing-canvas>
+                          <drawing-canvas ref="drawingCanvas"></drawing-canvas>
                         </canvas-layer>
 
                         <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>

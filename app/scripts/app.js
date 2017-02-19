@@ -88,13 +88,16 @@ var bus;
               center: {
                 get: function() {
                   // by default go to 0, 0
-                  var center =  [0, 0];
+                  var center = [0, 0];
                   // if we have an extent look up the center
                   if (_.has(this, 'model.extent.sw')) {
                     var model = this.model;
                     var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
                         ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
-                    center = [(sw.lat + ne.lat)/2, (sw.lng + ne.lng)/2];
+                    center = [
+                      (sw.lat + ne.lat) / 2,
+                      (sw.lng + ne.lng) / 2
+                    ];
                   }
                   // use the model view center if available
                   center = _.get(this, 'model.view.center', center);
