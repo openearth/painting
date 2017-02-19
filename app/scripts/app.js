@@ -36,7 +36,9 @@ var bus;
   $(document).ready(function() {
     // make a global event bus
     bus = new Vue();
-    Vue.use(Vuetify);
+    // Vuetify is exposed as a module, in newer versions
+    var VuetifyPlugin = _.get(Vuetify, 'default', Vuetify);
+    Vue.use(VuetifyPlugin);
     Vue.component('v-marker', Vue2Leaflet.Marker);
     Vue.component('v-poly', Vue2Leaflet.Polyline);
     Vue.component('v-group', Vue2Leaflet.LayerGroup);
