@@ -7,6 +7,13 @@
     props: ['model'],
     data: function() {
       return {};
+    },
+    methods: {
+      select() {
+        console.log('selecting', this.model);
+        // dispatch to parent
+        bus.$emit('model-selected', this.model);
+      }
     }
   });
 

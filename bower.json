@@ -16,6 +16,7 @@
     "scrollmagic": "^2.0.5",
     "jssor-slider": "jssor#^21.1.5",
     "Vue2Leaflet": "SiggyF/Vue2Leaflet#6a8ecb5631f65a10f91df2016a324d92e61b1c1e",
+    "vue-color": "xiaokaike/vue-color#f952010c706734cac326f31c8cc0e4bb02201c22",
     "vuetify": "vuetifyjs/vuetify#^0.8.9",
     "material-design-icons": "^3.0.1",
     "roboto-fontface": "^0.6.0",
@@ -23,6 +24,11 @@
     "leaflet.markercluster": "Leaflet.markercluster#^1.0.2"
   },
   "overrides": {
+    "vue-color": {
+      "main": [
+        "dist/vue-color.js"
+      ]
+    },
     "pixi.js": {
       "old": "3.0.11",
       "main": [

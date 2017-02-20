@@ -47,7 +47,8 @@
           // TODO: if not then, return....
           this.uvctx.drawImage(this.video, 0, 0, width, height);
           counter++;
-          console.log('fps', parseInt(counter / ((then - first) / 1000)) );
+
+          // console.log('fps', parseInt(counter / ((then - first) / 1000)) );
         }
       }
       animate.bind(this)();
@@ -60,13 +61,17 @@
         video.src = uv.src;
         video.height = uv.height;
         video.width = uv.width;
+        this.loaded = false;
         // send this event once
         if (this.model.uv.tag === 'video') {
           // if it's really a video, bind to data update
           this.video.currentTime = this.video.currentTime;
           $(this.video).bind('loadeddata', () => {
-            this.loaded = true;
             Vue.set(this.model, 'duration', this.video.duration);
+            if (!this.loaded) {
+              this.loaded = true;
+              bus.$emit('video-loaded', video);
+            }
           });
           $(this.video).bind('timeupdate', () => {
             Vue.set(this.model, 'currentTime', this.video.currentTime);
@@ -74,7 +79,7 @@
         }
         // load the url
         video.load();
-        bus.$emit('video-loaded', video);
+
 
       }
     },
@@ -105,8 +110,8 @@
       },
       uvctx: {
         get: function() {
-          var uvHidden = document.getElementById('uv-hidden');
-          return uvHidden.getContext('2d');
+          var uvCanvas = document.getElementById('uv-canvas');
+          return uvCanvas.getContext('2d');
         },
         cache: false
 
@@ -357,6 +362,8 @@
 
           // get latest videoSprite
           videoSprite = this.videoSprite;
+
+          var index = this.stage.getChildIndex(videoSprite);
 
           // video not valid, don't bother rendering
           if (!videoSprite.texture.valid) {
