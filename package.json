@@ -57,7 +57,8 @@
       "Vue": true,
       "ScrollMagic": true,
       "Vue2leaflet": true,
-      "Modernizr": true
+      "Modernizr": true,
+      "VueColor": true
     },
     "rules": {
       "quotes": [
