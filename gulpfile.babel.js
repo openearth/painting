@@ -10,7 +10,6 @@ import {stream as wiredep} from 'wiredep';
 import jsonServer from 'json-server';
 
 const $ = gulpLoadPlugins();
-const reload = browserSync.reload;
 const es6LintOptions = {
   extends: 'eslint:recommended',
   baseConfig: {
@@ -24,6 +23,7 @@ const es6LintOptions = {
   }
 };
 const bs = browserSync.create();
+const reload = bs.reload;
 
 gulp.task('styles', () => {
   return gulp.src('app/styles/*.scss')

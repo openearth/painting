@@ -11,6 +11,9 @@
     this.particleAlpha = 0.8;
     this.replace = true;
     this.particles = [];
+    this.color = 'rgba(255, 91, 126, 0.8)';
+    this.r = 1;
+    this.fade = 0.95;
     this.counter = 0;
     this.state = 'STOPPED';
     // create offscreen buffer
@@ -110,10 +113,10 @@
     }
 
 
-    var uvhidden = $('#uv-hidden')[0];
-    var uvctx = uvhidden.getContext('2d');
-    var width = uvhidden.width,
-        height = uvhidden.height;
+    var uvCanvas = $('#uv-canvas')[0];
+    var uvctx = uvCanvas.getContext('2d');
+    var width = uvCanvas.width,
+        height = uvCanvas.height;
 
     // TODO: Move this to uv-source
     var frame = uvctx.getImageData(0, 0, width, height);
@@ -173,23 +176,53 @@
     var width = this.canvas.width;
     var height = this.canvas.height;
 
-    // bit of aliasing
-    var r = 3;
     // render buffer to keep a trail
-    var offscreen = this.offScreen.getContext('2d');
+    var offScreen = this.offScreen.getContext('2d');
 
-    // clear
-    offscreen.clearRect(0, 0, width, height);
-    // alpha determines length of the trail
-    offscreen.globalAlpha = 0.95;
-    // pingpong
-    offscreen.drawImage(this.canvas, 0, 0);
+    //
+    if (this.counter % 20 === 0) {
+      // cleanup every 20 timesteps
+      var imageData = ctx.getImageData(0, 0, width, height);
+      var data = imageData.data;
+      var fade = this.fade;
+      for(var i = 0, n = data.length; i < n; i += 4) {
+
+        var alpha = data[i + 3];
+        if (alpha <= (1 - fade)) {
+          data[i + 3] = 0.0;
+        }
+      }
+
+      // pingpong
+      // offscreen.drawImage(this.canvas, 0, 0);
+      offScreen.putImageData(imageData, 0, 0);
+
+    } else {
+      // No need to clear the screen fi we composite copy
+      offScreen.globalCompositeOperation = 'copy';
+
+      // offscreen.fillStyle = 'white';
+      // offScreen.clearRect(0, 0, width, height);
+      offScreen.drawImage(this.canvas, 0, 0);
+    }
+
+
+    // clear current screen
+    ctx.fillStyle = 'white';
     ctx.clearRect(0, 0, width, height);
+    // alpha determines length of the trail
+
+    ctx.globalAlpha = this.fade;
+    ctx.drawImage(this.offScreen, 0, 0);
+    ctx.globalAlpha = 1.0;
     // somehow this is not working properly,
     // triad to map color
-    ctx.fillStyle = 'rgba(255, 91, 126, 0.5)';
+    ctx.fillStyle = this.color;
     // plot all points at once
     ctx.beginPath();
+
+    // bit of aliasing
+    var r = this.r;
     _.each(this.particles, (particle) => {
       // fixes the stroke
       ctx.moveTo(particle.x + r, particle.y);
@@ -197,8 +230,6 @@
     });
     ctx.closePath();
     ctx.fill();
-    ctx.globalCompositeOperation = 'destination-over';
-    ctx.drawImage(this.offScreen, 0, 0);
 
 
   };

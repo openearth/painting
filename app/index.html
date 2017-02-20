@@ -46,7 +46,7 @@
       id="app"
       >
       <!-- Sidebar if settings.sidebar is active -->
-      <v-app>
+      <v-app left-sidebar>
         <!-- <header> -->
         <!--   <v-navbar> -->
         <!--     <div class="navbar__side-icon"> -->
@@ -58,24 +58,45 @@
         <!--   </v-navbar> -->
         <!-- </header> -->
         <main>
-          <v-sidebar drawer id="left-sidebar">
-            <v-collapsible>
-              <v-collapsible-header>Models</v-collapsible-header><v-collapsible-body>
+          <v-sidebar drawer id="left-sidebar" v-model="sidebar">
+            <v-expansion-panel>
+              <v-expansion-panel-content>
+                <div slot="header">Model details</div>
                 <model-details :model="model"></model-details>
+              </v-expansion-panel-content>
+              <v-expansion-panel-content>
+                <div slot="header">Available models</div>
                 <models-overview></models-overview>
-              </v-collapsible-body>
-              <v-collapsible-header>Palettes</v-collapsible-header><v-collapsible-body>
-                <painting-palettes></painting-palettes>
-                <palette-chart :palette="palette"></palette-chart>
-              </v-collapsible-body>
-              <v-collapsible-header>Controls</v-collapsible-header><v-collapsible-body>
+              </v-expansion-panel-content>
+              <v-expansion-panel-content>
+                <div slot="header">Color</div>
+                <v-btn-toggle :options="colorToggleOptions" v-model="colorType"></v-btn-toggle>
+                <div v-show="colorType==='color'">
+                  <v-color-picker v-model="color" @change-color="onColorChange"></v-color-picker>
+                </div>
+
+                <div v-show="colorType==='palette'">
+                  <painting-palettes></painting-palettes>
+                  <palette-chart :palette="palette"></palette-chart>
+                </div>
+              </v-expansion-panel-content>
+              <v-expansion-panel-content>
+                <div slot="header">Controls</div>
                 <drawing-controls :sketch="sketch"></drawing-controls>
                 <map-controls ref="mapControls" :map="map" ></map-controls>
-              </v-collapsible-body>
-              <v-collapsible-header>Key bindings</v-collapsible-header><v-collapsible-body>
+              </v-expansion-panel-content>
+              <v-expansion-panel-content>
+                <div slot="header">Key bindings</div>
                 <key-bindings></key-bindings>
-              </v-collapsible-body>
-            </v-collapsible>
+              </v-expansion-panel-content>
+              <v-expansion-panel-content>
+                <div slot="header">Source video</div>
+                <uv-source :model="model" ref="uvSource"></uv-source>
+                <canvas id="canvas-icon" width="10" height="10"></canvas>
+
+              </v-expansion-panel-content>
+
+            </v-expansion-panel>
           </v-sidebar>
           <v-content>
             <v-container>
@@ -86,7 +107,7 @@
                       <v-map ref="map" :class="{'sidebar-map': settings.sidebar}" :zoom="zoom" :center="center">
 
                         <toggle-controls :sketch="sketch"></toggle-controls>
-                        <realtime-layer :model="model"></realtime-layer>
+                        <realtime-layer :model="model" v-if="model && model.realtime"></realtime-layer>
                         <canvas-layer :model="model" id="particles">
                           <particle-component
                             ref="particleComponent"
@@ -103,8 +124,8 @@
 
                         <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
                       </v-map>
-                      <v-btn floating raised class="map-button white " v-side-bar:left-sidebar v-if="settings.sidebar">
-                        <v-icon>edit</v-icon>
+                      <v-btn floating default class="map-button" light small @click.native.stop="sidebar = !sidebar" v-if="settings.sidebar" >
+                        <v-icon>menu</v-icon>
                       </v-btn>
                     </v-card-text>
 
@@ -143,14 +164,6 @@
 
 
       <!-- Hidden layers -->
-      <div class="hidden layer">
-        <div>
-          <uv-source :model="model" ref="uvSource"></uv-source>
-        </div>
-        <div>
-          <canvas id="canvas-icon" width="10" height="10"></canvas>
-        </div>
-      </div>
     </div>
 
 
@@ -171,6 +184,7 @@
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
     <script src="/bower_components/jssor-slider/js/jssor.slider.mini.js"></script>
     <script src="/bower_components/Vue2Leaflet/dist/vue2-leaflet.js"></script>
+    <script src="/bower_components/vue-color/dist/vue-color.js"></script>
     <script src="/bower_components/vuetify/dist/vuetify.js"></script>
     <script src="/bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <script src="/bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
@@ -184,6 +198,7 @@
     <!-- custom overlay -->
     <script src="scripts/CanvasOverlay.js"></script>
     <!-- main files -->
+    <script src="scripts/id.js"></script>
     <script src="scripts/bus.js"></script>
     <script src="scripts/map.js"></script>
     <script src="scripts/realtime.js"></script>

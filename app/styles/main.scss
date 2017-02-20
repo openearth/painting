@@ -22,6 +22,54 @@ $brand-info: #64ff64;
 
 @import 'map';
 
+.menu__content {
+  z-index: 5000;
+}
+
+.expansion-panel {
+
+  .tabs__container,
+  .list li {
+    border: initial;
+  }
+  .list .list__tile {
+    color: initial;
+  }
+
+  .expansion-panel__body>div {
+    margin-bottom: 10px;
+  }
+
+  .vue-color__chrome {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+}
+
+.sidebar--close {
+  width: 0;
+  max-width: 0;
+}
+.sidebar--open {
+  max-width: 300px;
+}
+.sidebar {
+  height: 100vh;
+  flex-direction: column;
+  flex: 1 1 auto;
+  position: static;
+  transition: max-width .3s cubic-bezier(0,0,.2,1); //, transform .3s cubic-bezier(0,0,.2,1);
+  .expansion-panel {
+    .expansion-panel__body {
+      padding: 10px;
+    }
+  }
+}
+
+.model {
+  margin-bottom: 10px;
+}
+
 .flex-vertical {
   display: flex;
   flex-direction: column;
@@ -139,4 +187,9 @@ circle.active {
   h2 {
     font-size: 1.5rem;
   }
+}
+#uv-video,
+#uv-canvas {
+  width: 250px;
+  height: 250px;
 }

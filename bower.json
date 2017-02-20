@@ -24,6 +24,11 @@
     "leaflet.markercluster": "Leaflet.markercluster#^1.0.2"
   },
   "overrides": {
+    "vue-color": {
+      "main": [
+        "dist/vue-color.js"
+      ]
+    },
     "pixi.js": {
       "old": "3.0.11",
       "main": [

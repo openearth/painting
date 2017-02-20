@@ -1,17 +1,25 @@
 <template id="model-details-template">
-  <div>
-    <div v-if="model">
-      <h2>{{ model.title }} <small>{{ model.engine }}</small></h2>
-      <dl>
-        <dt>Abstract</dt>
-        <dd>{{ model.abstract }}</dd>
-      </dl>
-      <dl>
-        <dt>Number of advection cells</dt>
-        <dd>{{ model.width * model.height }} ({{model.width}} x {{ model.height}})</dd>
-      </dl>
 
-    </div>
+  <div>
+    <v-card v-if="model">
+      <v-card-row class="primary">
+        <v-card-title>
+          <span class="white--text">{{ model.title }} <small>{{ model.engine }}</small></span>
+          <v-spacer></v-spacer>
+          <div>
+            <v-btn icon class="white--text" @click.native="select">
+              <v-icon>play_arrow</v-icon>
+            </v-btn>
+          </div>
+        </v-card-title>
+      </v-card-row>
+      <v-card-text>
+        <v-card-row>
+          {{ model.abstract }}
+          Number of advection cells: {{ model.width * model.height }} ({{model.width}} x {{ model.height}})
+        </v-card-row>
+      </v-card-text>
+    </v-card>
     <div v-else>
       no model loaded
     </div>
