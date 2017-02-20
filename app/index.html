@@ -69,9 +69,16 @@
                 <models-overview></models-overview>
               </v-expansion-panel-content>
               <v-expansion-panel-content>
-                <div slot="header">Palettes</div>
-                <painting-palettes></painting-palettes>
-                <palette-chart :palette="palette"></palette-chart>
+                <div slot="header">Color</div>
+                <v-btn-toggle :options="colorToggleOptions" v-model="colorType"></v-btn-toggle>
+                <div v-show="colorType==='color'">
+                  <v-color-picker v-model="color" @change-color="onColorChange"></v-color-picker>
+                </div>
+
+                <div v-show="colorType==='palette'">
+                  <painting-palettes></painting-palettes>
+                  <palette-chart :palette="palette"></palette-chart>
+                </div>
               </v-expansion-panel-content>
               <v-expansion-panel-content>
                 <div slot="header">Controls</div>
@@ -84,12 +91,8 @@
               </v-expansion-panel-content>
               <v-expansion-panel-content>
                 <div slot="header">Source video</div>
-                <div>
-                  <uv-source :model="model" ref="uvSource"></uv-source>
-                </div>
-                <div>
-                  <canvas id="canvas-icon" width="10" height="10"></canvas>
-                </div>
+                <uv-source :model="model" ref="uvSource"></uv-source>
+                <canvas id="canvas-icon" width="10" height="10"></canvas>
 
               </v-expansion-panel-content>
 
@@ -104,7 +107,7 @@
                       <v-map ref="map" :class="{'sidebar-map': settings.sidebar}" :zoom="zoom" :center="center">
 
                         <toggle-controls :sketch="sketch"></toggle-controls>
-                        <realtime-layer :model="model"></realtime-layer>
+                        <realtime-layer :model="model" v-if="model && model.realtime"></realtime-layer>
                         <canvas-layer :model="model" id="particles">
                           <particle-component
                             ref="particleComponent"
@@ -181,6 +184,7 @@
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
     <script src="/bower_components/jssor-slider/js/jssor.slider.mini.js"></script>
     <script src="/bower_components/Vue2Leaflet/dist/vue2-leaflet.js"></script>
+    <script src="/bower_components/vue-color/dist/vue-color.js"></script>
     <script src="/bower_components/vuetify/dist/vuetify.js"></script>
     <script src="/bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <script src="/bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
@@ -194,6 +198,7 @@
     <!-- custom overlay -->
     <script src="scripts/CanvasOverlay.js"></script>
     <!-- main files -->
+    <script src="scripts/id.js"></script>
     <script src="scripts/bus.js"></script>
     <script src="scripts/map.js"></script>
     <script src="scripts/realtime.js"></script>
