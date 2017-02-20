@@ -44,7 +44,8 @@
   Vue.component('palette-chart', {
     template: '#palette-chart-template',
     data: () => {
-      return {};
+      return {
+      };
     },
     props: {
       palette: {
@@ -56,13 +57,40 @@
       /* global sketch */
       this.$watch('palette', function(){
         this.updateChart();
+        this.selectAll();
       });
     },
+    computed: {
+      svg: {
+        get: function() {
+          return d3.select('#palette').select('svg');
+        },
+        cache: false
+      }
+    },
     methods: {
+      deselectAll() {
+        var svg = this.svg;
+        var circles = svg
+            .select('g');
+        circles
+          .selectAll('circle')
+          .classed('active', false);
+        updateColors();
+      },
+      selectAll() {
+        var svg = this.svg;
+        var circles = svg
+            .select('g');
+        circles
+          .selectAll('circle')
+          .classed('active', true);
+        updateColors();
+      },
       updateChart: function() {
-        var width = 300,
+        var width = 260,
             height = 200;
-        var svg = d3.select('#palette').select('svg');
+        var svg = this.svg;
         var circles = svg
           .select('g');
 
@@ -97,10 +125,7 @@
             updateColors();
           });
         // by default select all circles
-        circles
-          .selectAll('circle')
-          .classed('active', true);
-        updateColors();
+        this.selectAll();
 
       }
     }

@@ -6,7 +6,33 @@ var bus;
 
 (function () {
   'use strict';
-
+  var defaultColor = {
+    hex: '#194d33',
+    hsl: {
+      h: 150,
+      s: 0.5,
+      l: 0.2,
+      a: 1
+    },
+    hsv: {
+      h: 150,
+      s: 0.66,
+      v: 0.30,
+      a: 1
+    },
+    rgba: {
+      r: 25,
+      g: 77,
+      b: 51,
+      a: 1
+    },
+    a: 1
+  };
+  function val2rgbaString(val) {
+    var rgba = val.rgba;
+    var [r, g, b, a] = [rgba.r, rgba.g, rgba.b, rgba.a];
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+  }
   function urlParams () {
     // parse url parameters, adapted from http://stackoverflow.com/a/2880929/386327
     var match,
@@ -52,6 +78,8 @@ var bus;
     Vue.component('v-poly', Vue2Leaflet.Polyline);
     Vue.component('v-group', Vue2Leaflet.LayerGroup);
     Vue.component('v-map', Vue2Leaflet.Map);
+    Vue.component('v-color-picker', VueColor.Chrome);
+    // Vue.component('hue', VueColor.Hue);
     Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
     $('#template-container')
       .load(
@@ -73,6 +101,18 @@ var bus;
                   chart: true,
                   model: null
                 },
+                colorToggleOptions: [
+                  {
+                    icon: 'color_lens',
+                    value: 'palette'
+                  },
+                  {
+                    icon: 'colorize',
+                    value: 'color'
+                  }
+                ],
+                colorType: 'color',
+                color: defaultColor,
                 palette: [],
                 pipeline: null,
                 model: null,
@@ -83,6 +123,10 @@ var bus;
               return defaults;
             },
             methods: {
+              onColorChange(val) {
+                this.color = val;
+                this.sketch.palette = [val2rgbaString(val)];
+              }
             },
             computed: {
               map: {

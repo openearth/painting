@@ -86,7 +86,7 @@
 
         var xDomain = _.map(this.model.extent.time, d3.isoParse);
         this.chart.xTime.domain(xDomain);
-        this.chart.yWaterlevel.domain(this.model.extent.waterlevel);
+        this.chart.yWaterlevel.domain(_.get(this.model.extent, 'waterlevel', [0, 1]));
         this.chart.xAxis
           .call(d3.axisBottom(this.chart.xTime));
         this.chart.yAxis
