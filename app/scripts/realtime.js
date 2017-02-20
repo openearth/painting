@@ -118,6 +118,7 @@
     data: function() {
       return {
         points: [],
+        markerGroup: null,
         layerGroup: null
       };
     },
@@ -150,6 +151,10 @@
       deferredMountedTo(parent) {
         this.layerGroup = L.layerGroup([]);
         this.layerGroup.addTo(parent);
+        if (this.markerGroup) {
+          this.layerGroup.addLayer(this.markerGroup);
+        }
+
       },
       createMarkers() {
 
@@ -231,7 +236,7 @@
         });
 
         // select first feature
-        this.layerGroup.addLayer(markerGroup);
+        this.markerGroup = markerGroup;
         var selectedFeature = _.first(
           _.filter(
             this.points.features,
@@ -241,6 +246,10 @@
           )
         );
         this.setChart(selectedFeature);
+
+        if (!_.isNil(this.layerGroup)) {
+          this.layerGroup.addLayer(markerGroup);
+        }
       },
       clearMarkers() {
         if (this.layerGroup) {
