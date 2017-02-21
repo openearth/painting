@@ -12,8 +12,8 @@
             key: 'p',
             description: 'Particles',
             method: () => {
-              if (_.has(app, '$refs.particleComponent.addParticles')) {
-                app.$refs.particleComponent.addParticles();
+              if (_.has(app, '$refs.particleComponent.add')) {
+                app.$refs.particleComponent.add();
               }
             },
             arguments: {}
@@ -29,11 +29,8 @@
           {
             key: 'q',
             description: 'Quiver like plot',
-            method: (evt, drawing) => {
-              if (_.isNil(drawing)) {
-                return;
-              }
-              drawing.quiver();
+            method: () => {
+              app.$refs.drawingCanvas.quiver();
 
             }
           },
@@ -77,12 +74,20 @@
         // app.$refs.particleComponent.removeParticles();
         if (_.has(app.$refs, 'drawingCanvas')) {
           app.$refs.drawingCanvas.clear();
+        } else {
           console.warn('Expected drawingCanvas on', app.$refs);
         }
         if (_.has(app.$refs, 'modelCanvas')) {
           app.$refs.modelCanvas.clear();
+        } else {
           console.warn('Expected modelCanvas on', app.$refs);
         }
+        if (_.has(app.$refs, 'particleComponent')) {
+          app.$refs.particleComponent.clear();
+        } else {
+          console.warn('Expected particleCanvas on', app.$refs);
+        }
+
       }
     }
   });
