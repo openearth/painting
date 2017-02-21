@@ -1,9 +1,34 @@
 <template id="key-bindings-template">
-  <div>
-    <h2>Key bindings</h2>
-    <ul>
-      <li v-for="binding in keyBindings"><kbd>{{ binding.key }}</kbd>: {{ binding.description }}</li>
-      <li><kbd>Shift</kbd> + <kbd>mouse</kbd>: draw</li>
-    </ul>
-  </div>
+  <v-card>
+    <v-card-title>
+      Key bindings
+    </v-card-title>
+    <v-list>
+      <v-list-item v-for="binding in keyBindings">
+        <v-list-tile avatar>
+          <v-list-tile-avatar>
+            <kbd>{{ binding.key }}</kbd>
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              {{ binding.description }}
+            </v-list-tile-title>
+
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list-item>
+      <v-list-item>
+        <v-list-tile avatar>
+          <v-list-tile-avatar>
+            <kbd>&#x21E7;</kbd> + <kbd><i class="fa fa-mouse-pointer" aria-hidden="true"></i></kbd>
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              Draw
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list-item>
+    </v-list>
+  </v-card>
 </template>

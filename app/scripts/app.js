@@ -103,12 +103,12 @@ var bus;
                 },
                 colorToggleOptions: [
                   {
-                    icon: 'color_lens',
-                    value: 'palette'
-                  },
-                  {
                     icon: 'colorize',
                     value: 'color'
+                  },
+                  {
+                    icon: 'color_lens',
+                    value: 'palette'
                   }
                 ],
                 colorType: 'color',

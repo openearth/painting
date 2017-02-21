@@ -82,8 +82,17 @@
               </v-expansion-panel-content>
               <v-expansion-panel-content>
                 <div slot="header">Controls</div>
-                <drawing-controls :sketch="sketch"></drawing-controls>
-                <map-controls ref="mapControls" :map="map" ></map-controls>
+                <v-card>
+                  <v-card-row>
+                    <v-card-title>
+                      Map options
+                    </v-card-title>
+                  </v-card-row>
+                  <v-card-text>
+                  <map-controls ref="mapControls" :map="map" ></map-controls>
+                  </v-card-text>
+
+                </v-card>
               </v-expansion-panel-content>
               <v-expansion-panel-content>
                 <div slot="header">Key bindings</div>

@@ -35,9 +35,9 @@ $brand-info: #64ff64;
   .list .list__tile {
     color: initial;
   }
-
-  .expansion-panel__body>div {
-    margin-bottom: 10px;
+  .expansion-panel__body .card {
+    margin-bottom: 5px;
+    margin-top: 5px;
   }
 
   .vue-color__chrome {
@@ -60,10 +60,15 @@ $brand-info: #64ff64;
   position: static;
   transition: max-width .3s cubic-bezier(0,0,.2,1); //, transform .3s cubic-bezier(0,0,.2,1);
   .expansion-panel {
-    .expansion-panel__body {
-      padding: 10px;
+    .expansion-panel__body  {
+      padding: 0 10px;
+      &>div {
+        margin-top: 5px;
+      }
     }
+
   }
+
 }
 
 .model {

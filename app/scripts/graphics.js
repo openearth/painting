@@ -6,16 +6,6 @@ var sketch;
   'use strict';
   /*exported sketch */
 
-  Vue.component('drawing-controls', {
-    // controls to change the drawing
-    template: '#drawing-controls-template',
-    props: ['sketch'],
-    data: function() {
-      return {
-      };
-    }
-  });
-
   Vue.component('drawing-canvas', {
     // overwrite data in object constructor
     template: '<div></div>',
