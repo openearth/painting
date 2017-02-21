@@ -1,6 +1,13 @@
 <template id="map-controls-template">
   <div>
     <v-checkbox id="lockmap" name="lockmap" label="Lock map" checked gap v-model="locked"></v-checkbox>
+    <v-text-input
+      id="particle-size"
+      name="particle-size"
+      label="Particle Size"
+      type="number"
+      v-model="particleSize"
+  ></v-text-input>
   </div>
 
 </template>

@@ -6,7 +6,9 @@
       "id": "3536B75C-DF01-4C13-8E78-924A17B306FD",
       "engine": "Delft3D Flow",
       "timeseries": "data/timeseries/dcsm.json",
-      "realtime": "/api/points",
+      "realtime": {
+        "points": "data/points"
+      },
       "uv": {
         "src": "models/movies/dcsm.mp4",
         "type": "video/mp4",
@@ -110,7 +112,9 @@
       },
       "extent": {
         "sw": [37.4487848675731, -123.09234894317646],
-        "ne": [38.780310596186474, -121.2218887213739]
+        "ne": [38.780310596186474, -121.2218887213739],
+        "time": ["2016-12-20T20:40:00Z", "2016-12-28T20:40:00Z"],
+        "waterlevel": [-2, 5]
       },
       "view": {
         "zoom": 10

@@ -158,7 +158,8 @@ var bus;
                   // use the model view center if available
                   center = _.get(this, 'model.view.center', center);
                   return center;
-                }
+                },
+                cache: false
               }
             }
           });

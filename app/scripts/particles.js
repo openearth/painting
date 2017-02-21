@@ -258,6 +258,15 @@
       'pipeline': 'resetParticles'
     },
     computed: {
+      radius: {
+        get() {
+          return _.get(this.particles, 'r');
+        },
+        set(val) {
+          this.particles.r = val;
+        },
+        cache: false
+      },
       width: {
         get: function() {
           return _.get(this, 'canvas.width');
@@ -283,7 +292,8 @@
         if (this.particles) {
           this.particles.stopAnimate();
         }
-        Vue.set(this, 'particles', new Particles(this.model, this.canvas, uv));
+        Vue.set(this, 'particles', new Particles(this.model, this.canvas, uv, {radius: this.radius}));
+
         this.particles.startAnimate();
 
       },

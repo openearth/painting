@@ -14,22 +14,21 @@
 }
 
 .station-icon {
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.24)) brightness(1.5) hue-rotate(20deg) saturate(0.7);
   box-sizing: content-box;
   width: 100%;
   height: 100%;
   text-align: center;
 }
 
-
 .cluster-icon {
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,.24)) brightness(1.5) hue-rotate(20deg)  saturate(0.7);
   opacity: 0.8;
   overflow: visible;
   svg {
     overflow: visible;
   }
   path {
-    stroke: white;
-    stroke-width: 1px;
   }
 }
 
@@ -39,7 +38,7 @@
   opacity: 0.8;
 }
 .selected {
-  border: 3px solid white;
+  border: 1px solid white;
 }
 
 #webgl {

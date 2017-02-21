@@ -116,7 +116,7 @@
                       <v-map ref="map" :class="{'sidebar-map': settings.sidebar}" :zoom="zoom" :center="center">
 
                         <toggle-controls :sketch="sketch"></toggle-controls>
-                        <realtime-layer :model="model" v-if="model && model.realtime"></realtime-layer>
+                        <realtime-layer :model="model" v-show="model && model.realtime"></realtime-layer>
                         <canvas-layer :model="model" id="particles">
                           <particle-component
                             ref="particleComponent"

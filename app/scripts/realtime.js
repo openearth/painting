@@ -10,100 +10,12 @@
     },
     data: function() {
       return {
-        limits: null,
-        series: null
       };
     },
     methods: {
-      createChart: function() {
-        var model = this.$root.model;
-        var margin = {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        };
-        var width = this.$el.clientWidth - margin.left - margin.right;
-        var height = this.$el.clientHeight - margin.top - margin.bottom;
 
-        var xTime = d3.scaleTime()
-          .range([0, width]);
-        var yWaterlevel = d3.scaleLinear()
-            .range([height, 0]);
-        var el = $(this.$el).find('svg')[0];
-
-        var svg = d3.select(el);
-        svg.selectAll('*').remove();
-
-        svg
-          .attr('width', width + margin.left + margin.right)
-          .attr('height', height + margin.top + margin.bottom);
-        var g = svg
-            .append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-        g
-          .append('clipPath')
-          .attr('id', 'clip')
-          .append('rect')
-          .attr('width', width)
-          .attr('height', height);
-
-        var xDomain = _.map(model.extent.time, d3.isoParse);
-        xTime.domain(xDomain);
-        yWaterlevel.domain(model.extent.waterlevel);
-
-
-        if (!this.series.length) {
-          return;
-        }
-        // remove old series
-        g
-          .selectAll('.series')
-          .remove();
-
-        // create the series
-        var series = g
-            .selectAll('.series')
-            .data(this.series)
-            .enter()
-            .append('g')
-            .attr('class', 'series');
-
-
-        var lineWaterlevel = d3.line()
-            .x((d) => {
-              var date = d3.isoParse(d.dateTime);
-              var x = xTime(date);
-              return x;
-            })
-          .y((d) => {
-            var y = yWaterlevel(d.value / 100.0);
-            // cm/m
-            return y;
-          });
-
-        series
-          .append('path')
-          .attr('class', 'line waterlevel clipped')
-          .attr('d', (d) => {
-            return lineWaterlevel(d.data);
-          });
-
-      }
     },
     mounted: function() {
-      var feature = this.feature;
-      var url = 'data/details/' + feature.properties.locationCode;
-      fetch(url)
-        .then((resp)=>{
-          return resp.json();
-        })
-        .then((json) => {
-          Vue.set(this, 'series', json.series);
-          // limits
-          Vue.set(this, 'limits', _.get(json, 'limits', []));
-          this.createChart();
-        });
 
     }
   });
@@ -221,12 +133,14 @@
           marker.on('add', () => {
             // dynamicly mount the icon
             var element = $(marker.getElement()).find('station-icon');
-            (new StationIcon({
+            var station = new StationIcon({
               parent: this,
               propsData: {
                 feature: feature
               }
-            })).$mount(element[0]);
+            });
+            // this.$children.push(station);
+            station.$mount(element[0]);
 
           });
 

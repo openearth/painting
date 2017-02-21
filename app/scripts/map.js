@@ -33,6 +33,15 @@
           }
         },
         cache: false
+      },
+      particleSize: {
+        get() {
+          return _.get(this.$root.$refs, 'particleComponent.radius');
+        },
+        set(val) {
+          this.$root.$refs.particleComponent.radius = parseFloat(val);
+        },
+        cache: false
       }
     },
     methods: {
