@@ -7,7 +7,18 @@
       label="Particle Size"
       type="number"
       v-model="particleSize"
-  ></v-text-input>
+      >
+    </v-text-input>
+    <v-text-input
+      id="playback-rate"
+      name="playback-rate"
+      :label="'Playback rate: ' + playbackRate"
+      type="range"
+      v-model="computedPlaybackRate"
+      >
+    </v-text-input>
+
+
   </div>
 
 </template>

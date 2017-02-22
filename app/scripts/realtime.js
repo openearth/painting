@@ -25,6 +25,10 @@
     props: {
       model: {
         type: Object
+      },
+      repository: {
+        type: String,
+        default: ''
       }
     },
     data: function() {
@@ -35,31 +39,44 @@
       };
     },
     watch: {
-      points: function() {
+      points: function(val) {
         this.clearMarkers();
         this.createMarkers();
+      },
+      model(val) {
+        this.fetchPoints();
       }
     },
     components: {
       'station-icon': StationIcon
     },
     mounted: function() {
-      var url = 'data/points';
-      fetch(url)
-        .then((resp) => {
-          return resp.json();
-        })
-        .then((json) => {
-          _.each(json.features, (feature) => {
-            feature.properties.selected = false;
-          });
-          Vue.set(this, 'points', json);
-        });
-
+      this.fetchPoints();
     },
     computed: {
     },
     methods: {
+      fetchPoints() {
+        var url = 'data/points';
+        if (this.repository !== '') {
+          if (_.isNil(this.model)) {
+            // no model yet, wait for watch
+            return;
+          }
+          url = urljoin(this.repository, this.model.realtime.points);
+        }
+        fetch(url)
+          .then((resp) => {
+            return resp.json();
+          })
+          .then((json) => {
+            _.each(json.features, (feature) => {
+              feature.properties.selected = false;
+            });
+            Vue.set(this, 'points', json);
+          });
+
+      },
       deferredMountedTo(parent) {
         this.layerGroup = L.layerGroup([]);
         this.layerGroup.addTo(parent);
@@ -79,7 +96,11 @@
             var marker = L.divIcon({ html: '<div class="cluster-icon" id="' + id + '"></div>' });
             cluster.on('add', function() {
               var markers = cluster.getAllChildMarkers();
-              var colors = _.map(markers, 'options.feature.properties.locationColor');
+              var colors = _.map(
+                markers, (marker) => {
+                  return _.get(marker, 'options.feature.properties.locationColor', '#eebb33');
+                }
+              );
               var data = _.toPairs(_.groupBy(colors));
               var pie = d3.pie()
                 .value(function(d) {
@@ -113,7 +134,9 @@
           }
         });
         _.each(this.points.features, (feature, i) => {
-          var latlng = L.latLng(feature.properties.lat, feature.properties.lon);
+          var lat = _.get(feature, 'properties.lat', feature.geometry.coordinates[1]);
+          var lon = _.get(feature, 'properties.lon', feature.geometry.coordinates[0]);
+          var latlng = L.latLng(lat, lon);
 
           // html: '<div id="station-icon-"' + feature.id + '></div>',
           var id = 'station-icon-' + feature.id;
@@ -155,7 +178,8 @@
           _.filter(
             this.points.features,
             (feature) => {
-              return feature.properties.featured;
+              // features can be featured (...), by default they are
+              return _.get(feature, 'properties.featured', true);
             }
           )
         );

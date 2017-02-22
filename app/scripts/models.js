@@ -19,6 +19,12 @@
 
   Vue.component('models-overview', {
     template: '#models-overview-template',
+    props: {
+      repository: {
+        type: String,
+        default: ''
+      }
+    },
     data: function() {
       return {
         models: []
@@ -26,12 +32,13 @@
     },
     mounted: function() {
       // get models.json
-      fetch('data/models.json')
+      var path = this.repository === '' ? 'data/models.json' : 'models';
+      fetch(urljoin(this.repository, path))
         .then((response) => {
           return response.json();
         })
         .then((json) => {
-          this.models = json.models;
+          this.models = _.get(json, 'models', json);
 
           // find the model by url parameter
           var selectedModel = _.first(_.filter(this.models, ['id', this.$root.settings.model]));

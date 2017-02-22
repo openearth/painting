@@ -1,4 +1,4 @@
-/* global Vue2Leaflet, Vuetify  */
+/* global Vue2Leaflet, Vuetify, urlParams, val2rgbaString, repository  */
 
 // app is global, prefer to use this.$root
 var app;
@@ -8,57 +8,12 @@ var bus;
   'use strict';
   var defaultColor = {
     hex: '#194d33',
-    hsl: {
-      h: 150,
-      s: 0.5,
-      l: 0.2,
-      a: 1
-    },
-    hsv: {
-      h: 150,
-      s: 0.66,
-      v: 0.30,
-      a: 1
-    },
-    rgba: {
-      r: 25,
-      g: 77,
-      b: 51,
-      a: 1
-    },
+    hsl: {h: 150, s: 0.5, l: 0.2, a: 1},
+    hsv: {h: 150, s: 0.66, v: 0.30, a: 1},
+    rgba: {r: 25, g: 77, b: 51, a: 1},
     a: 1
   };
-  function val2rgbaString(val) {
-    var rgba = val.rgba;
-    var [r, g, b, a] = [rgba.r, rgba.g, rgba.b, rgba.a];
-    return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
-  }
-  function urlParams () {
-    // parse url parameters, adapted from http://stackoverflow.com/a/2880929/386327
-    var match,
-        pl = /\+/g,  // Regex for replacing addition symbol with a space
-        search = /([^&=]+)=?([^&]*)/g,
-        decode = function (s) { return decodeURIComponent(s.replace(pl, ' ')); },
-        query = window.location.search.substring(1);
 
-    var result = {};
-    while ((match = search.exec(query)) !== null) {
-      // paraeter
-      var value = decode(match[2]);
-      var decoded = null;
-      if (value === 'true') {
-        decoded = true;
-      } else if (value === 'false') {
-        decoded = false;
-      } else {
-        decoded = value;
-      }
-
-      result[decode(match[1])] = decoded;
-    }
-    return result;
-
-  }
   $(document).ready(function() {
     // make a global event bus
     bus = new Vue();
@@ -99,7 +54,8 @@ var bus;
                   sidebar: true,
                   story: false,
                   chart: true,
-                  model: null
+                  model: null,
+                  repository: repository
                 },
                 colorToggleOptions: [
                   {

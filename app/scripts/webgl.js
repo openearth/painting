@@ -1,4 +1,4 @@
-/* global AdvectionFilter, bus */
+/* global AdvectionFilter, bus, urljoin */
 (function () {
   'use strict';
 
@@ -8,6 +8,10 @@
       model: {
         type: Object,
         required: false
+      },
+      repository: {
+        type: String,
+        default: ''
       }
     },
     data: function() {
@@ -58,7 +62,8 @@
       uv: function(uv) {
         // new uv, create a new video
         var video = this.video;
-        video.src = uv.src;
+        video.src = urljoin(this.repository, uv.src);
+        video.setAttribute('crossorigin', 'anonymous');
         video.height = uv.height;
         video.width = uv.width;
         this.loaded = false;

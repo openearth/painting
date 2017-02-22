@@ -10,7 +10,16 @@
         type: Object
       }
     },
+    data() {
+      return {
+        playbackRate: 1.0
+      };
+    },
     mounted: function() {
+      var slider = $(this.$el).find('#playback-rate');
+      slider.attr('min', 0.1);
+      slider.attr('max', 3.0);
+      slider.attr('step', 0.1);
     },
     computed: {
       locked: {
@@ -20,7 +29,6 @@
           if (_.has(map, 'dragging')) {
             locked = !(map.dragging.enabled());
           }
-          console.log('returning locked', locked);
           return locked;
 
         },
@@ -40,6 +48,19 @@
         },
         set(val) {
           this.$root.$refs.particleComponent.radius = parseFloat(val);
+        },
+        cache: false
+      },
+      computedPlaybackRate: {
+        get() {
+          var video = $('#uv-video')[0];
+          var playbackRate = _.get(video, 'playbackRate', this.playbackRate);
+          return playbackRate;
+        },
+        set(val) {
+          this.playbackRate = val;
+          var video = $('#uv-video')[0];
+          video.playbackRate = parseFloat(val);
         },
         cache: false
       }

@@ -4,7 +4,15 @@
 
   Vue.component('chart-container', {
     template: '#chart-container-template',
-    props: ['model'],
+    props: {
+      model: {
+        type: Object
+      },
+      repository: {
+        type: String,
+        default: ''
+      }
+    },
     data: function() {
       return {
         series: [],
@@ -18,7 +26,11 @@
       // wait for other elements to load as well
       bus.$on('feature-selected', (feature) => {
         this.feature = feature;
-        var url = 'data/details/' + feature.properties.locationCode;
+
+        var url = 'data/details/' + _.get(feature, 'properties.locationCode', feature.id);
+        if (this.repository !== '') {
+          url = urljoin(this.repository, 'data/details', feature.id);
+        }
         fetch(url)
           .then((resp)=>{
             return resp.json();
@@ -160,12 +172,12 @@
 
         var lineWaterlevel = d3.line()
             .x((d) => {
-              var date = d3.isoParse(d.dateTime);
+              var date = d3.isoParse(d.date || d.dateTime);
               var x = this.chart.xTime(date);
               return x;
             })
           .y((d) => {
-            var y = this.chart.yWaterlevel(d.value / 100.0);
+            var y = this.chart.yWaterlevel(d.s1 || d.value / 100.0);
             // cm/m
             return y;
           });

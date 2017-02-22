@@ -38,10 +38,7 @@
             key: 'g',
             description: 'Grid plot',
             method: (evt, drawing) => {
-              if (!drawing) {
-                return;
-              }
-              drawing.grid();
+              app.$refs.drawingCanvas.grid();
             }
           }
         ]

@@ -62,11 +62,11 @@
             <v-expansion-panel>
               <v-expansion-panel-content>
                 <div slot="header">Model details</div>
-                <model-details :model="model"></model-details>
+                <model-details :model="model" :repositor="settings.repository"></model-details>
               </v-expansion-panel-content>
               <v-expansion-panel-content>
                 <div slot="header">Available models</div>
-                <models-overview></models-overview>
+                <models-overview :repository="settings.repository"></models-overview>
               </v-expansion-panel-content>
               <v-expansion-panel-content>
                 <div slot="header">Color</div>
@@ -100,7 +100,7 @@
               </v-expansion-panel-content>
               <v-expansion-panel-content>
                 <div slot="header">Source video</div>
-                <uv-source :model="model" ref="uvSource"></uv-source>
+                <uv-source :model="model" :repository="settings.repository" ref="uvSource"></uv-source>
                 <canvas id="canvas-icon" width="10" height="10"></canvas>
 
               </v-expansion-panel-content>
@@ -116,7 +116,7 @@
                       <v-map ref="map" :class="{'sidebar-map': settings.sidebar}" :zoom="zoom" :center="center">
 
                         <toggle-controls :sketch="sketch"></toggle-controls>
-                        <realtime-layer :model="model" v-show="model && model.realtime"></realtime-layer>
+                        <realtime-layer :model="model" v-show="model && model.realtime" :repository="settings.repository"></realtime-layer>
                         <canvas-layer :model="model" id="particles">
                           <particle-component
                             ref="particleComponent"
@@ -145,7 +145,7 @@
                 <v-row class="chart-row">
                   <v-card class="chart-card" v-if="settings.chart">
                     <v-card-text>
-                      <chart-container  :model="model"></chart-container>
+                      <chart-container  :model="model" :repository="settings.repository"></chart-container>
                     </v-card-text>
                   </v-card>
                 </v-row>
@@ -193,10 +193,11 @@
     <script src="/bower_components/scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
     <script src="/bower_components/jssor-slider/js/jssor.slider.mini.js"></script>
     <script src="/bower_components/Vue2Leaflet/dist/vue2-leaflet.js"></script>
-    <script src="/bower_components/vue-color/dist/vue-color.js"></script>
     <script src="/bower_components/vuetify/dist/vuetify.js"></script>
+    <script src="/bower_components/vue-color/dist/vue-color.js"></script>
     <script src="/bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <script src="/bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+    <script src="/bower_components/url-join/lib/url-join.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -207,7 +208,9 @@
     <!-- custom overlay -->
     <script src="scripts/CanvasOverlay.js"></script>
     <!-- main files -->
+    <script src="scripts/config.js"></script>
     <script src="scripts/id.js"></script>
+    <script src="scripts/utils.js"></script>
     <script src="scripts/bus.js"></script>
     <script src="scripts/map.js"></script>
     <script src="scripts/realtime.js"></script>
