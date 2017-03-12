@@ -19,7 +19,6 @@ $brand-info: #64ff64;
 @import 'bower_components/open-sans-fontface/open-sans.scss';
 // endbower
 
-
 @import 'map';
 
 .menu__content {
@@ -197,4 +196,28 @@ circle.active {
 #uv-canvas {
   width: 250px;
   height: 250px;
+}
+
+.wind-rose {
+  .axis line,
+  .axis circle {
+    fill: none;
+    stroke: #777;
+    stroke-dasharray: 1,4;
+  }
+
+  .axis :last-of-type circle {
+    stroke: #333;
+    stroke-dasharray: none;
+  }
+  .line {
+    fill: none;
+    stroke: $brand-info;
+    stroke-width: 1.5px;
+  }
+  .arrow {
+    fill: none;
+    stroke: $sea-color;
+    stroke-width: 1.5px;
+  }
 }

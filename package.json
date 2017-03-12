@@ -58,7 +58,8 @@
       "ScrollMagic": true,
       "Vue2leaflet": true,
       "Modernizr": true,
-      "VueColor": true
+      "VueColor": true,
+      "moment": true
     },
     "rules": {
       "quotes": [

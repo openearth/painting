@@ -22,7 +22,8 @@
     "roboto-fontface": "^0.6.0",
     "Leaflet.awesome-markers": "^2.0.2",
     "leaflet.markercluster": "Leaflet.markercluster#^1.0.2",
-    "url-join": "^1.1.0"
+    "url-join": "^1.1.0",
+    "moment": "^2.17.1"
   },
   "overrides": {
     "vue-color": {

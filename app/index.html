@@ -58,7 +58,7 @@
         <!--   </v-navbar> -->
         <!-- </header> -->
         <main>
-          <v-sidebar drawer id="left-sidebar" v-model="sidebar">
+          <v-sidebar drawer id="left-sidebar" v-model="sidebar" :close-on-click="false">
             <v-expansion-panel>
               <v-expansion-panel-content>
                 <div slot="header">Model details</div>
@@ -83,8 +83,8 @@
               <v-expansion-panel-content>
                 <div slot="header">Controls</div>
                 <v-card>
-                  <v-card-row>
-                    <v-card-title>
+                  <v-card-row class="blue-grey darken-1">
+                    <v-card-title class="white--text">
                       Map options
                     </v-card-title>
                   </v-card-row>
@@ -102,6 +102,11 @@
                 <div slot="header">Source video</div>
                 <uv-source :model="model" :repository="settings.repository" ref="uvSource"></uv-source>
                 <canvas id="canvas-icon" width="10" height="10"></canvas>
+
+              </v-expansion-panel-content>
+              <v-expansion-panel-content>
+                <div slot="header">Wind rose</div>
+                <wind-rose :model="model" :repository="settings.repository"></wind-rose>
 
               </v-expansion-panel-content>
 
@@ -198,6 +203,7 @@
     <script src="/bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.js"></script>
     <script src="/bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
     <script src="/bower_components/url-join/lib/url-join.js"></script>
+    <script src="/bower_components/moment/moment.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -223,6 +229,7 @@
     <script src="scripts/key-bindings.js"></script>
     <script src="scripts/story.js"></script>
     <script src="scripts/chart.js"></script>
+    <script src="scripts/wind-rose.js"></script>
     <script src="scripts/app.js"></script>
     <!-- endbuild -->
   </body>
