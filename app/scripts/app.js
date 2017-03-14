@@ -1,4 +1,4 @@
-/* global Vue2Leaflet, Vuetify, urlParams, val2rgbaString, repository  */
+/* global Vue2Leaflet, Vuetify, urlParams, val2rgbaString  */
 
 // app is global, prefer to use this.$root
 var app;
@@ -24,7 +24,7 @@ var bus;
     var vueitfyComponents = {
       'v-sidebar': 'VSidebar'
     };
-    _.each(_.toPairs(vueitfyComponents), (pair) =>  {
+    _.each(_.toPairs(vueitfyComponents), (pair) => {
       var [key, val] = pair;
       Vue.component(key, Vue.options.components[val]);
     });
@@ -55,7 +55,7 @@ var bus;
                   story: false,
                   chart: true,
                   model: null,
-                  repository: repository
+                  repository: ''
                 },
                 colorToggleOptions: [
                   {

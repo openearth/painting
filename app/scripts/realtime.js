@@ -39,18 +39,18 @@
       };
     },
     watch: {
-      points: function(val) {
+      points() {
         this.clearMarkers();
         this.createMarkers();
       },
-      model(val) {
+      model() {
         this.fetchPoints();
       }
     },
     components: {
       'station-icon': StationIcon
     },
-    mounted: function() {
+    mounted() {
       this.fetchPoints();
     },
     computed: {
@@ -93,7 +93,7 @@
             var id = 'cluster-' + cluster._leaflet_id;
             /* eslint-enable no-underscore-dangle */
 
-            var marker = L.divIcon({ html: '<div class="cluster-icon" id="' + id + '"></div>' });
+            var markerIcon = L.divIcon({ html: '<div class="cluster-icon" id="' + id + '"></div>' });
             cluster.on('add', function() {
               var markers = cluster.getAllChildMarkers();
               var colors = _.map(
@@ -130,7 +130,7 @@
                 });
 
             });
-            return marker;
+            return markerIcon;
           }
         });
         _.each(this.points.features, (feature, i) => {

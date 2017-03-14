@@ -59,7 +59,8 @@
       "Vue2leaflet": true,
       "Modernizr": true,
       "VueColor": true,
-      "moment": true
+      "moment": true,
+      "urljoin": true
     },
     "rules": {
       "quotes": [

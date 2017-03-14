@@ -24,7 +24,6 @@
       var fps = 3;
       var now = Date.now();
       var then = Date.now();
-      var first = then;
       var interval = 1000 / fps;
       var delta;
       var counter = 0;
@@ -52,7 +51,6 @@
           this.uvctx.drawImage(this.video, 0, 0, width, height);
           counter++;
 
-          // console.log('fps', parseInt(counter / ((then - first) / 1000)) );
         }
       }
       animate.bind(this)();
@@ -367,8 +365,6 @@
 
           // get latest videoSprite
           videoSprite = this.videoSprite;
-
-          var index = this.stage.getChildIndex(videoSprite);
 
           // video not valid, don't bother rendering
           if (!videoSprite.texture.valid) {

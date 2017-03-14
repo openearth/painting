@@ -1,4 +1,4 @@
-/* global bus */
+/* global */
 (function () {
   'use strict';
 
@@ -16,13 +16,12 @@
     data: function() {
       return {
         series: [],
-        chart: null,
         path: null,
         line: null
       };
     },
     watch: {
-      'model.realtime.wind': function(wind) {
+      'model.realtime.wind': function() {
         this.updateWindSeries();
       },
       'model.currentTime': function(time) {
@@ -36,13 +35,13 @@
         var date1 = moment(this.model.extent.time[1]);
         // miliseconds
         var dateDiff = date1 - date0;
-        var relativeDuration = time/_.get(this.model, 'duration' , 1);
+        var relativeDuration = time / _.get(this.model, 'duration', 1);
         var currentDate = date0 + (relativeDuration * dateDiff);
         var bisect = d3.bisector(function(d) { return d.date; }).left;
         var rowIndex = bisect(this.series, currentDate);
         var row = this.series[rowIndex];
         this.arrow
-          .datum([{u: 0, v: 0},  row])
+          .datum([{u: 0, v: 0}, row])
           .attr('d', this.line);
 
       },
@@ -54,7 +53,7 @@
       }
     },
     mounted: function(){
-      if (!_.isNil(this.model) && _.has(this.model, 'realtime.wind'))  {
+      if (!_.isNil(this.model) && _.has(this.model, 'realtime.wind')) {
         this.updateWindSeries();
       }
       this.updateAxis();
@@ -70,13 +69,13 @@
         var radius = Math.min(width, height) / 2 - 30;
 
 
-        var r = d3.scaleLinear()
+        var rScale = d3.scaleLinear()
             .domain([0, 10.0])
             .range([0, radius]);
         var line = d3.radialLine()
             .radius(function(d) {
-              var radius = Math.sqrt(Math.pow(d.u, 2) + Math.pow(d.v, 2));
-              return r( radius );
+              var r = Math.sqrt(Math.pow(d.u, 2) + Math.pow(d.v, 2));
+              return rScale(r);
             })
             .angle(function(d) {
               var angle = Math.atan2(d.v, d.u);
@@ -97,17 +96,17 @@
           .attr('class', 'r axis')
           .selectAll('g')
             .data(
-              r
+              rScale
                 .ticks(5)
                 .slice(1)
             )
             .enter()
             .append('g');
         gr.append('circle')
-          .attr('r', r);
+          .attr('r', rScale);
 
         gr.append('text')
-          .attr('y', function(d) { return -r(d) - 4; })
+          .attr('y', function(d) { return -rScale(d) - 4; })
           .attr('transform', 'rotate(15)')
           .style('text-anchor', 'middle')
           .text(function(d) {

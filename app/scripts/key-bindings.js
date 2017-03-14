@@ -37,7 +37,7 @@
           {
             key: 'g',
             description: 'Grid plot',
-            method: (evt, drawing) => {
+            method: () => {
               app.$refs.drawingCanvas.grid();
             }
           }
