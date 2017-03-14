@@ -12,7 +12,7 @@ $tab-active-bg: #23527c;
 $OpenSansPath: '../fonts';
 
 $brand-info: #64ff64;
-
+$black: #000;
 
 // bower:scss
 @import 'bower_components/fontawesome/scss/font-awesome.scss';
@@ -212,12 +212,20 @@ circle.active {
   }
   .line {
     fill: none;
-    stroke: $brand-info;
-    stroke-width: 1.5px;
+    stroke: $black;
+    stroke-opacity: 0.3;
+    stroke-width: 1;
+  }
+  #triangle {
+    fill: $black;
+    stroke: $black;
+    stroke-width: 1px;
   }
   .arrow {
     fill: none;
-    stroke: $sea-color;
-    stroke-width: 1.5px;
+    stroke: $black;
+    marker-end: url(#triangle);
+    stroke-width: 2px;
+    filter: url(#dropShadow);
   }
 }

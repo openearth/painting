@@ -104,7 +104,7 @@
                 <canvas id="canvas-icon" width="10" height="10"></canvas>
 
               </v-expansion-panel-content>
-              <v-expansion-panel-content>
+              <v-expansion-panel-content v-if="model && model.realtime.wind">
                 <div slot="header">Wind rose</div>
                 <wind-rose :model="model" :repository="settings.repository"></wind-rose>
 

@@ -54,7 +54,7 @@
       }
     },
     mounted: function(){
-      if (!_.isNil(this.model) && _.has(this.model.realtime.wind))  {
+      if (!_.isNil(this.model) && _.has(this.model, 'realtime.wind'))  {
         this.updateWindSeries();
       }
       this.updateAxis();
