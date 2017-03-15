@@ -32,8 +32,11 @@
     },
     mounted: function() {
       // get models.json
-      var path = this.repository === '' ? 'data/models.json' : 'models';
-      fetch(urljoin(this.repository, path))
+      var url = 'data/models.json';
+      if (this.repository !== '') {
+        url = urljoin(this.repository, 'models');
+      }
+      fetch(url)
         .then((response) => {
           return response.json();
         })

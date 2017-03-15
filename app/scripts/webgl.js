@@ -60,7 +60,11 @@
       uv: function(uv) {
         // new uv, create a new video
         var video = this.video;
-        video.src = urljoin(this.repository, uv.src);
+        var url = uv.src;
+        if (this.repository !== '') {
+          url = urljoin(this.repository, uv.src);
+        }
+        video.src = url;
         video.setAttribute('crossorigin', 'anonymous');
         video.height = uv.height;
         video.width = uv.width;

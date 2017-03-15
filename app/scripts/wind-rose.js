@@ -147,7 +147,10 @@
         this.arrow = arrow;
       },
       updateWindSeries() {
-        var url = urljoin(this.repository, this.model.realtime.wind);
+        var url = this.model.realtime.wind;
+        if (this.repository !== '') {
+          url = urljoin(this.repository, this.model.realtime.wind);
+        }
         fetch(url)
           .then((resp) => {
             return resp.json();
