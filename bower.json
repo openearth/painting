@@ -106,8 +106,7 @@
     },
     "roboto-fontface": {
       "main": [
-        "css/roboto/roboto-fontface.css",
-        "css/roboto-condensed/roboto-condensed-fontface.css",
+        "css/roboto/sass/roboto-fontface.scss",
         "fonts/**/*.woff2",
         "fonts/**/*.woff",
         "fonts/**/*.ttf"

@@ -130,6 +130,16 @@ gulp.task('morefonts', () => {
 
 });
 
+gulp.task('problemfonts', () => {
+  // some fonts are expected next to styles...
+  return gulp.src([
+    'bower_components/material-design-icons/iconfont/**/*.{eot,svg,ttf,woff,woff2}'
+  ])
+    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest('dist/styles'));
+
+});
+
 gulp.task('extras', () => {
   return gulp.src([
     'app/*.*',
@@ -241,7 +251,7 @@ gulp.task('templates', [], () => {
     .pipe(gulp.dest('dist/templates'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'moreimages', 'fonts', 'morefonts', 'extras', 'data', 'models', 'templates'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'moreimages', 'fonts', 'morefonts', 'problemfonts', 'extras', 'data', 'models', 'templates'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
