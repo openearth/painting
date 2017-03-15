@@ -42,6 +42,7 @@
         var row = this.series[rowIndex];
         this.arrow
           .datum([{u: 0, v: 0}, row])
+          .transition()
           .attr('d', this.line);
 
       },

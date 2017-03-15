@@ -63,6 +63,7 @@
         ];
         this.chart.pathProgress
           .datum(data)
+          .transition()
           .attr('d', this.chart.lineProgress);
       },
       series: function() {
@@ -176,11 +177,11 @@
               var x = this.chart.xTime(date);
               return x;
             })
-          .y((d) => {
-            var y = this.chart.yWaterlevel(d.s1 || d.value / 100.0);
-            // cm/m
-            return y;
-          });
+            .y((d) => {
+              var y = this.chart.yWaterlevel(d.s1 || d.value / 100.0);
+              // cm/m
+              return y;
+            });
 
         series
           .append('path')
@@ -206,11 +207,11 @@
         var xTime = d3.scaleTime()
           .range([0, width]);
         var xLinear = d3.scaleLinear()
-            .range([0, width]);
+          .range([0, width]);
         var yLinear = d3.scaleLinear()
           .range([height, 0]);
         var yWaterlevel = d3.scaleLinear()
-            .range([height, 0]);
+          .range([height, 0]);
         var el = $(this.$el).find('svg')[0];
 
         var svg = d3.select(el);
@@ -220,8 +221,8 @@
           .attr('width', width + margin.left + margin.right)
           .attr('height', height + margin.top + margin.bottom);
         var g = svg
-            .append('g')
-            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+          .append('g')
+          .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
         g
           .append('clipPath')
           .attr('id', 'clip')
@@ -252,7 +253,7 @@
           .x(function(d) { return xLinear(d.x); })
           .y(function(d) { return yLinear(d.y); });
         var pathProgress = g
-            .datum(dataProgress)
+          .datum(dataProgress)
           .append('path')
           .attr('class', 'line')
           .attr('d', lineProgress);
