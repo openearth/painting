@@ -1,1 +1,0 @@
-<template id=models-overview-template><div><div v-for="model in models" class=model :id=model.id><div class=row><div class=col-xs-12><h2>{{ model.title }}</h2><p>{{ model.abstract }}</p><a @click=selectModel(model) class="btn btn-primary btn-xs load-model" :data-id=model.id><i class="fa fa-play"></i></a></div></div></div></div></template>
