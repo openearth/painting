@@ -27,19 +27,25 @@
       bus.$on('feature-selected', (feature) => {
         this.feature = feature;
 
-        var url = 'data/details/' + _.get(feature, 'properties.locationCode', feature.id);
-        if (this.repository !== '') {
-          url = urljoin(this.repository, 'data/details', feature.id);
+        if (_.has(feature, 'properties.series')) {
+          // data is in the feature
+          Vue.set(this, 'series', [feature.properties.series]);
+        } else {
+          var url = 'data/details/' + _.get(feature, 'properties.locationCode', feature.id);
+          if (this.repository !== '') {
+            url = urljoin(this.repository, 'data/details', feature.id);
+          }
+          fetch(url)
+            .then((resp)=>{
+              return resp.json();
+            })
+            .then((json) => {
+              Vue.set(this, 'series', json.series);
+              // limits
+              Vue.set(this, 'limits', _.get(json, 'limits', []));
+            });
+
         }
-        fetch(url)
-          .then((resp)=>{
-            return resp.json();
-          })
-          .then((json) => {
-            Vue.set(this, 'series', json.series);
-            // limits
-            Vue.set(this, 'limits', _.get(json, 'limits', []));
-          });
       });
       this.$nextTick(function(){
 
@@ -187,7 +193,7 @@
           .append('path')
           .attr('class', 'line waterlevel clipped')
           .attr('d', (d) => {
-            return lineWaterlevel(d.data);
+            return lineWaterlevel(_.get(d, 'data', d));
           })
           .style('stroke', (d) => {return d.color; });
 

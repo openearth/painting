@@ -34,7 +34,7 @@
       // get models.json
       var url = 'data/models.json';
       if (this.repository !== '') {
-        url = urljoin(this.repository, 'models');
+        url = urljoin(this.repository, 'models.json');
       }
       fetch(url)
         .then((response) => {

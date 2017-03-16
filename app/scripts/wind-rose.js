@@ -38,7 +38,9 @@
         var relativeDuration = time / _.get(this.model, 'duration', 1);
         var currentDate = date0 + (relativeDuration * dateDiff);
         var bisect = d3.bisector(function(d) { return d.date; }).left;
-        var rowIndex = bisect(this.series, currentDate);
+        // in case bisect is longer than timeries clamp it
+        var rowIndex = _.clamp(bisect(this.series, currentDate), 0, this.series.length - 1);
+
         var row = this.series[rowIndex];
         this.arrow
           .datum([{u: 0, v: 0}, row])
