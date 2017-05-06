@@ -7,7 +7,8 @@
       "engine": "Delft3D Flow",
       "timeseries": "data/timeseries/dcsm.json",
       "realtime": {
-        "points": "data/points"
+        "points": "https://tr4e0lb583.execute-api.us-east-1.amazonaws.com/dev/points",
+        "details": "https://tr4e0lb583.execute-api.us-east-1.amazonaws.com/dev/details/${location}"
       },
       "uv": {
         "src": "models/movies/dcsm.mp4",
@@ -24,8 +25,7 @@
       "extent": {
         "sw": [49.264198303222656, -3.877345323562622],
         "ne": [57.1629943847656, 9.84266757965088],
-        "time": ["2016-12-20T20:40:00Z", "2016-12-28T20:40:00Z"],
-        "waterlevel": [-2, 5]
+        "time": ["2017-05-01T20:40:00Z", "2017-05-08T20:40:00Z"]
       },
       "view": {
         "zoom": 7,

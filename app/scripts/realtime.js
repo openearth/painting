@@ -57,14 +57,23 @@
     },
     methods: {
       fetchPoints() {
-        var url = 'data/points';
-        if (this.repository !== '') {
-          if (_.isNil(this.model)) {
-            // no model yet, wait for watch
-            return;
-          }
-          url = urljoin(this.repository, this.model.realtime.points);
+
+        if (_.isNil(this.model)) {
+          // no model yet, wait for watch
+          return;
         }
+
+        let url = _.get(
+          this.model,
+          'realtime.points',
+          'data/points'
+        );
+
+        // we have a repository
+        if (this.repository !== '') {
+          url = urljoin(this.repository, url);
+        }
+
         fetch(url)
           .then((resp) => {
             return resp.json();

@@ -31,10 +31,26 @@
           // data is in the feature
           Vue.set(this, 'series', [feature.properties.series]);
         } else {
-          var url = 'data/details/' + _.get(feature, 'properties.locationCode', feature.id);
-          if (this.repository !== '') {
-            url = urljoin(this.repository, 'data/details', feature.id);
+          // get the url
+          let url = _.get(
+            this.model,
+            'realtime.details',
+            'data/details/${location}'
+          );
+
+          let location = _.get(feature, 'properties.locationCode', feature.id);
+
+          // we have a template url
+          if (_.includes(url, '${location}')) {
+            // fill in template
+            url = _.template(url)({location: location});
           }
+
+          // we have a repository
+          if (this.repository !== '') {
+            url = urljoin(this.repository, url);
+          }
+
           fetch(url)
             .then((resp)=>{
               return resp.json();
@@ -105,10 +121,19 @@
 
         var xDomain = _.map(this.model.extent.time, d3.isoParse);
         this.chart.xTime.domain(xDomain);
-        this.chart.yWaterlevel.domain(_.get(this.model.extent, 'waterlevel', [0, 1]));
+        var values = _.flatMap(_.flatMap(this.series, 'data'), 'value');
+        var extent = d3.extent(values);
+        var yDomain = _.get(
+          this.model.extent,
+          'waterlevel',
+          extent
+        );
+        this.chart.yWaterlevel.domain(yDomain);
         this.chart.xAxis
+          .transition()
           .call(d3.axisBottom(this.chart.xTime));
         this.chart.yAxis
+          .transition()
           .call(
             d3.axisLeft(this.chart.yWaterlevel)
               .ticks(5)
@@ -136,9 +161,9 @@
             return this.chart.xTime(t0);
           })
           .attr('y', (d) => {
-            var y = this.model.extent.waterlevel[1];
+            var y = yDomain[1];
             if (!_.isNil(d.to)) {
-              y = d.to / 100.0;
+              y = d.to;
             }
             return this.chart.yWaterlevel(y);
           })
@@ -149,13 +174,13 @@
             return width;
           })
           .attr('height', (d) => {
-            var y0 = this.model.extent.waterlevel[0];
+            var y0 = yDomain[0];
             if (!_.isNil(d.from)) {
-              y0 = d.from / 100.0;
+              y0 = d.from;
             }
-            var y1 = this.model.extent.waterlevel[1];
+            var y1 = yDomain[1];
             if (!_.isNil(d.to)) {
-              y1 = d.to / 100.0;
+              y1 = d.to;
             }
             var height = this.chart.yWaterlevel(y0) - this.chart.yWaterlevel(y1);
             if (height < 0) {
@@ -184,7 +209,7 @@
               return x;
             })
             .y((d) => {
-              var y = this.chart.yWaterlevel(d.s1 || d.value / 100.0);
+              var y = this.chart.yWaterlevel(d.s1 || d.value);
               // cm/m
               return y;
             });
