@@ -54,7 +54,6 @@ var bus;
                   sidebar: true,
                   story: false,
                   chart: true,
-                  model: null,
                   repository: ''
                 },
                 colorToggleOptions: [
@@ -72,6 +71,7 @@ var bus;
                 palette: [],
                 pipeline: null,
                 model: null,
+                realtime: null,
                 sketch: null,
                 sidebar: false
               };
@@ -88,6 +88,12 @@ var bus;
               map: {
                 get: function() {
                   return _.get(this.$refs, 'map.mapObject');
+                },
+                cache: false
+              },
+              chart: {
+                get() {
+                  return _.isObjectLike(this.realtime);
                 },
                 cache: false
               },
@@ -123,6 +129,11 @@ var bus;
           bus.$on('model-selected', function(model) {
             // set the model in the app
             Vue.set(app, 'model', model);
+            // this propagates to the components on the next tick
+          });
+          bus.$on('realtime-selected', function(realtime) {
+            // set the realtime in the app
+            Vue.set(app, 'realtime', realtime);
             // this propagates to the components on the next tick
           });
           bus.$on('palette-selected', function(palette){

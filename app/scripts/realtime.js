@@ -20,10 +20,60 @@
     }
   });
 
+  Vue.component('realtime-details', {
+    template: '#realtime-details-template',
+    props: {
+      realtime: {
+        type: Object
+      }
+    },
+    methods: {
+      select() {
+        console.log('selecting', this.realtime);
+        // dispatch to parent
+        bus.$emit('realtime-selected', this.realtime);
+      },
+      deselect() {
+        console.log('selecting', null);
+        // dispatch to parent
+        bus.$emit('realtime-selected', null);
+      }
+
+    }
+
+  });
+
+  Vue.component('realtime-overview', {
+    template: '#realtime-overview-template',
+    data: function() {
+      return {
+        realtime: []
+      };
+    },
+    mounted() {
+      const url = 'data/realtime.json';
+      fetch(url)
+        .then((resp) => {
+          return resp.json();
+        })
+        .then((json) => {
+          let realtime = json.realtime;
+          _.each(realtime, (el) => {
+            el.loaded = false;
+          });
+          this.realtime = json.realtime;
+
+        });
+    }
+  });
+
   Vue.component('realtime-layer', {
     template: '#realtime-layer-template',
     props: {
       model: {
+        type: Object
+      },
+      realtime: {
         type: Object
       },
       repository: {
@@ -43,7 +93,7 @@
         this.clearMarkers();
         this.createMarkers();
       },
-      model() {
+      realtime() {
         this.fetchPoints();
       }
     },
@@ -58,16 +108,13 @@
     methods: {
       fetchPoints() {
 
-        if (_.isNil(this.model)) {
-          // no model yet, wait for watch
+        if (_.isNil(this.realtime)) {
+          // no realtime data yet, wait for watch
+          this.clearMarkers();
           return;
         }
 
-        let url = _.get(
-          this.model,
-          'realtime.points',
-          'data/points'
-        );
+        let url = this.realtime.points;
 
         // we have a repository
         if (this.repository !== '') {

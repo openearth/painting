@@ -8,6 +8,7 @@ import browserSync from 'browser-sync';
 import del from 'del';
 import {stream as wiredep} from 'wiredep';
 import jsonServer from 'json-server';
+import gutil from 'gulp-util';
 
 const $ = gulpLoadPlugins();
 const es6LintOptions = {
@@ -78,8 +79,8 @@ gulp.task('lint:test', lint('test/spec/**/*.js', testLintOptions));
 gulp.task('html', ['styles', 'scripts'], () => {
   return gulp.src('app/**/*.html')
     .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
-    .pipe($.debug())
     .pipe($.if('*.js', $.uglify()))
+    .on('error', function (err) { gutil.log(gutil.colors.red('[Error]'), err.toString()); })
     .pipe($.if('*.css', $.minifyCss({compatibility: '*'})))
     .pipe($.if('*.html', $.minifyHtml({conditionals: true})))
     .pipe(gulp.dest('dist'));

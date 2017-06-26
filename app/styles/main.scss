@@ -23,6 +23,13 @@ $black: #000;
 
 @import 'map';
 
+#app {
+  width: 100vw;
+}
+
+.container {
+  padding: 12px;
+}
 .menu__content {
   z-index: 5000;
 }
@@ -47,19 +54,19 @@ $black: #000;
   }
 }
 
-.sidebar--close {
-  width: 0;
-  max-width: 0;
-}
-.sidebar--open {
-  max-width: 300px;
-}
+/* .sidebar--close { */
+/*   width: 0; */
+/*   max-width: 0; */
+/* } */
+/* .sidebar--open { */
+/*   max-width: 300px; */
+/* } */
 .sidebar {
-  height: 100vh;
-  flex-direction: column;
-  flex: 1 1 auto;
-  position: static;
-  transition: max-width .3s cubic-bezier(0,0,.2,1); //, transform .3s cubic-bezier(0,0,.2,1);
+  /* height: 100vh; */
+  /* flex-direction: column; */
+  /* flex: 1 1 auto; */
+  /* position: static; */
+  /* transition: max-width .3s cubic-bezier(0,0,.2,1); //, transform .3s cubic-bezier(0,0,.2,1); */
   .expansion-panel {
     .expansion-panel__body  {
       padding: 0 10px;

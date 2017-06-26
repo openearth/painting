@@ -21,8 +21,11 @@
       };
     },
     watch: {
-      'model.realtime.wind': function() {
-        this.updateWindSeries();
+      'model.realtime': {
+        handler: function() {
+          this.updateWindSeries();
+        },
+        deep: true
       },
       'model.currentTime': function(time) {
 

@@ -8,6 +8,9 @@
       model: {
         type: Object
       },
+      realtime: {
+        type: Object
+      },
       repository: {
         type: String,
         default: ''
@@ -32,11 +35,7 @@
           Vue.set(this, 'series', [feature.properties.series]);
         } else {
           // get the url
-          let url = _.get(
-            this.model,
-            'realtime.details',
-            'data/details/${location}'
-          );
+          let url = this.realtime.details;
 
           let location = _.get(feature, 'properties.locationCode', feature.id);
 
@@ -119,15 +118,29 @@
           return;
         }
 
-        var xDomain = _.map(this.model.extent.time, d3.isoParse);
+        var xDomain = [moment().subtract(1, 'days').toDate(), moment().toDate()];
+        if (_.has(this.model.extent, 'time')) {
+          xDomain = _.map(this.model.extent.time, d3.isoParse);
+        } else {
+          var dates = _.map(
+            _.flatMap(
+              _.flatMap(this.series, 'data'),
+              'dateTime'
+            ),
+            d3.isoParse
+          );
+          xDomain = d3.extent(dates);
+        }
         this.chart.xTime.domain(xDomain);
+
         var values = _.flatMap(_.flatMap(this.series, 'data'), 'value');
-        var extent = d3.extent(values);
+        var valuesExtent = d3.extent(values);
         var yDomain = _.get(
           this.model.extent,
           'waterlevel',
-          extent
+          valuesExtent
         );
+
         this.chart.yWaterlevel.domain(yDomain);
         this.chart.xAxis
           .transition()
@@ -155,9 +168,9 @@
           .data(this.limits)
           .enter()
           .append('rect')
-          .attr('class', 'limits')
+          .attr('class', 'limits clipped')
           .attr('x', () => {
-            var t0 = d3.isoParse(this.model.extent.time[0]);
+            var t0 = xDomain[0];
             return this.chart.xTime(t0);
           })
           .attr('y', (d) => {
@@ -168,8 +181,8 @@
             return this.chart.yWaterlevel(y);
           })
           .attr('width', () => {
-            var t1 = d3.isoParse(this.model.extent.time[1]);
-            var t0 = d3.isoParse(this.model.extent.time[0]);
+            var t1 = xDomain[1];
+            var t0 = xDomain[0];
             var width = this.chart.xTime(t1) - this.chart.xTime(t0);
             return width;
           })
@@ -228,7 +241,7 @@
       createChart() {
         var margin = {
           top: 14,
-          right: 14 + 10,
+          right: 14,
           bottom: 14 + 14,
           left: 14 + 20
         };

@@ -1,0 +1,10 @@
+{
+  "realtime": [
+    {
+      "title": "waterinfo",
+      "abstract": "Water info",
+      "points": "https://tr4e0lb583.execute-api.us-east-1.amazonaws.com/dev/points",
+      "details": "https://tr4e0lb583.execute-api.us-east-1.amazonaws.com/dev/details/${location}"
+    }
+  ]
+}
