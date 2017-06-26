@@ -4,10 +4,11 @@
       "title": "DCSM",
       "abstract": "Rijkswaterstaat Operational Systems",
       "id": "3536B75C-DF01-4C13-8E78-924A17B306FD",
-      "engine": "Delft3D Flow",
+      "engine": "Simona",
       "timeseries": "data/timeseries/dcsm.json",
       "realtime": {
-        "points": "data/points"
+        "points": "https://tr4e0lb583.execute-api.us-east-1.amazonaws.com/dev/points",
+        "details": "https://tr4e0lb583.execute-api.us-east-1.amazonaws.com/dev/details/${location}"
       },
       "uv": {
         "src": "models/movies/dcsm.mp4",
@@ -24,8 +25,7 @@
       "extent": {
         "sw": [49.264198303222656, -3.877345323562622],
         "ne": [57.1629943847656, 9.84266757965088],
-        "time": ["2016-12-20T20:40:00Z", "2016-12-28T20:40:00Z"],
-        "waterlevel": [-2, 5]
+        "time": ["2017-05-01T20:40:00Z", "2017-05-08T20:40:00Z"]
       },
       "view": {
         "zoom": 7,
@@ -38,7 +38,7 @@
       "title": "Wadden",
       "abstract": "wadden model",
       "id": "E719CD9A-339A-11E5-BA2D-4963B6C90E9A",
-      "engine": "delft3d flow",
+      "engine": "Delft3D-FLOW",
       "story": "data/stories/ecomare.json",
       "uv": {
         "src": "models/movies/wadden.webm",
@@ -68,7 +68,7 @@
       "title": "Ameland",
       "abstract": "Ameland model from KPP project",
       "id": "51139bae-a380-11e5-b02f-3c15c2d29372",
-      "engine": "delft3d flow",
+      "engine": "Delft3D-FLOW",
       "uv": {
         "src": "models/movies/ameland.mp4",
         "type": "video/mp4",
@@ -99,7 +99,7 @@
       "title": "San Francisco ",
       "abstract": "San Francisco Bay model",
       "id": "F24A0CB6-339A-11E5-98F4-4963B6C90E9A",
-      "engine": "delft3d flexible mesh",
+      "engine": "Delft3D Flexible Mesh",
       "uv": {
         "src": "models/movies/im2.webm",
         "type": "video/webm",
@@ -145,7 +145,7 @@
 
       },
       "view": {
-        "zoom": 10
+        "zoom": 4
       },
       "width": 2048,
       "height": 2048
@@ -153,7 +153,7 @@
     {
       "title": "Hycom",
       "abstract": "Backward advection of the Hycom model",
-      "engine": "hycom",
+      "engine": "Hycom",
       "id": "15bb1006-8c50-11e5-a43d-3c15c2d29372",
       "uv": {
         "src": "models/movies/mh370.webm",
