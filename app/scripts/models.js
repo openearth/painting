@@ -13,6 +13,17 @@
         console.log('selecting', this.model);
         // dispatch to parent
         bus.$emit('model-selected', this.model);
+      },
+      formatStartTime() {
+        let a = moment(this.model.extent.time[0]);
+        return a.calendar();
+      },
+      formatDuration() {
+        let a = moment(this.model.extent.time[0]);
+        let b = moment(this.model.extent.time[1]);
+        let duration = moment.duration(b.diff(a));
+        return duration.humanize();
+
       }
     }
   });
@@ -34,9 +45,15 @@
       // get models.json
       var url = 'data/models.json';
       if (this.repository !== '') {
-        url = urljoin(this.repository, 'models.json');
+        // TODO: use absolute links
+        if (!this.repository.endsWith('models')) {
+          url = urljoin(this.repository, 'models.json');
+        } else {
+          url = this.repository;
+        }
+
       }
-      fetch(url)
+      fetch(url, {mode: 'cors'})
         .then((response) => {
           return response.json();
         })

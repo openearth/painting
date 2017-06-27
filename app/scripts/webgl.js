@@ -62,7 +62,11 @@
         var video = this.video;
         var url = uv.src;
         if (this.repository !== '') {
-          url = urljoin(this.repository, uv.src);
+          // relative url's
+          if (!uv.src.startsWith('http')) {
+            url = urljoin(this.repository, uv.src);
+          }
+
         }
         video.src = url;
         video.setAttribute('crossorigin', 'anonymous');
@@ -294,10 +298,11 @@
           return;
         }
         var model = this.model;
-        this.advectionFilter.scale.x = model.uniforms.scale;
-        this.advectionFilter.scale.y = model.uniforms.scale;
-        this.advectionFilter.flipv = model.uniforms.flipv;
-        this.advectionFilter.decay = model.uniforms.decay;
+        const defaultScale = 2.0;
+        this.advectionFilter.scale.x = _.get(model, 'uniforms.scale', defaultScale);
+        this.advectionFilter.scale.y = _.get(model, 'uniforms.scale', defaultScale);
+        this.advectionFilter.flipv = _.get(model, 'uniforms.flipv', true);
+        this.advectionFilter.decay = _.get(model, 'uniforms.decay', 0.999);
 
       },
       createFilter: function() {

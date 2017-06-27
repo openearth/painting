@@ -54,7 +54,7 @@ var bus;
                   sidebar: true,
                   story: false,
                   chart: true,
-                  repository: ''
+                  repository: 'https://rvfqs9rqlc.execute-api.eu-west-1.amazonaws.com/dev/models'
                 },
                 colorToggleOptions: [
                   {

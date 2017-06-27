@@ -118,7 +118,9 @@
 
         // we have a repository
         if (this.repository !== '') {
-          url = urljoin(this.repository, url);
+          if (!url.startsWith('http')) {
+            url = urljoin(this.repository, url);
+          }
         }
 
         fetch(url)

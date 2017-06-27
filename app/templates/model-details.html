@@ -4,7 +4,7 @@
     <v-card v-if="model">
       <v-card-row class="blue-grey darken-1">
         <v-card-title>
-          <span class="white--text">{{ model.title }} <small>{{ model.engine }}</small></span>
+          <span class="white--text">{{ model.title || model.metadata.title }} <small>{{ model.engine || model.metadata.engine }}</small></span>
           <v-spacer></v-spacer>
           <div>
             <v-btn icon class="white--text" @click.native="select">
@@ -13,12 +13,14 @@
           </div>
         </v-card-title>
       </v-card-row>
-      <v-card-text>
-        <v-card-row>
-          {{ model.abstract }}
-          Number of advection cells: {{ model.width * model.height }} ({{model.width}} x {{ model.height}})
-        </v-card-row>
-      </v-card-text>
+      <v-card-row>
+        <v-card-text>
+          <p>{{ model.abstract || model.metadata.summary }}</p>
+          <p>Start: {{ formatStartTime() }}</p>
+          <p>Duration: {{ formatDuration() }}</p>
+
+        </v-card-text>
+      </v-card-row>
     </v-card>
     <div v-else>
       no model loaded
