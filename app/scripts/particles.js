@@ -112,6 +112,7 @@
       return;
     }
 
+    const scale = _.get(this.model, 'uniforms.scale', 2.0);
 
     var uvCanvas = $('#uv-canvas')[0];
     var uvctx = uvCanvas.getContext('2d');
@@ -135,8 +136,8 @@
       // velocity is zero
       mask = mask || (Math.abs(u) + Math.abs(v) === 0.0);
       // update the position
-      particle.position.x = particle.position.x + u * this.model.uniforms.scale * speedup;
-      particle.position.y = particle.position.y + v * this.model.uniforms.scale * speedup;
+      particle.position.x = particle.position.x + u * scale * speedup;
+      particle.position.y = particle.position.y + v * scale * speedup;
       mask = mask || particle.position.x > width;
       mask = mask || particle.position.x < 0;
       mask = mask || particle.position.y > height - 1;
