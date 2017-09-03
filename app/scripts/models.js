@@ -84,6 +84,29 @@
         // dispatch to parent
         bus.$emit('model-selected', model);
 
+      },
+      nestedModels() {
+        let sortedModels = _.reverse(
+          _.sortBy(
+            this.models,
+            (model) => model.extent.time[0]
+          )
+        );
+        let groupedModels = _.groupBy(
+          sortedModels,
+          (model) => {
+            return _.get(model, 'metadata.title', model.title);
+          }
+        );
+        let grouped = _.map(groupedModels, function(value, index) {
+          return {
+            title: index,
+            items: value,
+            active: false,
+            icon: 'school'
+          };
+        });
+        return grouped;
       }
     }
 
