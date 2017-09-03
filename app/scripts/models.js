@@ -85,6 +85,16 @@
         bus.$emit('model-selected', model);
 
       },
+      formatStartTime(model) {
+        let a = moment(model.extent.time[0]);
+        return a.calendar();
+      },
+      formatDuration(model) {
+        let a = moment(model.extent.time[0]);
+        let b = moment(model.extent.time[1]);
+        let duration = moment.duration(b.diff(a));
+        return duration.humanize();
+      },
       nestedModels() {
         let sortedModels = _.reverse(
           _.sortBy(
@@ -102,6 +112,7 @@
           return {
             title: index,
             items: value,
+            metadata: value[0].metadata,
             active: false,
             icon: 'school'
           };
