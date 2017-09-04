@@ -95,6 +95,21 @@
         let duration = moment.duration(b.diff(a));
         return duration.humanize();
       },
+      lookupIcon(model) {
+        // icon is icons/lat_lon_zoom.jpg
+
+        let lat = ((model.extent.ne[0] + model.extent.sw[0])/2).toFixed(3);
+        let lon = ((model.extent.ne[1] + model.extent.sw[1])/2).toFixed(3);
+        let zoom = _.get(model, 'view.zoom', 10).toFixed(0);
+        let urlTemplate = _.template('images/icons/${lat}_${lon}_${zoom}.jpg');
+        let url = urlTemplate({
+          lat: lat,
+          lon: lon,
+          zoom: zoom
+        });
+        return url;
+
+      },
       nestedModels() {
         let sortedModels = _.reverse(
           _.sortBy(
@@ -114,7 +129,7 @@
             items: value,
             metadata: value[0].metadata,
             active: false,
-            icon: 'school'
+            icon: 'folder'
           };
         });
         return grouped;

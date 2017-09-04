@@ -2,25 +2,21 @@
 
   <div>
     <v-card >
-      <v-card-row class="blue-grey darken-1">
-        <v-card-title>
-          <span class="white--text">{{ realtime.title }}</span>
-          <v-spacer></v-spacer>
-          <div>
-            <v-btn icon class="white--text" @click.native="deselect">
-              <v-icon>stop</v-icon>
-            </v-btn>
-            <v-btn icon class="white--text" @click.native="select">
-              <v-icon>play_arrow</v-icon>
-            </v-btn>
-          </div>
-        </v-card-title>
-      </v-card-row>
+      <v-card-title>
+        <span class="white--text">{{ realtime.title }}</span>
+        <v-spacer></v-spacer>
+        <div>
+          <v-btn icon class="white--text" @click.native="deselect">
+            <v-icon>stop</v-icon>
+          </v-btn>
+          <v-btn icon class="white--text" @click.native="select">
+            <v-icon>play_arrow</v-icon>
+          </v-btn>
+        </div>
+      </v-card-title>
       <v-card-text>
-        <v-card-row>
-          {{ realtime.abstract }}
+        {{ realtime.abstract }}
 
-        </v-card-row>
       </v-card-text>
     </v-card>
   </div>

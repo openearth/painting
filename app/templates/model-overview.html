@@ -1,67 +1,55 @@
 <template id="models-overview-template" >
-  <div>
-    <div>
-      <v-list two-line>
-        <template
-          v-for="(item, key) in nestedModels()" :value="item.active"
-          >
-          <v-list-group v-if="item.items.length > 1">
-            <v-list-tile slot="item" >
-              <v-list-tile-action>
-                <v-icon>{{ item.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                <v-list-tile-sub-title>{{ item.abstract || item.metadata.summary }}</v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-icon>keyboard_arrow_down</v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
-            <v-list-item v-for="subItem in item.items" v-bind:key="subItem.title">
-              <v-list-tile>
-                <v-list-tile-content>
-                  <v-list-tile-title>{{ formatStartTime(subItem) }}</v-list-tile-title>
-                  <v-list-tile-title>{{ formatDuration(subItem) }}</v-list-tile-title>
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-icon>play</v-icon>
-                </v-list-tile-action>
-              </v-list-tile>
-            </v-list-item>
-          </v-list-group>
-          <v-list-item v-if="item.items.length == 1" >
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.items[0].title }}</v-list-tile-title>
-                <v-list-tile-title>{{ item.items[0].metadata.summary }}</v-list-tile-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-icon>play</v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
-          </v-list-item>
+  <v-list two-line >
+    <template
+      v-for="(item, key) in nestedModels()" :value="item.active"
+      >
+      <v-list-group v-if="item.items.length > 1">
+        <v-list-tile slot="item" >
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+            <v-list-tile-sub-title>{{ item.abstract || item.metadata.summary }}</v-list-tile-sub-title>
+          </v-list-tile-content>
+          <v-list-tile-action>
+            <v-icon>keyboard_arrow_down</v-icon>
+          </v-list-tile-action>
+        </v-list-tile>
+        <v-list-tile avatar v-for="subItem in item.items" v-bind:key="subItem.title">
+          <v-list-tile-avatar>
+            <img :src="lookupIcon(subItem)" alt="" />
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ formatStartTime(subItem) }}</v-list-tile-title>
+            <v-list-tile-sub-title>{{ formatDuration(subItem) }}</v-list-tile-sub-title>
+          </v-list-tile-content>
+          <v-list-tile-action>
+            <v-btn icon @click="selectModel(subItem)">
+              <v-icon >play_arrow</v-icon>
+            </v-btn>
 
-        </template>
+          </v-list-tile-action>
+        </v-list-tile>
+      </v-list-group>
+      <v-list-tile v-if="item.items.length == 1" avatar >
+        <v-list-tile-avatar>
+          <img :src="lookupIcon(item.items[0])">
+        </v-list-tile-avatar>
+        <v-list-tile-content>
+          <v-list-tile-title>{{ item.items[0].metadata.title }}</v-list-tile-title>
+          <v-list-tile-sub-title>{{ item.items[0].metadata.summary }}</v-list-tile-sub-title>
+        </v-list-tile-content>
+        <v-list-tile-action>
+          <v-btn icon @click="selectModel(item.items[0])">
+            <v-icon >play_arrow</v-icon>
+          </v-btn>
+        </v-list-tile-action>
+      </v-list-tile>
+
+    </template>
 
 
 
-      </v-list>
-    </div>
-    <div v-for="model in models" class="model" :id="model.id">
-      <model-details :model="model" >
-      </model-details>
-      <!--   <div class="row"> -->
-
-      <!--     <div class="col-xs-12"> -->
-      <!--       <h2>{{ model.title }}</h2> -->
-      <!--       <p>{{ model.abstract }}</p> -->
-      <!--       <a @click="selectModel(model)" class="btn btn-primary btn-xs load-model" :data-id="model.id"> -->
-      <!--         <i class="fa fa-play"></i> -->
-      <!--       </a> -->
-      <!--     </div> -->
-      <!--   </div> -->
-
-      <!-- </div> -->
-    </div>
+  </v-list>
 </template>
