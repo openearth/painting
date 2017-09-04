@@ -3,7 +3,7 @@
     <template
       v-for="(item, key) in nestedModels()" :value="item.active"
       >
-      <v-list-group v-if="item.items.length > 1">
+      <v-list-group v-if="item.items.length > 1" :value="item.active">
         <v-list-tile slot="item" >
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
