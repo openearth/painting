@@ -2,6 +2,37 @@
 
 (function () {
   'use strict';
+  Vue.component('color-selection', {
+    template: '#color-selection-template',
+    props: {
+      color: {
+        type: Object
+      },
+      palette: {
+        type: Array
+      }
+    },
+    data: () => {
+      return {
+        colorToggleOptions: [
+          {
+            icon: 'colorize',
+            value: 'color'
+          },
+          {
+            icon: 'color_lens',
+            value: 'palette'
+          }
+        ],
+        colorType: 'color'
+      };
+    },
+    methods: {
+      onColorChange: function(val){
+        bus.$emit('color-selected', val);
+      }
+    }
+  });
 
   Vue.component('painting-palettes', {
     template: '#paintings-template',

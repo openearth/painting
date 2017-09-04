@@ -1,0 +1,30 @@
+<template id="color-selection-template">
+  <v-tabs icons centered dark>
+    <v-tabs-bar class="blue-grey darken-2 white--text">
+      <v-tabs-item href="#single-color" ripple>
+        <v-icon>colorize</v-icon>
+        Single
+      </v-tabs-item>
+      <v-tabs-item href="#palette-selection" ripple>
+        <v-icon>color_lens</v-icon>
+        Painting
+      </v-tabs-item>
+      <v-tabs-slider></v-tabs-slider>
+    </v-tabs-bar>
+    <v-tabs-items>
+      <v-tabs-content id="single-color">
+        <v-card>
+          <v-card-text>
+            <v-color-picker v-model="color" @change-color="onColorChange"></v-color-picker>
+          </v-card-text>
+
+        </v-card>
+
+      </v-tabs-content>
+      <v-tabs-content id="palette-selection">
+        <painting-palettes></painting-palettes>
+        <palette-chart :palette="palette"></palette-chart>
+      </v-tabs-content>
+    </v-tabs-items>
+  </v-tabs>
+</template>

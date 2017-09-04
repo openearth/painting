@@ -55,19 +55,7 @@
             </v-expansion-panel-content>
             <v-expansion-panel-content>
               <div slot="header">Color</div>
-              <v-btn-toggle v-model="colorType">
-                <v-btn v-for="btn in colorToggleOptions" :key="btn.icon" :value="btn.value">
-                  <v-icon>{{ btn.icon }}</v-icon>
-                </v-btn>
-              </v-btn-toggle>
-              <div v-show="colorType==='color'">
-                <v-color-picker v-model="color" @change-color="onColorChange"></v-color-picker>
-              </div>
-
-              <div v-show="colorType==='palette'">
-                <painting-palettes></painting-palettes>
-                <palette-chart :palette="palette"></palette-chart>
-              </div>
+              <color-selection :color="color" :palette="palette"></color-selection>
             </v-expansion-panel-content>
             <v-expansion-panel-content>
               <div slot="header">Realtime</div>
@@ -76,13 +64,12 @@
             <v-expansion-panel-content>
               <div slot="header">Controls</div>
               <v-card>
-                <v-card-title class="white--text">
-                  Map options
+                <v-card-title class="blue-grey darken-2 white--text">
+                  <span class="headline">Map options</span>
                 </v-card-title>
                 <v-card-text>
                   <map-controls ref="mapControls" :map="map" ></map-controls>
                 </v-card-text>
-
               </v-card>
             </v-expansion-panel-content>
             <v-expansion-panel-content>

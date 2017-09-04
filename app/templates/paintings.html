@@ -1,18 +1,13 @@
 <template id="paintings-template">
-  <v-card>
-    <v-toolbar class="blue-grey darken-1">
-      <v-toolbar-title class="white--text">Select a painting</v-toolbar-title>
-    </v-toolbar>
-    <v-list two-line>
-      <v-list-tile avatar v-for="painting in paintings" :key="painting.url" @click="select(painting)">
-        <v-list-tile-avatar>
-          <img :src="painting.url"/>
-        </v-list-tile-avatar>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ painting.painter }}</v-list-tile-title>
-          <v-list-tile-sub-title><a :href="painting.info">{{ painting.title }}</a></v-list-tile-sub-title>
-        </v-list-tile-content>
-      </v-list-tile>
-    </v-list>
-  </v-card>
+  <v-list two-line>
+    <v-list-tile avatar v-for="painting in paintings" :key="painting.url" @click="select(painting)">
+      <v-list-tile-avatar>
+        <img :src="painting.url"/>
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>{{ painting.painter }}</v-list-tile-title>
+        <v-list-tile-sub-title><a :href="painting.info">{{ painting.title }}</a></v-list-tile-sub-title>
+      </v-list-tile-content>
+    </v-list-tile>
+  </v-list>
 </template>

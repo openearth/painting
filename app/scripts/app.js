@@ -56,17 +56,6 @@ var bus;
                   chart: true,
                   repository: 'https://rvfqs9rqlc.execute-api.eu-west-1.amazonaws.com/dev/models'
                 },
-                colorToggleOptions: [
-                  {
-                    icon: 'colorize',
-                    value: 'color'
-                  },
-                  {
-                    icon: 'color_lens',
-                    value: 'palette'
-                  }
-                ],
-                colorType: 'color',
                 color: defaultColor,
                 palette: [],
                 pipeline: null,
@@ -79,10 +68,6 @@ var bus;
               return defaults;
             },
             methods: {
-              onColorChange(val) {
-                this.color = val;
-                this.sketch.palette = [val2rgbaString(val)];
-              }
             },
             computed: {
               map: {
@@ -138,6 +123,10 @@ var bus;
           });
           bus.$on('palette-selected', function(palette){
             Vue.set(app, 'palette', palette);
+          });
+          bus.$on('color-selected', function(val) {
+            this.color = val;
+            this.sketch.palette = [val2rgbaString(val)];
           });
           bus.$on('model-layer-added', function() {
           });

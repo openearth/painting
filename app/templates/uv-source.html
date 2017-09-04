@@ -1,16 +1,19 @@
 <template id="uv-source-template">
-  <div>
-    <div id="uv-container">
-      <video id="uv-video" autoplay loop v-if="tag === 'video'"></video>
-      <img id="uv-img" v-if="tag === 'img'" />
-    </div>
-    <div>
-      <!-- canvas to copy image or video on, to extract data -->
-      <!-- fixed size, fixed type, makes things easy -->
-      <canvas id="uv-canvas" width="1024" height="1024"></canvas>
+  <v-card>
+    <v-card-text>
+      <div id="uv-container">
+        <video id="uv-video" autoplay loop v-if="tag === 'video'"></video>
+        <img id="uv-img" v-if="tag === 'img'" />
+      </div>
+      <div>
+        <!-- canvas to copy image or video on, to extract data -->
+        <!-- fixed size, fixed type, makes things easy -->
+        <canvas id="uv-canvas" width="1024" height="1024"></canvas>
 
-    </div>
-  </div>
+      </div>
+
+    </v-card-text>
+  </v-card>
 
 
 </template>
