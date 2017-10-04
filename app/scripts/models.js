@@ -84,6 +84,64 @@
         // dispatch to parent
         bus.$emit('model-selected', model);
 
+      },
+      formatStartTime(model) {
+        let a = moment(model.extent.time[0]);
+        return a.calendar();
+      },
+      formatDuration(model) {
+        let a = moment(model.extent.time[0]);
+        let b = moment(model.extent.time[1]);
+        let duration = moment.duration(b.diff(a));
+        return duration.humanize();
+      },
+      lookupIcon(model) {
+        // icon is icons/lat_lon_zoom.jpg
+        // default icon
+        let url = 'gear';
+        if (_.has(model, 'metadata.icon')) {
+          url = model.metadata.icon;
+          if (this.repository) {
+            url = urljoin(this.repository, url);
+          }
+        } else if (_.has(model, 'extent.ne')) {
+          let lat = ((model.extent.ne[0] + model.extent.sw[0]) / 2).toFixed(3);
+          let lon = ((model.extent.ne[1] + model.extent.sw[1]) / 2).toFixed(3);
+          let zoom = _.get(model, 'view.zoom', 10).toFixed(0);
+          let urlTemplate = _.template('images/icons/${lat}_${lon}_${zoom}.jpg');
+          url = urlTemplate({
+            lat: lat,
+            lon: lon,
+            zoom: zoom
+          });
+
+        }
+        return url;
+
+      },
+      nestedModels() {
+        let sortedModels = _.reverse(
+          _.sortBy(
+            this.models,
+            (model) => model.extent.time[0]
+          )
+        );
+        let groupedModels = _.groupBy(
+          sortedModels,
+          (model) => {
+            return _.get(model, 'metadata.title', model.title);
+          }
+        );
+        let grouped = _.map(groupedModels, function(value, index) {
+          return {
+            title: index,
+            items: value,
+            metadata: value[0].metadata,
+            active: false,
+            icon: 'folder'
+          };
+        });
+        return grouped;
       }
     }
 

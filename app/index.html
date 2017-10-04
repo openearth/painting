@@ -42,8 +42,8 @@
       id="app"
       >
       <!-- Sidebar if settings.sidebar is active -->
-      <v-app>
-        <v-navigation-drawer persistent drawer light id="left-sidebar" class="sidebar" v-model="sidebar" :close-on-click="false">
+      <v-app light>
+        <v-navigation-drawer persistent drawer id="left-sidebar" class="sidebar" v-model="sidebar" :close-on-click="false" class="pb-0">
           <v-expansion-panel>
             <v-expansion-panel-content>
               <div slot="header">Model details</div>
@@ -55,15 +55,7 @@
             </v-expansion-panel-content>
             <v-expansion-panel-content>
               <div slot="header">Color</div>
-              <v-btn-toggle :options="colorToggleOptions" v-model="colorType"></v-btn-toggle>
-              <div v-show="colorType==='color'">
-                <v-color-picker v-model="color" @change-color="onColorChange"></v-color-picker>
-              </div>
-
-              <div v-show="colorType==='palette'">
-                <painting-palettes></painting-palettes>
-                <palette-chart :palette="palette"></palette-chart>
-              </div>
+              <color-selection :color="color" :palette="palette"></color-selection>
             </v-expansion-panel-content>
             <v-expansion-panel-content>
               <div slot="header">Realtime</div>
@@ -72,15 +64,12 @@
             <v-expansion-panel-content>
               <div slot="header">Controls</div>
               <v-card>
-                <v-card-row class="blue-grey darken-1">
-                  <v-card-title class="white--text">
-                    Map options
-                  </v-card-title>
-                </v-card-row>
+                <v-card-title class="blue-grey darken-2 white--text">
+                  <span class="headline">Map options</span>
+                </v-card-title>
                 <v-card-text>
                   <map-controls ref="mapControls" :map="map" ></map-controls>
                 </v-card-text>
-
               </v-card>
             </v-expansion-panel-content>
             <v-expansion-panel-content>
@@ -125,7 +114,7 @@
 
                   <v-tilelayer url="https://api.tiles.mapbox.com/v4/siggyf.c74e2e04/{z}/{x}/{y}.png?access_token={token}" token="pk.eyJ1Ijoic2lnZ3lmIiwiYSI6Il8xOGdYdlEifQ.3-JZpqwUa3hydjAJFXIlMA"></v-tilelayer>
                 </v-map>
-                <v-btn floating default class="map-button" light small @click.native.stop="sidebar = !sidebar" v-if="settings.sidebar" >
+                <v-btn floating default class="map-button" small @click.native.stop="sidebar = !sidebar" v-if="settings.sidebar" >
                   <v-icon>menu</v-icon>
                 </v-btn>
               </v-card-text>

@@ -97,7 +97,7 @@
     computed: {
       tag: {
         get: function() {
-          return _.get(this, 'model.uv.tag', 'video');
+          return _.get(this.model, 'uv.tag', 'video');
         },
         cache: false
       },

@@ -56,17 +56,6 @@ var bus;
                   chart: true,
                   repository: 'https://rvfqs9rqlc.execute-api.eu-west-1.amazonaws.com/dev/models'
                 },
-                colorToggleOptions: [
-                  {
-                    icon: 'colorize',
-                    value: 'color'
-                  },
-                  {
-                    icon: 'color_lens',
-                    value: 'palette'
-                  }
-                ],
-                colorType: 'color',
                 color: defaultColor,
                 palette: [],
                 pipeline: null,
@@ -79,10 +68,6 @@ var bus;
               return defaults;
             },
             methods: {
-              onColorChange(val) {
-                this.color = val;
-                this.sketch.palette = [val2rgbaString(val)];
-              }
             },
             computed: {
               map: {
@@ -99,7 +84,7 @@ var bus;
               },
               zoom: {
                 get: function() {
-                  return _.get(this, 'model.view.zoom', 5);
+                  return _.get(this.model, 'view.zoom', 5);
                 },
                 cache: false
               },
@@ -108,7 +93,7 @@ var bus;
                   // by default go to 0, 0
                   var center = [0, 0];
                   // if we have an extent look up the center
-                  if (_.has(this, 'model.extent.sw')) {
+                  if (_.has(this.model, 'extent.sw')) {
                     var model = this.model;
                     var sw = L.latLng(model.extent.sw[0], model.extent.sw[1]),
                         ne = L.latLng(model.extent.ne[0], model.extent.ne[1]);
@@ -118,7 +103,7 @@ var bus;
                     ];
                   }
                   // use the model view center if available
-                  center = _.get(this, 'model.view.center', center);
+                  center = _.get(this.model, 'view.center', center);
                   return center;
                 },
                 cache: false
@@ -138,6 +123,10 @@ var bus;
           });
           bus.$on('palette-selected', function(palette){
             Vue.set(app, 'palette', palette);
+          });
+          bus.$on('color-selected', function(val) {
+            this.color = val;
+            this.sketch.palette = [val2rgbaString(val)];
           });
           bus.$on('model-layer-added', function() {
           });
