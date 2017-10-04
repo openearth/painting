@@ -9,8 +9,8 @@
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-            <v-list-tile-sub-title>{{ item.abstract || item.metadata.summary }}</v-list-tile-sub-title>
+            <v-list-tile-title>{{ item.metadata.title }}</v-list-tile-title>
+            <v-list-tile-sub-title>{{ item.metadata.summary }}</v-list-tile-sub-title>
           </v-list-tile-content>
           <v-list-tile-action>
             <v-icon>keyboard_arrow_down</v-icon>
@@ -33,6 +33,7 @@
         </v-list-tile>
       </v-list-group>
       <v-list-tile v-if="item.items.length == 1" avatar >
+        <!-- just show the first item -->
         <v-list-tile-avatar>
           <img :src="lookupIcon(item.items[0])">
         </v-list-tile-avatar>
