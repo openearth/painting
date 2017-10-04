@@ -105,8 +105,8 @@
             url = urljoin(this.repository, url);
           }
         } else if (_.has(model, 'extent.ne')) {
-          let lat = ((model.extent.ne[0] + model.extent.sw[0])/2).toFixed(3);
-          let lon = ((model.extent.ne[1] + model.extent.sw[1])/2).toFixed(3);
+          let lat = ((model.extent.ne[0] + model.extent.sw[0]) / 2).toFixed(3);
+          let lon = ((model.extent.ne[1] + model.extent.sw[1]) / 2).toFixed(3);
           let zoom = _.get(model, 'view.zoom', 10).toFixed(0);
           let urlTemplate = _.template('images/icons/${lat}_${lon}_${zoom}.jpg');
           url = urlTemplate({
