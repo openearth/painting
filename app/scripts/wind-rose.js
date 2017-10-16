@@ -11,6 +11,9 @@
       repository: {
         type: String,
         default: ''
+      },
+      selectingPoint: {
+        type: Boolean
       }
     },
     data: function() {
@@ -65,6 +68,9 @@
       this.updateAxis();
     },
     methods: {
+      selectPoint() {
+        bus.$emit('select-point');
+      },
       updateAxis() {
         var svgElement = this.$el.querySelector('.wind-rose');
         var svg = d3.select(svgElement);
