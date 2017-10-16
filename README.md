@@ -1,7 +1,6 @@
 # Painting
 Painting in numerical models
 
-
 # Getting Started
 
 Make sure you have [node.js](https://nodejs.org/en/) (>=4.0) installed, preferably through your package manager or using nvm.
