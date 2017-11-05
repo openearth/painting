@@ -10,7 +10,7 @@
     "lodash": "*",
     "fetch": "*",
     "fontawesome": "~4.4.0",
-    "pixi.js": "^4.3.0",
+    "pixi.js": "~4.3.0",
     "d3": "~4.2.2",
     "open-sans-fontface": "~1.4.2",
     "scrollmagic": "^2.0.5",
