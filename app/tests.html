@@ -46,15 +46,12 @@
 
         <main>
           <v-container fluid>
-            <v-card>
-              <v-card-text>
-                <wind-rose
-                  :model="mockupModel"
-                  url="http://stathakis-dev.eu-west-1.elasticbeanstalk.com/stathakis/1.0.0/grids/ncep/measurements/wind?lat=52&lon=4&start_time=2017-01-01&end_time=2017-03-03"
-                  >
-                </wind-rose>
-              </v-card-text>
-            </v-card>
+            <wind-rose
+              :model="mockupModel"
+              :lat="52"
+              :lon="3"
+              >
+            </wind-rose>
 
 
 

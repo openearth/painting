@@ -241,6 +241,7 @@ circle.active {
     stroke: $black;
     marker-end: url(#triangle);
     stroke-width: 2px;
-    filter: url(#dropShadow);
+    // this is a bit buggy...
+    // filter: url(#dropShadow);
   }
 }
