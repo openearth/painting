@@ -20,31 +20,14 @@
     }
   });
 
-  Vue.component('realtime-details', {
-    template: '#realtime-details-template',
-    props: {
-      realtime: {
-        type: Object
-      }
-    },
-    methods: {
-      select() {
-        console.log('selecting', this.realtime);
-        // dispatch to parent
-        bus.$emit('realtime-selected', this.realtime);
-      },
-      deselect() {
-        console.log('selecting', null);
-        // dispatch to parent
-        bus.$emit('realtime-selected', null);
-      }
-
-    }
-
-  });
 
   Vue.component('realtime-overview', {
     template: '#realtime-overview-template',
+    props: {
+      model: {
+        type: Object
+      }
+    },
     data: function() {
       return {
         realtime: []
@@ -64,16 +47,38 @@
           this.realtime = json.realtime;
 
         });
+    },
+    watch: {
+      realtime: {
+        handler: function(val, old) {
+          let loaded = _.filter(val, (item) => {return item.loaded;});
+          console.log('loaded', loaded);
+          bus.$emit('realtimes-selected', loaded);
+        },
+        deep: true
+      }
+    },
+    methods: {
+      includes(item, type) {
+        return _.includes(item.types, type);
+      },
+      isGrid(item) {
+        return _.has(item, 'grid');
+      }
     }
   });
 
   Vue.component('realtime-layer', {
     template: '#realtime-layer-template',
+    // realtime can contain both points or a grid
     props: {
       model: {
         type: Object
       },
       realtime: {
+        type: Object
+      },
+      currentPoint: {
         type: Object
       },
       repository: {
@@ -94,18 +99,59 @@
         this.createMarkers();
       },
       realtime() {
-        this.fetchPoints();
+        this.fetchData();
+      },
+      currentPoint() {
+        if (_.has(this.realtime, 'grid')) {
+          this.fetchGrid();
+        }
       }
     },
     components: {
       'station-icon': StationIcon
     },
     mounted() {
-      this.fetchPoints();
+      if (_.isNil(this.layerGroup)) {
+        this.deferredMountedTo(this.$parent.mapObject);
+      }
+      this.fetchData();
     },
     computed: {
     },
     methods: {
+      fetchData() {
+        if (_.has(this.realtime, 'points')) {
+          this.fetchPoints();
+        }
+        if (_.has(this.realtime, 'grid')) {
+          this.fetchGrid();
+        }
+      },
+      fetchGrid() {
+        let url = this.realtime.grid;
+        console.log('adding points to', this, 'for model', this.model);
+        let N = 10;
+        let s = this.model.extent.sw[0];
+        let w = this.model.extent.sw[1];
+        let n = this.model.extent.ne[0];
+        let e = this.model.extent.ne[1];
+        let lats = _.range(s, n, (n-s)/ N);
+        let lons = _.range(w, e, (e-w)/ N);
+        let markers = [];
+        _.each(lats, function(lat) {
+          _.each(lons, function(lon) {
+            let marker = L.marker([lat, lon]);
+            marker.properties = {
+              selected: false,
+              grid: url
+            };
+            markers.push(marker);
+          });
+        });
+        let featureGroup = L.featureGroup(markers);
+        Vue.set(this, 'points', featureGroup.toGeoJSON());
+
+      },
       fetchPoints() {
 
         if (_.isNil(this.realtime)) {

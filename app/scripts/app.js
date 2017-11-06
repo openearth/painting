@@ -60,7 +60,10 @@ var bus;
                 palette: [],
                 pipeline: null,
                 model: null,
-                realtime: null,
+                realtimes: [],
+                currentRealtime: null,
+                currentPoint: null,
+                addingPoint: false,
                 sketch: null,
                 sidebar: false
               };
@@ -68,6 +71,11 @@ var bus;
               return defaults;
             },
             methods: {
+              addPoint(evt) {
+                console.log('adding point selected in app', evt);
+                bus.$emit('point-added', evt);
+                this.addingPoint = false;
+              }
             },
             computed: {
               map: {
@@ -78,7 +86,7 @@ var bus;
               },
               chart: {
                 get() {
-                  return _.isObjectLike(this.realtime);
+                  return _.isObjectLike(this.currentRealtime);
                 },
                 cache: false
               },
@@ -114,11 +122,18 @@ var bus;
           bus.$on('model-selected', function(model) {
             // set the model in the app
             Vue.set(app, 'model', model);
+            Vue.set(app, 'currentPoint', L.latLng(app.center));
             // this propagates to the components on the next tick
           });
-          bus.$on('realtime-selected', function(realtime) {
+          bus.$on('realtimes-selected', function(realtimes) {
             // set the realtime in the app
-            Vue.set(app, 'realtime', realtime);
+            Vue.set(app, 'realtimes', realtimes);
+            if (realtimes.length > 0) {
+              Vue.set(app, 'currentRealtime', realtimes[0]);
+            } else {
+              Vue.set(app, 'currentRealtime', null);
+            }
+
             // this propagates to the components on the next tick
           });
           bus.$on('palette-selected', function(palette){
@@ -135,6 +150,9 @@ var bus;
           });
           bus.$on('pipeline-created', function(pipeline) {
             Vue.set(app, 'pipeline', pipeline);
+          });
+          bus.$on('adding-point', function(points) {
+            Vue.set(app, 'addingPoint', true);
           });
         });
   });
