@@ -8,75 +8,102 @@
       model: {
         type: Object
       },
-      repository: {
+      lat: {
+        type: Number
+      },
+      lon: {
+        type: Number
+      },
+      // u and v timeseries (begin and end time will be filled in from model extent)
+      url: {
         type: String,
-        default: ''
+        default: 'http://stathakis-dev.eu-west-1.elasticbeanstalk.com/stathakis/1.0.0/grids/ncep/measurements/wind?lat=${lat}&lon=${lon}&start_time=${startTime}&end_time=${endTime}'
       }
     },
     data: function() {
       return {
+        // timeseries with dateTime (iso), u, v
         series: [],
+        arrow: null,
         path: null,
-        line: null
+        svg: null
       };
     },
     watch: {
-      'model.realtime': {
-        handler: function() {
-          this.updateWindSeries();
-        },
-        deep: true
-      },
       'model.currentTime': function(time) {
-
         if (!this.series.length) {
           // no data yet...
           return;
         }
 
-        var date0 = moment(this.model.extent.time[0]);
-        var date1 = moment(this.model.extent.time[1]);
+        let startDate = moment(this.model.extent.time[0]);
+        let endDate = moment(this.model.extent.time[1]);
         // miliseconds
-        var dateDiff = date1 - date0;
-        var relativeDuration = time / _.get(this.model, 'duration', 1);
-        var currentDate = date0 + (relativeDuration * dateDiff);
-        var bisect = d3.bisector(function(d) { return d.date; }).left;
+        let dateDiff = endDate - startDate;
+        let relativeDuration = time / _.get(this.model, 'duration', 1);
+        let currentDate = startDate + (relativeDuration * dateDiff);
+        let bisect = d3.bisector(function(d) { return d.date; }).left;
         // in case bisect is longer than timeries clamp it
-        var rowIndex = _.clamp(bisect(this.series, currentDate), 0, this.series.length - 1);
-
-        var row = this.series[rowIndex];
+        let rowIndex = _.clamp(bisect(this.series, currentDate), 0, this.series.length - 1);
+        let row = this.series[rowIndex];
         this.arrow
           .datum([{u: 0, v: 0}, row])
           .transition()
           .attr('d', this.line);
+        let selection = _.slice(this.series, 0, rowIndex + 1);
+        this.path
+          .datum(
+            selection
+          )
+          .transition()
+          .duration(500)
+          .attr('d', this.line);
+
 
       },
       series: function(series) {
-        this.path
-          .datum(series)
-          .attr('class', 'line')
-          .attr('d', this.line);
+        this.updateAxis();
       }
     },
     mounted: function(){
-      if (!_.isNil(this.model) && _.has(this.model, 'realtime.wind')) {
+      let svgElement = this.$el.querySelector('.wind-rose');
+      let svg = d3.select(svgElement);
+      this.svg = svg;
+      if (!_.isNil(this.model) && this.url) {
         this.updateWindSeries();
       }
       this.updateAxis();
     },
     methods: {
+      changeLocation(evt) {
+        console.log('evt', evt);
+      },
       updateAxis() {
-        var svgElement = this.$el.querySelector('.wind-rose');
-        var svg = d3.select(svgElement);
-        var width = 246;
-        var height = 246;
+        let svg = this.svg;
+
+        // todo, replace by client height
+        var width = 280;
+        var height = 280;
+
+        svg
+          .attr('width', width)
+          .attr('height', height);
 
         // Based on: https://bl.ocks.org/mbostock/4583749
-        var radius = Math.min(width, height) / 2 - 30;
+        var radius = Math.min(width, height) / 2 - 48;
+        var magMax = 10.0;
+        if (this.series.length) {
+          var mag = _.map(this.series, (d) => {
+            return Math.sqrt(
+              Math.pow(d.u, 2) + Math.pow(d.v, 2)
+            );
+          });
+          magMax = _.max(mag);
 
+        }
 
         var rScale = d3.scaleLinear()
-            .domain([0, 10.0])
+            .domain([0, magMax])
             .range([0, radius]);
         var line = d3.radialLine()
             .radius(function(d) {
@@ -90,27 +117,32 @@
         this.line = line;
 
 
-        svg
-          .attr('width', width)
-          .attr('height', height);
 
         var g = svg
-          .append('g')
-          .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
+            .select('#chart')
+            .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
-        var gr = g.append('g')
-          .attr('class', 'r axis')
-          .selectAll('g')
+        // remove old axis
+        g.select('g.r.axis')
+          .selectAll('*')
+          .remove();
+        var gr = g.select('g.r.axis')
+            .selectAll('g')
             .data(
               rScale
-                .ticks(5)
+                .ticks(3)
                 .slice(1)
             )
             .enter()
             .append('g');
+
+        // cleanup old circles
+        gr.selectAll('circle').remove();
         gr.append('circle')
           .attr('r', rScale);
 
+        // clean up old texts
+        gr.selectAll('text').remove();
         gr.append('text')
           .attr('y', function(d) { return -rScale(d) - 4; })
           .attr('transform', 'rotate(15)')
@@ -120,8 +152,7 @@
           });
 
 
-        var ga = g.append('g')
-            .attr('class', 'a axis')
+        var ga = g.select('g.a.axis')
             .selectAll('g')
             .data(d3.range(0, 360, 30))
             .enter()
@@ -140,33 +171,44 @@
           .text(function(d) { return d + '°'; });
 
 
-        var path = g.append('path')
-            .datum(this.series)
-            .attr('class', 'line')
+        // start with empty path (let it draw)
+        var path = g.select('path.line')
+            .datum([])
             .attr('d', line);
         this.path = path;
 
-        var arrow = g
-            .append('path')
-            .attr('class', 'arrow');
+        var arrow = g.select('path.arrow');
         this.arrow = arrow;
       },
       updateWindSeries() {
-        var url = this.model.realtime.wind;
-        if (this.repository !== '') {
-          url = urljoin(this.repository, this.model.realtime.wind);
-        }
-        fetch(url)
+
+        let startTime = moment(this.model.extent.time[0]).toISOString();
+        let endTime = moment(this.model.extent.time[1]).toISOString();
+        console.log('url', this.url);
+        let compiled = _.template(this.url);
+        let filledUrl = compiled({
+          lat: this.lat,
+          lon: this.lon,
+          startTime: startTime,
+          endTime: endTime
+        });
+        console.log('filled', filledUrl);
+
+        fetch(filledUrl)
           .then((resp) => {
+            console.log('resp', resp);
             return resp.json();
           })
-          .then((json) => {
-            _.each(json, (row) => {
-              row.date = moment.utc(row.t);
+          .then((data) => {
+            this.series = data.series;
+            _.each(this.series, (row) => {
+              // parse date
+              row.date = moment(row.dateTime);
             });
-            Vue.set(this, 'series', json);
           });
+
       }
+
     }
   });
-})();
+}());
