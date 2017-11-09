@@ -37,7 +37,7 @@
         bus.$emit('color-selected', val);
       },
       onPaintingSelected: function(painting) {
-        Vue.set(this, 'painting',  painting);
+        Vue.set(this, 'painting', painting);
       }
     }
   });
@@ -96,22 +96,15 @@
           return d3.select('#palette').select('svg');
         },
         cache: false
-      },
-      selectedColors: {
-        get: function() {
-          // Select all colors
-          let colors = [];
-          this.svg.selectAll('circle.active').each(function(d){
-            var color = d3.rgb(d.rgb[0] * 255, d.rgb[1] * 255, d.rgb[2] * 255);
-            colors.push(color);
-          });
-          return colors;
-        }
       }
     },
     methods: {
       selectPalette() {
-        let colors = this.selectedColors;
+        let colors = [];
+        d3.select('#palette').select('svg').selectAll('circle.active').each(function(d){
+          var color = d3.rgb(d.rgb[0] * 255, d.rgb[1] * 255, d.rgb[2] * 255);
+          colors.push(color);
+        });
         bus.$emit('palette-selected', colors);
       },
       deselectAll() {
