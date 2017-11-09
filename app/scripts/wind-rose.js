@@ -75,8 +75,8 @@
       this.updateAxis();
     },
     methods: {
-      changeLocation(evt) {
-        console.log('evt', evt);
+      selectPoint() {
+        bus.$emit('select-point');
       },
       updateAxis() {
         let svg = this.svg;

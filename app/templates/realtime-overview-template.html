@@ -1,7 +1,31 @@
 <template id="realtime-overview-template" >
-  <div>
-    <div v-for="el in realtime" class="realtime" :id="el.id">
-      <realtime-details :realtime="el" ></realtime-details>
-    </div>
-  </div>
+
+  <v-list two-line>
+    <template v-for="item in realtime" class="realtime" :id="item.id">
+      <v-list-tile
+        avatar
+        :key="item.title"
+        >
+        <v-list-tile-avatar>
+          <div>
+            <i class="icon wi wi-strong-wind" v-if="includes(item, 'wind')" title="wind"></i>
+            <i class="icon wi wi-flood" v-if="includes(item, 'waterlevel')" title="waterlevel"></i>
+          </div>
+        </v-list-tile-avatar>
+        <v-list-tile-content>
+          <v-list-tile-title>
+            <span>{{ item.title }}</span>
+          </v-list-tile-title>
+          <v-list-tile-sub-title>
+            {{ item.abstract }}
+          </v-list-tile-sub-title>
+          <!-- <realtime-details :realtime="item" ></realtime-details> -->
+        </v-list-tile-content>
+        <v-list-tile-action>
+          <v-switch v-model="item.loaded" style="flex: 0;"></v-switch>
+
+        </v-list-tile-action>
+      </v-list-tile>
+    </template>
+  </v-list>
 </template>

@@ -1,10 +1,25 @@
 {
   "realtime": [
     {
-      "title": "waterinfo",
-      "abstract": "Water info",
+      "title": "Waterinfo",
+      "abstract": "Rijkswaterstaat waterinfo",
+      "types": ["waterlevel"],
       "points": "https://tr4e0lb583.execute-api.us-east-1.amazonaws.com/dev/points",
       "details": "https://tr4e0lb583.execute-api.us-east-1.amazonaws.com/dev/details/${location}"
+    },
+    {
+      "title": "Waterinfo",
+      "abstract": "Rijkswaterstaat station information from data distribution layer",
+      "types": ["waterlevel"],
+      "points": "http://stathakis-dev.eu-west-1.elasticbeanstalk.com/stathakis/1.0.0/stations/rws/waterlevel",
+      "details": "http://stathakis-dev.eu-west-1.elasticbeanstalk.com/stathakis/1.0.0/stations/rws/${location}/measurements/waterlevel"
+    },
+    {
+      "title": "NCEP",
+      "abstract": "ncep reanalysis from NOAA",
+      "types": ["wind"],
+      "grid": "http://stathakis-dev.eu-west-1.elasticbeanstalk.com/stathakis/1.0.0/grids/ncep/wind",
+      "details": "http://stathakis-dev.eu-west-1.elasticbeanstalk.com/stathakis/1.0.0/grids/ncep/measurements/wind?lat=${lat}&lon=${lon}&start_time=${start_time}&end_time=${end_time}"
     }
   ]
 }
