@@ -78,6 +78,9 @@
       realtime: {
         type: Object
       },
+      currentPoint: {
+        type: Object
+      },
       repository: {
         type: String,
         default: ''
