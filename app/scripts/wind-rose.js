@@ -18,6 +18,9 @@
       url: {
         type: String,
         default: 'http://stathakis-dev.eu-west-1.elasticbeanstalk.com/stathakis/1.0.0/grids/ncep/measurements/wind?lat=${lat}&lon=${lon}&start_time=${startTime}&end_time=${endTime}'
+      },
+      selectingPoint: {
+        type: Boolean
       }
     },
     data: function() {
@@ -75,8 +78,8 @@
       this.updateAxis();
     },
     methods: {
-      changeLocation(evt) {
-        console.log('evt', evt);
+      selectPoint() {
+        bus.$emit('select-point');
       },
       updateAxis() {
         let svg = this.svg;

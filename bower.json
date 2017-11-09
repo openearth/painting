@@ -23,7 +23,9 @@
     "Leaflet.awesome-markers": "^2.0.2",
     "leaflet.markercluster": "Leaflet.markercluster#^1.0.2",
     "url-join": "^1.1.0",
-    "moment": "^2.17.1"
+    "moment": "^2.17.1",
+    "Leaflet.MakiMarkers": "^3.1.0",
+    "weather-icons": "^2.0.10"
   },
   "overrides": {
     "vue-color": {
