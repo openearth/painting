@@ -8,11 +8,8 @@
       model: {
         type: Object
       },
-      lat: {
-        type: Number
-      },
-      lon: {
-        type: Number
+      currentPoint: {
+        type: Object
       },
       // u and v timeseries (begin and end time will be filled in from model extent)
       url: {
@@ -73,6 +70,37 @@
         this.updateWindSeries();
       }
       this.updateAxis();
+    },
+    computed: {
+      lat() {
+        let lat = 0.0;
+        if (!_.isNil(this.currentPoint)) {
+          // use current point if available
+          lat = this.currentPoint.lat;
+        }
+        if (_.has(this.model, 'extent.sw')) {
+          // use model extent
+          lat = (this.model.extent.sw[0] + this.model.extent.ne[0])/2.0;
+        }
+        return lat;
+      },
+      lon() {
+        let lon = 0.0;
+        if (!_.isNil(this.currentPoint)) {
+          lon = this.currentPoint.lng;
+        }
+        if (_.has(this.model, 'extent.sw')) {
+          lon = (this.model.extent.sw[1] + this.model.extent.ne[1])/2.0;
+        }
+        return lon;
+      },
+      displayLatLng() {
+        let template = _.template('${lat}&deg;N, ${lon}&deg;E');
+        return template({
+          lat: this.lat.toFixed(3),
+          lon: this.lon.toFixed(3)
+        });
+      }
     },
     methods: {
       selectPoint() {

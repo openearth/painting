@@ -3,7 +3,7 @@
     <v-card-title class="blue-grey darken-2 white--text">
       <div>
         <h3 class="headline mb-0">Wind direction </h3>
-        <div @click.prevent="changeLocation">{{ lat }}&deg;N, {{ lon }}&deg;E</div>
+        <div v-html="displayLatLng"></div>
       </div>
     </v-card-title>
     <v-card-media>
@@ -21,8 +21,8 @@
                 markerWidth="8"
                 markerHeight="6"
                 orient="auto">
-			    <path d="M 0 0 L 20 10 L 0 20 z"/>
-		    </marker>
+          <path d="M 0 0 L 20 10 L 0 20 z"/>
+        </marker>
         <g id="chart">
           <!-- radial axis -->
           <g class="r axis"></g>
@@ -35,6 +35,9 @@
         </g>
       </svg>
     </v-card-media>
+    <v-card-actions>
+      <v-btn flat @click="selectPoint">select point</v-btn>
+    </v-card-actions>
   </v-card>
 
 </template>

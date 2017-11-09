@@ -38,10 +38,25 @@
     },
     data: function() {
       return {
-        models: []
+        models: [],
+        icons: {
+          default: "http://www.openearth.nl/painting/images/icons/deltares.png"
+        }
       };
     },
     mounted: function() {
+
+      // get model icons
+      var url = 'data/icons.json';
+      fetch(url, {mode: 'cors'})
+        .then((response) => {
+          return response.json();
+        })
+        .then((json) => {
+          // lookup icons
+          this.icons = json;
+        });
+
       // get models.json
       var url = 'data/models.json';
       if (this.repository !== '') {
@@ -98,23 +113,19 @@
       lookupIcon(model) {
         // icon is icons/lat_lon_zoom.jpg
         // default icon
-        let url = 'gear';
+        let url = this.icons.default;
         if (_.has(model, 'metadata.icon')) {
           url = model.metadata.icon;
           if (this.repository) {
             url = urljoin(this.repository, url);
           }
-        } else if (_.has(model, 'extent.ne')) {
-          let lat = ((model.extent.ne[0] + model.extent.sw[0]) / 2).toFixed(3);
-          let lon = ((model.extent.ne[1] + model.extent.sw[1]) / 2).toFixed(3);
-          let zoom = _.get(model, 'view.zoom', 10).toFixed(0);
-          let urlTemplate = _.template('images/icons/${lat}_${lon}_${zoom}.jpg');
-          url = urlTemplate({
-            lat: lat,
-            lon: lon,
-            zoom: zoom
-          });
-
+        } else {
+          if (_.has(this.icons, model.metadata.title)) {
+            url = this.icons[model.metadata.title];
+          }
+          if (_.has(this.icons, model.id)) {
+            url = this.icons[model.id];
+          }
         }
         return url;
 
