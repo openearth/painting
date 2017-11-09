@@ -17,7 +17,7 @@
     "jssor-slider": "jssor#^21.1.5",
     "Vue2Leaflet": "SiggyF/Vue2Leaflet#6a8ecb5631f65a10f91df2016a324d92e61b1c1e",
     "vuetify": "vuetifyjs/vuetify#8e3eec8ae0ed4f078693109bd7659d359e69979b",
-    "vue-color": "xiaokaike/vue-color#ea970d4ed0c77e9534aec77ffecde5f9c2238473",
+    "vue-color": "xiaokaike/vue-color#e903fc2200d14e956855b609827bf15499a55c32",
     "material-design-icons": "^3.0.1",
     "roboto-fontface": "^0.6.0",
     "Leaflet.awesome-markers": "^2.0.2",

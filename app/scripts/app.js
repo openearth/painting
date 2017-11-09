@@ -140,8 +140,8 @@ var bus;
             Vue.set(app, 'palette', palette);
           });
           bus.$on('color-selected', function(val) {
-            this.color = val;
-            this.sketch.palette = [val2rgbaString(val)];
+            Vue.set(app, 'color', val);
+            Vue.set(app.sketch, 'palette', [val2rgbaString(val)]);
           });
           bus.$on('model-layer-added', function() {
           });

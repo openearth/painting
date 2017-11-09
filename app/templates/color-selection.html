@@ -15,7 +15,7 @@
       <v-tabs-content id="single-color">
         <v-card>
           <v-card-text>
-            <v-color-picker v-model="color" @change-color="onColorChange"></v-color-picker>
+            <v-color-picker :value="color" @input="onColorChange"></v-color-picker>
           </v-card-text>
 
         </v-card>
