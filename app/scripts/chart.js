@@ -34,40 +34,6 @@
           // data is in the feature
           Vue.set(this, 'series', [feature.properties.series]);
         }
-        else if (_.has(feature, 'properties.grid')) {
-          // we have a repository
-          let point = feature.geometry;
-
-          if (this.repository !== '') {
-            if (!url.startsWith('http')) {
-              url = urljoin(this.repository, url);
-            }
-          }
-          if (_.isNil(point)) {
-            console.log('not fetching grid, no point set');
-            return;
-          }
-
-          let params = {
-            lat: point.lat,
-            lon: point.lng,
-            start_time: this.model.extent.time[0],
-            end_time: this.model.extent.time[1]
-          };
-          // fill in params
-          url = _.template(url)(params);
-          console.log('fetching', url);
-          fetch(url)
-            .then((resp) => {
-              return resp.json();
-            })
-            .then((json) => {
-              // add to the points
-              Vue.set(this, 'series', json);
-
-            });
-
-        }
         else if (_.has(feature, 'properties.locationCode'))
         {
           // get the url

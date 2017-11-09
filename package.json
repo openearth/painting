@@ -67,7 +67,8 @@
         2,
         "single",
         "avoid-escape"
-      ]
+      ],
+      "no-console": false
     }
   },
   "dependencies": {}

@@ -1,7 +1,7 @@
-/* global Vue2Leaflet, Vuetify, urlParams, val2rgbaString  */
-// app is global, prefer to use this.$root
-var app;
+/* global Vuetify, mockupModel  */
+
 var bus;
+var app;
 
 (function () {
   'use strict';
@@ -34,11 +34,8 @@ var bus;
             computed: {
             }
           });
+          bus.$emit('app-loaded', app);
 
         });
   });
-
-
-
-
 }());

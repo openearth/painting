@@ -50,8 +50,10 @@
     },
     watch: {
       realtime: {
-        handler: function(val, old) {
-          let loaded = _.filter(val, (item) => {return item.loaded;});
+        handler: function(val) {
+          let loaded = _.filter(val, (item) => {
+            return item.loaded;
+          });
           console.log('loaded', loaded);
           bus.$emit('realtimes-selected', loaded);
         },

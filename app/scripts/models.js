@@ -40,15 +40,15 @@
       return {
         models: [],
         icons: {
-          default: "http://www.openearth.nl/painting/images/icons/deltares.png"
+          default: 'http://www.openearth.nl/painting/images/icons/deltares.png'
         }
       };
     },
     mounted: function() {
 
       // get model icons
-      var url = 'data/icons.json';
-      fetch(url, {mode: 'cors'})
+      var iconUrl = 'data/icons.json';
+      fetch(iconUrl, {mode: 'cors'})
         .then((response) => {
           return response.json();
         })
@@ -58,17 +58,17 @@
         });
 
       // get models.json
-      var url = 'data/models.json';
+      var modelsUrl = 'data/models.json';
       if (this.repository !== '') {
         // TODO: use absolute links
         if (!this.repository.endsWith('models')) {
-          url = urljoin(this.repository, 'models.json');
+          modelsUrl = urljoin(this.repository, 'models.json');
         } else {
-          url = this.repository;
+          modelsUrl = this.repository;
         }
 
       }
-      fetch(url, {mode: 'cors'})
+      fetch(modelsUrl, {mode: 'cors'})
         .then((response) => {
           return response.json();
         })

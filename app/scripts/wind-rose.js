@@ -1,4 +1,4 @@
-/* global */
+/* global bus */
 (function () {
   'use strict';
 
@@ -62,10 +62,10 @@
 
 
       },
-      currentPoint: function(pt) {
+      currentPoint: function() {
         this.updateWindSeries();
       },
-      series: function(series) {
+      series: function() {
         this.updateAxis();
       }
     },
@@ -93,13 +93,11 @@
       },
       displayLatLng: {
         get() {
-          {
-            let template = _.template('${lat}&deg;N, ${lon}&deg;E');
-            return template({
-              lat: this.lat.toFixed(3),
-              lon: this.lon.toFixed(3)
-            });
-          }
+          let template = _.template('${lat}&deg;N, ${lon}&deg;E');
+          return template({
+            lat: this.lat.toFixed(3),
+            lon: this.lon.toFixed(3)
+          });
         },
         cache: false
       }

@@ -110,9 +110,6 @@ void main(void)
      */
     apply(filterManager, input, output)
     {
-      if (_.isNaN(this.maskSprite.worldTransform.a)) {
-        console.warn('aaahh');
-      }
       const ratio = (1 / output.destinationFrame.width) * (output.size.width / input.size.width);
       this.uniforms.filterMatrix = filterManager.calculateSpriteMatrix(this.maskMatrix, this.maskSprite);
       this.uniforms.scale.x = this.scale.x * ratio;

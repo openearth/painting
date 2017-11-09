@@ -73,7 +73,6 @@ var bus;
             },
             methods: {
               pointSelected(evt) {
-                console.log('selected point', evt);
                 bus.$emit('point-selected', evt.latlng);
                 this.selectingPoint = false;
               }
@@ -126,7 +125,6 @@ var bus;
           });
           bus.$on('point-selected', function(latLng) {
             Vue.set(app, 'currentPoint', latLng);
-            console.log('selected point', app.currentPoint);
           });
           bus.$on('model-selected', function(model) {
             // set the model in the app
@@ -159,9 +157,6 @@ var bus;
           });
           bus.$on('pipeline-created', function(pipeline) {
             Vue.set(app, 'pipeline', pipeline);
-          });
-          bus.$on('adding-point', function(points) {
-            Vue.set(app, 'addingPoint', true);
           });
         });
   });
