@@ -66,6 +66,9 @@
       }
     },
     methods: {
+      selectPoint() {
+        console.log('selecting point');
+      },
       lockMap: function() {
         var map = this.map;
         // Disable drag and zoom handlers.

@@ -78,9 +78,6 @@
       realtime: {
         type: Object
       },
-      currentPoint: {
-        type: Object
-      },
       repository: {
         type: String,
         default: ''
@@ -100,11 +97,6 @@
       },
       realtime() {
         this.fetchData();
-      },
-      currentPoint() {
-        if (_.has(this.realtime, 'grid')) {
-          this.fetchGrid();
-        }
       }
     },
     components: {
@@ -123,34 +115,6 @@
         if (_.has(this.realtime, 'points')) {
           this.fetchPoints();
         }
-        if (_.has(this.realtime, 'grid')) {
-          this.fetchGrid();
-        }
-      },
-      fetchGrid() {
-        let url = this.realtime.grid;
-        console.log('adding points to', this, 'for model', this.model);
-        let N = 10;
-        let s = this.model.extent.sw[0];
-        let w = this.model.extent.sw[1];
-        let n = this.model.extent.ne[0];
-        let e = this.model.extent.ne[1];
-        let lats = _.range(s, n, (n-s)/ N);
-        let lons = _.range(w, e, (e-w)/ N);
-        let markers = [];
-        _.each(lats, function(lat) {
-          _.each(lons, function(lon) {
-            let marker = L.marker([lat, lon]);
-            marker.properties = {
-              selected: false,
-              grid: url
-            };
-            markers.push(marker);
-          });
-        });
-        let featureGroup = L.featureGroup(markers);
-        Vue.set(this, 'points', featureGroup.toGeoJSON());
-
       },
       fetchPoints() {
 

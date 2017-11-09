@@ -6,8 +6,12 @@
         <div v-html="displayLatLng"></div>
       </div>
     </v-card-title>
+    <v-card-text>
+      <v-progress-circular v-show="loading" indeterminate color="primary"></v-progress-circular>
+    </v-card-text>
     <v-card-media>
-      <svg class="wind-rose">
+
+      <svg class="wind-rose" v-show="!loading">
         <filter
           id="dropShadow"
           >

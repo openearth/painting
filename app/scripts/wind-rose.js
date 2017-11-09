@@ -23,7 +23,8 @@
         series: [],
         arrow: null,
         path: null,
-        svg: null
+        svg: null,
+        loading: false
       };
     },
     watch: {
@@ -58,6 +59,9 @@
 
 
       },
+      currentPoint: function(pt) {
+        this.updateWindSeries();
+      },
       series: function(series) {
         this.updateAxis();
       }
@@ -72,34 +76,29 @@
       this.updateAxis();
     },
     computed: {
-      lat() {
-        let lat = 0.0;
-        if (!_.isNil(this.currentPoint)) {
-          // use current point if available
-          lat = this.currentPoint.lat;
-        }
-        if (_.has(this.model, 'extent.sw')) {
-          // use model extent
-          lat = (this.model.extent.sw[0] + this.model.extent.ne[0])/2.0;
-        }
-        return lat;
+      lat: {
+        get() {
+          return this.currentPoint.lat;
+        },
+        cache: false
       },
-      lon() {
-        let lon = 0.0;
-        if (!_.isNil(this.currentPoint)) {
-          lon = this.currentPoint.lng;
-        }
-        if (_.has(this.model, 'extent.sw')) {
-          lon = (this.model.extent.sw[1] + this.model.extent.ne[1])/2.0;
-        }
-        return lon;
+      lon: {
+        get() {
+          return this.currentPoint.lng;
+        },
+        cache: false
       },
-      displayLatLng() {
-        let template = _.template('${lat}&deg;N, ${lon}&deg;E');
-        return template({
-          lat: this.lat.toFixed(3),
-          lon: this.lon.toFixed(3)
-        });
+      displayLatLng: {
+        get() {
+          {
+            let template = _.template('${lat}&deg;N, ${lon}&deg;E');
+            return template({
+              lat: this.lat.toFixed(3),
+              lon: this.lon.toFixed(3)
+            });
+          }
+        },
+        cache: false
       }
     },
     methods: {
@@ -209,7 +208,7 @@
         this.arrow = arrow;
       },
       updateWindSeries() {
-
+        this.loading = true;
         let startTime = moment(this.model.extent.time[0]).toISOString();
         let endTime = moment(this.model.extent.time[1]).toISOString();
         console.log('url', this.url);
@@ -233,6 +232,7 @@
               // parse date
               row.date = moment(row.dateTime);
             });
+            this.loading = false;
           });
 
       }

@@ -91,7 +91,7 @@
             </v-expansion-panel-content>
             <v-expansion-panel-content v-if="model">
               <div slot="header">Wind rose</div>
-              <wind-rose :model="model"></wind-rose>
+              <wind-rose :model="model" :current-point="currentPoint"></wind-rose>
 
             </v-expansion-panel-content>
 
@@ -104,7 +104,7 @@
                 <v-map ref="map" :class="{'sidebar-map': settings.sidebar}" :zoom="zoom" :center="center">
 
                   <toggle-controls :sketch="sketch"></toggle-controls>
-                  <v-marker draggable :lat-lng="currentPoint" :visible="addingPoint" @l-click="addPoint"></v-marker>
+                  <v-marker draggable :lat-lng="currentPoint" :visible="selectingPoint" @l-click="pointSelected"></v-marker>
 
 
                   <template v-for="item in realtimes" >
