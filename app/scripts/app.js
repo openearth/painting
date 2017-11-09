@@ -62,8 +62,9 @@ var bus;
                 model: null,
                 realtimes: [],
                 currentRealtime: null,
+                // current point can be changed by changing selectingPoint to active, this will show the currentPoint layer
                 currentPoint: null,
-                addingPoint: false,
+                selectingPoint: false,
                 sketch: null,
                 sidebar: false
               };
@@ -71,10 +72,10 @@ var bus;
               return defaults;
             },
             methods: {
-              addPoint(evt) {
-                console.log('adding point selected in app', evt);
-                bus.$emit('point-added', evt);
-                this.addingPoint = false;
+              pointSelected(evt) {
+                console.log('selected point', evt);
+                bus.$emit('point-selected', evt.latlng);
+                this.selectingPoint = false;
               }
             },
             computed: {
@@ -119,6 +120,14 @@ var bus;
             }
           });
 
+          // these are some global event listeners that know about bus and app
+          bus.$on('select-point', function() {
+            Vue.set(app, 'selectingPoint', true);
+          });
+          bus.$on('point-selected', function(latLng) {
+            Vue.set(app, 'currentPoint', latLng);
+            console.log('selected point', app.currentPoint);
+          });
           bus.$on('model-selected', function(model) {
             // set the model in the app
             Vue.set(app, 'model', model);
@@ -140,8 +149,8 @@ var bus;
             Vue.set(app, 'palette', palette);
           });
           bus.$on('color-selected', function(val) {
-            this.color = val;
-            this.sketch.palette = [val2rgbaString(val)];
+            Vue.set(app, 'color', val);
+            Vue.set(app.sketch, 'palette', [val2rgbaString(val)]);
           });
           bus.$on('model-layer-added', function() {
           });

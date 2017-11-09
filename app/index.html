@@ -60,6 +60,9 @@
             <v-expansion-panel-content>
               <div slot="header">Color</div>
               <color-selection :color="color" :palette="palette"></color-selection>
+
+
+
             </v-expansion-panel-content>
             <v-expansion-panel-content>
               <div slot="header">Timeseries</div>
@@ -86,10 +89,9 @@
               <canvas id="canvas-icon" width="10" height="10"></canvas>
 
             </v-expansion-panel-content>
-            <v-expansion-panel-content v-if="model && currentRealtime">
+            <v-expansion-panel-content v-if="model">
               <div slot="header">Wind rose</div>
-              <wind-rose :model="model" :realtime="currentRealtime" :repository="settings.repository"></wind-rose>
-
+              <wind-rose :model="model" :current-point="currentPoint"></wind-rose>
             </v-expansion-panel-content>
 
           </v-expansion-panel>
@@ -101,7 +103,7 @@
                 <v-map ref="map" :class="{'sidebar-map': settings.sidebar}" :zoom="zoom" :center="center">
 
                   <toggle-controls :sketch="sketch"></toggle-controls>
-                  <v-marker draggable :lat-lng="currentPoint" :visible="addingPoint" @l-click="addPoint"></v-marker>
+                  <v-marker draggable :lat-lng="currentPoint" :visible="selectingPoint" @l-click="pointSelected"></v-marker>
 
 
                   <template v-for="item in realtimes" >

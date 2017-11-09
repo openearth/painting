@@ -8,11 +8,8 @@
       model: {
         type: Object
       },
-      lat: {
-        type: Number
-      },
-      lon: {
-        type: Number
+      currentPoint: {
+        type: Object
       },
       // u and v timeseries (begin and end time will be filled in from model extent)
       url: {
@@ -29,7 +26,8 @@
         series: [],
         arrow: null,
         path: null,
-        svg: null
+        svg: null,
+        loading: false
       };
     },
     watch: {
@@ -64,6 +62,9 @@
 
 
       },
+      currentPoint: function(pt) {
+        this.updateWindSeries();
+      },
       series: function(series) {
         this.updateAxis();
       }
@@ -76,6 +77,32 @@
         this.updateWindSeries();
       }
       this.updateAxis();
+    },
+    computed: {
+      lat: {
+        get() {
+          return this.currentPoint.lat;
+        },
+        cache: false
+      },
+      lon: {
+        get() {
+          return this.currentPoint.lng;
+        },
+        cache: false
+      },
+      displayLatLng: {
+        get() {
+          {
+            let template = _.template('${lat}&deg;N, ${lon}&deg;E');
+            return template({
+              lat: this.lat.toFixed(3),
+              lon: this.lon.toFixed(3)
+            });
+          }
+        },
+        cache: false
+      }
     },
     methods: {
       selectPoint() {
@@ -184,7 +211,7 @@
         this.arrow = arrow;
       },
       updateWindSeries() {
-
+        this.loading = true;
         let startTime = moment(this.model.extent.time[0]).toISOString();
         let endTime = moment(this.model.extent.time[1]).toISOString();
         console.log('url', this.url);
@@ -208,6 +235,7 @@
               // parse date
               row.date = moment(row.dateTime);
             });
+            this.loading = false;
           });
 
       }

@@ -3,11 +3,15 @@
     <v-card-title class="blue-grey darken-2 white--text">
       <div>
         <h3 class="headline mb-0">Wind direction </h3>
-        <div @click.prevent="changeLocation">{{ lat }}&deg;N, {{ lon }}&deg;E</div>
+        <div v-html="displayLatLng"></div>
       </div>
     </v-card-title>
+    <v-card-text>
+      <v-progress-circular v-show="loading" indeterminate color="primary"></v-progress-circular>
+    </v-card-text>
     <v-card-media>
-      <svg class="wind-rose">
+
+      <svg class="wind-rose" v-show="!loading">
         <filter
           id="dropShadow"
           >
@@ -35,6 +39,9 @@
         </g>
       </svg>
     </v-card-media>
+    <v-card-actions>
+      <v-btn flat @click="selectPoint">select point</v-btn>
+    </v-card-actions>
   </v-card>
 
 </template>
