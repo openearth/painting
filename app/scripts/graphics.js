@@ -42,7 +42,7 @@ var sketch;
           autoclear: false,
           fullscreen: false,
           exists: true,
-          palette: ['black', 'green'],
+          palette: ['black', 'blue', 'red'],
           radius: 3,
           painting: false,
           hasDragged: true,

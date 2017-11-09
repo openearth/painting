@@ -28,6 +28,13 @@
     "weather-icons": "^2.0.10"
   },
   "overrides": {
+    "leaflet": {
+        "main": [
+          "dist/leaflet.css",
+          "dist/leaflet-src.js",
+          "dist/images/*"
+        ]
+    },
     "vue-color": {
       "main": [
         "dist/vue-color.js"

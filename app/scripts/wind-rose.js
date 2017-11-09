@@ -212,7 +212,6 @@
         this.loading = true;
         let startTime = moment(this.model.extent.time[0]).toISOString();
         let endTime = moment(this.model.extent.time[1]).toISOString();
-        console.log('url', this.url);
         let compiled = _.template(this.url);
         let filledUrl = compiled({
           lat: this.lat,
@@ -220,11 +219,9 @@
           startTime: startTime,
           endTime: endTime
         });
-        console.log('filled', filledUrl);
 
         fetch(filledUrl)
           .then((resp) => {
-            console.log('resp', resp);
             return resp.json();
           })
           .then((data) => {

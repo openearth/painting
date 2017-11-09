@@ -22,8 +22,8 @@
 
       </v-tabs-content>
       <v-tabs-content id="palette-selection">
-        <painting-palettes></painting-palettes>
-        <palette-chart :palette="palette"></palette-chart>
+        <painting-palettes @select="onPaintingSelected"></painting-palettes>
+        <palette-chart :palette="painting.palette"></palette-chart>
       </v-tabs-content>
     </v-tabs-items>
   </v-tabs>

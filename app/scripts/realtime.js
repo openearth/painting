@@ -54,7 +54,6 @@
           let loaded = _.filter(val, (item) => {
             return item.loaded;
           });
-          console.log('loaded', loaded);
           bus.$emit('realtimes-selected', loaded);
         },
         deep: true

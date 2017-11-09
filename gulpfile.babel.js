@@ -105,8 +105,10 @@ gulp.task('images', () => {
 // referenced wrong....
 gulp.task('moreimages', () => {
   return gulp.src([
-    'bower_components/mapbox.js/**/*.{png,jpg,svg}'
+    'bower_components/mapbox.js/**/*.{png,jpg,svg}',
+    'bower_components/leaflet/dist/**/*.png'
   ])
+    .pipe(debug({title: 'unicorn:'}))
     .pipe(gulp.dest('dist/styles'));
 });
 
@@ -128,7 +130,13 @@ gulp.task('morefonts', () => {
   ])
     .pipe(gulp.dest('.tmp/fonts'))
     .pipe(gulp.dest('dist/fonts'));
-
+});
+gulp.task('fontswithouts', () => {
+  return gulp.src([
+    'bower_components/weather-icons/font/*.{eot,svg,ttf,woff,woff2}'
+  ])
+    .pipe(gulp.dest('.tmp/font'))
+    .pipe(gulp.dest('dist/font'));
 });
 
 gulp.task('problemfonts', () => {
@@ -252,7 +260,7 @@ gulp.task('templates', [], () => {
     .pipe(gulp.dest('dist/templates'));
 });
 
-gulp.task('build', ['lint', 'html', 'images', 'moreimages', 'fonts', 'morefonts', 'problemfonts', 'extras', 'data', 'models', 'templates'], () => {
+gulp.task('build', ['lint', 'html', 'images', 'moreimages', 'fonts', 'morefonts', 'fontswithouts', 'problemfonts', 'extras', 'data', 'models', 'templates'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 

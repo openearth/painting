@@ -145,6 +145,7 @@ var bus;
           });
           bus.$on('palette-selected', function(palette){
             Vue.set(app, 'palette', palette);
+            Vue.set(app.sketch, 'palette', palette);
           });
           bus.$on('color-selected', function(val) {
             Vue.set(app, 'color', val);

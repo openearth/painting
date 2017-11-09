@@ -12,6 +12,8 @@
         type: Array
       }
     },
+    mounted() {
+    },
     data: () => {
       return {
         colorToggleOptions: [
@@ -24,12 +26,18 @@
             value: 'palette'
           }
         ],
-        colorType: 'color'
+        colorType: 'color',
+        painting: {
+          palette: []
+        }
       };
     },
     methods: {
       onColorChange: function(val){
         bus.$emit('color-selected', val);
+      },
+      onPaintingSelected: function(painting) {
+        Vue.set(this, 'painting',  painting);
       }
     }
   });
@@ -55,19 +63,11 @@
     },
     methods: {
       select: function(painting){
-        bus.$emit('palette-selected', painting.palette);
+        this.$emit('select', painting);
       }
     }
   });
 
-  function updateColors(){
-    // Select all colors
-    var colors = [];
-    d3.selectAll('circle.active').each(function(d){
-      var color = d3.rgb(d.rgb[0] * 255, d.rgb[1] * 255, d.rgb[2] * 255);
-      colors.push(color);
-    });
-  }
 
   Vue.component('palette-chart', {
     template: '#palette-chart-template',
@@ -82,11 +82,13 @@
       }
     },
     mounted: function() {
-      /* global sketch */
-      this.$watch('palette', function(){
+    },
+    watch: {
+      palette: function() {
         this.updateChart();
         this.selectAll();
-      });
+        this.selectPalette();
+      }
     },
     computed: {
       svg: {
@@ -94,9 +96,24 @@
           return d3.select('#palette').select('svg');
         },
         cache: false
+      },
+      selectedColors: {
+        get: function() {
+          // Select all colors
+          let colors = [];
+          this.svg.selectAll('circle.active').each(function(d){
+            var color = d3.rgb(d.rgb[0] * 255, d.rgb[1] * 255, d.rgb[2] * 255);
+            colors.push(color);
+          });
+          return colors;
+        }
       }
     },
     methods: {
+      selectPalette() {
+        let colors = this.selectedColors;
+        bus.$emit('palette-selected', colors);
+      },
       deselectAll() {
         var svg = this.svg;
         var circles = svg
@@ -104,7 +121,7 @@
         circles
           .selectAll('circle')
           .classed('active', false);
-        updateColors();
+        this.selectPalette();
       },
       selectAll() {
         var svg = this.svg;
@@ -113,8 +130,8 @@
         circles
           .selectAll('circle')
           .classed('active', true);
-        updateColors();
-      },
+        this.selectPalette();
+     },
       updateChart: function() {
         var width = 260,
             height = 200;
@@ -150,29 +167,13 @@
             // toggle active
             d3.select(this)
               .classed('active', !d3.select(this).classed('active'));
-            updateColors();
+            this.selectPalette();
           });
         // by default select all circles
         this.selectAll();
 
       }
     }
-  });
-
-
-
-
-
-
-
-
-
-
-
-
-  // select palette if model is loaded
-  document.addEventListener('model-loaded', function(){
-    updateColors();
   });
 
 }());
