@@ -44,7 +44,20 @@
           _.each(realtime, (el) => {
             el.loaded = false;
           });
+
           this.realtime = json.realtime;
+          if (_.has(this.model, 'realtime')) {
+            this.realtime.push(this.model.realtime);
+            if (!_.has(this.model.realtime, 'title')) {
+              this.model.realtime.title = 'Model timeseries';
+            }
+            if (!_.has(this.model.realtime, 'abstract')) {
+              this.model.realtime.abstract = 'Timeseries extracted from model';
+            }
+            if (!_.has(this.model.realtime, 'types')) {
+              this.model.realtime.types = ['waterlevel'];
+            }
+          }
 
         });
     },
