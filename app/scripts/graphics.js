@@ -20,6 +20,7 @@ var sketch;
       this.$nextTick(() => {
         bus.$emit('drawing-canvas-created', this);
         bus.$on('model-selected', this.clear);
+        bus.$on('pattern-loaded', this.drawPattern);
       });
 
     },
@@ -161,6 +162,10 @@ var sketch;
             drawing.stroke();
           }
         );
+      },
+      drawPattern(img) {
+        // draw the image in the painting
+        this.sketch.drawImage(img, 0, 0);
       }
     }
   });

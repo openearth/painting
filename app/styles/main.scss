@@ -95,6 +95,9 @@ $black: #000;
   flex-direction: column;
 }
 
+.pattern {
+  min-height: 100px;
+}
 .map-row,
 .chart-row {
   padding-top: 2vh;
