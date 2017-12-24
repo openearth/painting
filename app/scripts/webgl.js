@@ -324,7 +324,7 @@
           {
             scale: 1.0,
             flipv: false,
-            decay: 0.99,
+            decay: 0.999,
             upwind: false
           }
         );
