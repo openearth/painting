@@ -13,30 +13,14 @@
       id="map"
     >
       <v-mapbox-navigation-control></v-mapbox-navigation-control>
+      <drawing-canvas></drawing-canvas>
+      <v-mapbox-source v-for="source in sources" :key="source.id"></v-mapbox-source>
+      <v-mapbox-layer v-for="layer in layers" :key="layer.id"></v-mapbox-layer>
     </v-mapbox>
   </v-container>
 </template>
 
-<script>
-  import Vue from 'vue';
-
-  import Vue2MapboxGL from 'vue2mapbox-gl';
-  Vue.use(Vue2MapboxGL);
-  export default {
-    name: '',
-    data () {
-      return {
-      }
-    },
-    mounted() {
-    },
-    methods: {
-    },
-    computed: {
-    }
-
-  }
-</script>
+<script src="./v-main.js"></script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
