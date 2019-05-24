@@ -1,0 +1,41 @@
+<template id="pattern-selection-template">
+  <div class="patterns">
+    <v-card>
+      <v-container fluid grid-list-xs="2px">
+        <v-layout row wrap>
+          <v-flex
+            xs4
+            v-for="url in images"
+            :key="url"
+            >
+            <v-card flat tile>
+              <v-card-media
+                class="pattern"
+                :src="url"
+                >
+              </v-card-media>
+              <v-card-actions >
+                <v-spacer></v-spacer>
+                <v-btn icon @click="putImage(url, $event)">
+                  <v-icon>fa-tint</v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn icon @click="snapshot">
+            <v-icon>fa-photo</v-icon>
+          </v-btn>
+          <v-btn icon href="#" id="dl" download="canvas.png" >
+            <v-icon>fa-download</v-icon>
+          </v-btn>
+        </v-card-actions>
+      </v-container>
+    </v-card>
+    <div class="hidden">
+      <a id="dl" download="canvas.png" href="#"></a>
+    </div>
+  </div>
+</template>

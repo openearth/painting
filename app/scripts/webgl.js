@@ -28,6 +28,7 @@
       var delta;
       var counter = 0;
 
+
       // create an animation function that draws the video into a 2d canvas
       function animate() {
 
@@ -174,6 +175,7 @@
         this.createVideoTexture(video);
         this.checkAndRun();
       }.bind(this));
+      bus.$on('download-requested', this.download);
       Vue.nextTick(() => {
         bus.$on('model-selected', this.clear);
       });
@@ -240,10 +242,11 @@
         var renderer = new PIXI.WebGLRenderer(
           this.width, this.height,
           {
-            'view': this.canvas,
-            'transparent': true,
-            clearBeforeRender: false,
-            preserveDrawingBuffer: false
+            view: this.canvas,
+            transparent: true,
+            // use true, true to make screenshots
+            clearBeforeRender: true,
+            preserveDrawingBuffer: true
 
           }
 
@@ -321,7 +324,7 @@
           {
             scale: 1.0,
             flipv: false,
-            decay: 0.99,
+            decay: 0.999,
             upwind: false
           }
         );
@@ -418,6 +421,20 @@
         }
         animate.bind(this)();
 
+      },
+      download() {
+
+        var dt = this.canvas.toDataURL('image/png');
+        // Change MIME type to trick the browser to downlaod the file
+        // instead of displaying it
+        dt = dt.replace(/^data:image\/[^;]*/, 'data:application/octet-stream');
+        // In addition to <a>'s "download" attribute, you
+        // can define HTTP-style headers */
+        dt = dt.replace(
+            /^data:application\/octet-stream/,
+          'data:application/octet-stream;headers=Content-Disposition%3A%20attachment%3B%20filename=Canvas.png'
+        );
+        bus.$emit('download-ready', dt);
       }
     }
   });

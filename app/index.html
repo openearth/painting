@@ -60,9 +60,10 @@
             <v-expansion-panel-content>
               <div slot="header">Color</div>
               <color-selection :color="color" :palette="palette"></color-selection>
-
-
-
+            </v-expansion-panel-content>
+            <v-expansion-panel-content>
+              <div slot="header">Pattern</div>
+              <pattern-selection></pattern-selection>
             </v-expansion-panel-content>
             <v-expansion-panel-content>
               <div slot="header">Timeseries</div>
@@ -204,6 +205,7 @@
     <script src="scripts/particles.js"></script>
     <script src="scripts/webgl.js"></script>
     <script src="scripts/palettes.js"></script>
+    <script src="scripts/patterns.js"></script>
     <script src="scripts/key-bindings.js"></script>
     <script src="scripts/story.js"></script>
     <script src="scripts/chart.js"></script>
